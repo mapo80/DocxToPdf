@@ -86,8 +86,9 @@ public sealed class TextRenderer
         {
             using var font = new SKFont(run.Typeface, sizePt)
             {
-                Subpixel = true,
-                Edging = SKFontEdging.Antialias
+                Subpixel = false,
+                Hinting = SKFontHinting.Full,
+                Edging = SKFontEdging.SubpixelAntialias
             };
             canvas.DrawText(run.Text, cursor, y, SKTextAlign.Left, font, paint);
             cursor += font.MeasureText(run.Text);
@@ -255,8 +256,9 @@ public sealed class TextRenderer
         {
             using var font = new SKFont(typeface, sizePt)
             {
-                Subpixel = true,
-                Edging = SKFontEdging.Antialias
+                Subpixel = false,
+                Hinting = SKFontHinting.Full,
+                Edging = SKFontEdging.SubpixelAntialias
             };
             using var shaper = new SKShaper(typeface);
             var result = shaper.Shape(text, font);
@@ -330,8 +332,9 @@ public sealed class TextRenderer
 
             using var font = new SKFont(Typeface, SizePt)
             {
-                Subpixel = true,
-                Edging = SKFontEdging.Antialias
+                Subpixel = false,
+                Hinting = SKFontHinting.Full,
+                Edging = SKFontEdging.SubpixelAntialias
             };
             using var paint = new SKPaint
             {
