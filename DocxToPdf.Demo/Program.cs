@@ -76,7 +76,9 @@ class Program
                 }
                 outputPath = args[++i];
             }
-            else if (string.Equals(current, "--log-numbering", StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(current, "--log-numbering", StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(current, "--log-tabs", StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(current, "--log-spacing", StringComparison.OrdinalIgnoreCase))
             {
                 enableDiagnostics = true;
             }

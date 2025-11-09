@@ -91,13 +91,29 @@ internal sealed class RunPropertySet
             SmallCaps = overlay.SmallCaps;
 
         if (overlay.ColorHex != null)
+        {
             ColorHex = overlay.ColorHex;
+            ThemeColor = null;
+            Tint = null;
+            Shade = null;
+        }
+
         if (overlay.ThemeColor.HasValue)
+        {
             ThemeColor = overlay.ThemeColor;
-        if (overlay.Tint.HasValue)
-            Tint = overlay.Tint;
-        if (overlay.Shade.HasValue)
-            Shade = overlay.Shade;
+            if (overlay.Tint.HasValue)
+                Tint = overlay.Tint;
+            if (overlay.Shade.HasValue)
+                Shade = overlay.Shade;
+            ColorHex = null;
+        }
+        else
+        {
+            if (overlay.Tint.HasValue)
+                Tint = overlay.Tint;
+            if (overlay.Shade.HasValue)
+                Shade = overlay.Shade;
+        }
     }
 
     public RunFormatting ToFormatting(DocxStyleResolver resolver)

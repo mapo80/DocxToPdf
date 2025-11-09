@@ -12,7 +12,7 @@ public sealed record ParagraphFormatting
 
     public float SpacingBeforePt { get; init; }
     public float SpacingAfterPt { get; init; }
-    public float? LineSpacingPt { get; init; }
+    public ParagraphLineSpacing? LineSpacing { get; init; }
     public ParagraphAlignment Alignment { get; init; } = ParagraphAlignment.Left;
     public float LeftIndentPt { get; init; }
     public float RightIndentPt { get; init; }
@@ -46,4 +46,7 @@ public sealed record ParagraphFormatting
 
         return LeftIndentPt;
     }
+
+    public float ResolveLineSpacing(float defaultSpacing) =>
+        LineSpacing?.Resolve(defaultSpacing) ?? defaultSpacing;
 }

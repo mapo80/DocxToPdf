@@ -94,6 +94,7 @@ dotnet run /path/to/documento.docx /path/to/output.pdf
 - ✅ Dimensione font (`w:sz` in half-points)
 - ✅ Paragrafo: spacing before/after, indentazioni (first-line/hanging) e allineamento base
 - ✅ Liste numerate/puntate (multi-level `w:numPr`, `w:abstractNum` con restart/continuation)
+- ✅ Tab stop personalizzati/default (left/center/right/decimal/bar), `w:ptab` e leader, con giustificazione/distribuzione spazi
 - ✅ Wrapping automatico con paginazione
 - ✅ Emoji e caratteri Unicode con font fallback
 
@@ -120,6 +121,15 @@ dotnet run render samples/numbering-multilevel.docx -o out/numbering-multilevel.
 
 Questo file mostra livelli 0‑2, bullet Wingdings, restart (`numId` diverso) e continuazioni sullo stesso `numId`.
 L'opzione `--log-numbering` stampa in console il tracciamento `numId/ilvl` risolto.
+
+### 5. Sample tabs & alignment
+
+```bash
+cd DocxToPdf.Demo
+dotnet run render samples/tabs-alignment.docx -o out/tabs-alignment.pdf --log-tabs
+```
+
+Il documento contiene tab stop left/center/right, decimali, bar tabs, tab assoluti (`w:ptab`), default tabs e paragrafi con giustificazione/distribuzione per verificare spacing e leader.
 
 ## API pubblica
 

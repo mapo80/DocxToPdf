@@ -12,4 +12,9 @@
     <PackageReference Include="SkiaSharp.HarfBuzz" Version="3.119.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Fonts\**\*.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Fonts\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

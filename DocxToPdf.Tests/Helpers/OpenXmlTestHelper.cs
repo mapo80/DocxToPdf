@@ -167,7 +167,7 @@ internal static class OpenXmlTestHelper
                             AsciiTheme = ThemeFontValues.MinorAscii,
                             HighAnsiTheme = ThemeFontValues.MinorHighAnsi
                         },
-                        new FontSize { Val = "24" },
+                        new FontSize { Val = "22" },
                         new Color { ThemeColor = ThemeColorValues.Text1 }
                     )
                 ),
@@ -302,7 +302,15 @@ internal static class OpenXmlTestHelper
                 new ParagraphStyleId { Val = "Heading1" },
                 new SpacingBetweenLines { Before = "360", After = "120" },
                 new Indentation { Left = "720", FirstLine = "360" },
-                new Justification { Val = JustificationValues.Center }
+                new Justification { Val = JustificationValues.Center },
+                new Tabs(
+                    new TabStop
+                    {
+                        Val = TabStopValues.Right,
+                        Position = 1440,
+                        Leader = TabStopLeaderCharValues.Dot
+                    }
+                )
             ),
             BuildRun("Plain linked", null),
             BuildRun(" Tint", new RunProperties(new Color
@@ -312,6 +320,14 @@ internal static class OpenXmlTestHelper
             })),
             BuildRun(" Hex", new RunProperties(new Color { Val = "3366FF" })),
             BuildRun(" Styled", new RunProperties(new RunStyle { Val = "AccentChar" }))
+        );
+
+        paragraph.Append(
+            new Run(
+                new RunProperties(new RunFonts { Ascii = "Courier New" }),
+                new TabChar(),
+                new Text("AfterTab")
+            )
         );
 
         body.Append(paragraph);

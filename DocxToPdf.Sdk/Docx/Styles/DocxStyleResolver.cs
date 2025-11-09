@@ -70,14 +70,10 @@ internal sealed class DocxStyleResolver
             }
         }
 
-        var paragraphDefaults = ParagraphPropertySet.FromOpenXml(
-            mainPart.StyleDefinitionsPart?.Styles?.DocDefaults?.ParagraphPropertiesDefault?
-                .GetFirstChild<ParagraphProperties>())
+        var docDefaults = mainPart.StyleDefinitionsPart?.Styles?.DocDefaults;
+        var paragraphDefaults = ParagraphPropertySet.FromOpenXml(ExtractParagraphDefaults(docDefaults?.ParagraphPropertiesDefault))
             ?? ParagraphPropertySet.Empty;
-
-        var runDefaults = RunPropertySet.FromOpenXml(
-            mainPart.StyleDefinitionsPart?.Styles?.DocDefaults?.RunPropertiesDefault?
-                .GetFirstChild<RunProperties>())
+        var runDefaults = RunPropertySet.FromOpenXml(ExtractRunDefaults(docDefaults?.RunPropertiesDefault))
             ?? RunPropertySet.Empty;
 
         var themeFonts = ThemeFontScheme.Load(mainPart.ThemePart);
@@ -308,5 +304,51 @@ internal sealed class DocxStyleResolver
         {
             yield return stack.Pop();
         }
+    }
+
+    private static ParagraphProperties? ExtractParagraphDefaults(ParagraphPropertiesDefault? defaultsElement)
+    {
+        if (defaultsElement == null)
+            return null;
+
+        var direct = defaultsElement.GetFirstChild<ParagraphProperties>();
+        if (direct != null)
+            return (ParagraphProperties)direct.CloneNode(true);
+
+        var baseStyle = defaultsElement.GetFirstChild<ParagraphPropertiesBaseStyle>();
+        if (baseStyle != null)
+        {
+            var clone = new ParagraphProperties();
+            foreach (var child in baseStyle.ChildElements)
+            {
+                clone.Append(child.CloneNode(true));
+            }
+            return clone;
+        }
+
+        return null;
+    }
+
+    private static RunProperties? ExtractRunDefaults(RunPropertiesDefault? defaultsElement)
+    {
+        if (defaultsElement == null)
+            return null;
+
+        var direct = defaultsElement.GetFirstChild<RunProperties>();
+        if (direct != null)
+            return (RunProperties)direct.CloneNode(true);
+
+        var baseStyle = defaultsElement.GetFirstChild<RunPropertiesBaseStyle>();
+        if (baseStyle != null)
+        {
+            var clone = new RunProperties();
+            foreach (var child in baseStyle.ChildElements)
+            {
+                clone.Append(child.CloneNode(true));
+            }
+            return clone;
+        }
+
+        return null;
     }
 }

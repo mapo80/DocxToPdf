@@ -24,7 +24,9 @@ public sealed class ParagraphPropertySetTests
         var set = ParagraphPropertySet.FromOpenXml(props);
         set.SpacingBeforePt.Should().Be(12);
         set.SpacingAfterPt.Should().Be(18);
-        set.LineSpacingPt.Should().Be(24);
+        set.LineSpacing.Should().NotBeNull();
+        set.LineSpacing!.Value.Rule.Should().Be(ParagraphLineSpacingRule.Auto);
+        set.LineSpacing.Value.Value.Should().BeApproximately(2f, 0.01f);
         set.LeftIndentPt.Should().Be(36);
         set.RightIndentPt.Should().Be(18);
         set.FirstLineIndentPt.Should().Be(9);

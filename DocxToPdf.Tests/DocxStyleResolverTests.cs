@@ -24,8 +24,8 @@ public sealed class DocxStyleResolverTests
         paragraph.ParagraphFormatting.GetFirstLineOffsetPt().Should().BeApproximately(54f, 0.01f);
         paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt().Should().BeApproximately(36f, 0.01f);
 
-        paragraph.Runs.Should().HaveCount(4);
-        paragraph.GetFullText().Should().Be("Plain linked Tint Hex Styled");
+        paragraph.Runs.Should().HaveCount(5);
+        paragraph.GetFullText().Should().Be("Plain linked Tint Hex StyledAfterTab");
 
         var plain = paragraph.Runs[0].Formatting;
         plain.FontFamily.Should().Be("Contoso Headings");
@@ -41,6 +41,16 @@ public sealed class DocxStyleResolverTests
 
         var styled = paragraph.Runs[3].Formatting;
         styled.Color.ToHex().Should().Be("4F81BD");
+
+        var tabs = paragraph.ParagraphFormatting.TabStops;
+        tabs.Should().HaveCount(1);
+        tabs[0].Alignment.Should().Be(TabAlignment.Right);
+        tabs[0].Leader.Should().Be(TabLeader.Dots);
+        tabs[0].PositionPt.Should().BeApproximately(DocxToPdf.Sdk.Units.UnitConverter.DxaToPoints(1440), 0.01f);
+
+        var tabInline = paragraph.InlineElements.OfType<DocxTabInline>().Single();
+        tabInline.Formatting.FontFamily.Should().Be("Courier New");
+        paragraph.InlineElements.OfType<DocxTextInline>().Last().Text.Should().Be("AfterTab");
     }
 
     private static string ExpectedTintedHex(string baseHex, byte tint)

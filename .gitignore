@@ -35,6 +35,8 @@ project.lock.json
 TestResults/
 *.trx
 *.coverage
+coverage.*
+*coverage.info
 
 # Generated PDFs (demo output)
 *.pdf

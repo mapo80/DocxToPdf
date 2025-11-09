@@ -8,6 +8,7 @@ using DocxToPdf.Sdk.Text;
 using DocxToPdf.Sdk.Units;
 using SkiaSharp;
 using System;
+using System.Linq;
 
 namespace DocxToPdf.Sdk;
 
@@ -38,8 +39,10 @@ public sealed class DocxToPdfConverter
     {
         using var docx = DocxDocument.Open(docxPath);
 
-        var previousSink = NumberingDiagnostics.Sink;
+        var previousNumberingSink = NumberingDiagnostics.Sink;
+        var previousTabSink = TabDiagnostics.Sink;
         NumberingDiagnostics.Sink = DiagnosticsLogger;
+        TabDiagnostics.Sink = DiagnosticsLogger;
 
         // Leggi sezione (pagina e margini)
         var section = docx.GetSection();
@@ -65,21 +68,40 @@ public sealed class DocxToPdfConverter
         float currentY = margins.Top;
 
         // Rendering paragrafi
+        int paragraphIndex = 0;
         foreach (var paragraph in docx.GetParagraphs())
         {
+            paragraphIndex++;
+            var lineSpacingDescriptor = paragraph.ParagraphFormatting.LineSpacing;
+            string lineSpacingValue;
+            if (lineSpacingDescriptor == null)
+                lineSpacingValue = "n/a";
+            else if (lineSpacingDescriptor.Value.Rule == ParagraphLineSpacingRule.Auto)
+                lineSpacingValue = $"{lineSpacingDescriptor.Value.Value:F2}x";
+            else
+                lineSpacingValue = $"{lineSpacingDescriptor.Value.Value:F2}pt";
+
+            DiagnosticsLogger?.Invoke(
+                $"Paragraph {paragraphIndex}: spacingBefore={paragraph.ParagraphFormatting.SpacingBeforePt:F2} " +
+                $"spacingAfter={paragraph.ParagraphFormatting.SpacingAfterPt:F2} " +
+                $"lineSpacingRule={lineSpacingDescriptor?.Rule} " +
+                $"lineSpacingValue={lineSpacingValue}");
+
             // Layout del paragrafo
             var lines = _layoutEngine.LayoutParagraph(paragraph, contentWidth);
 
             // Spaziatura prima del paragrafo
             currentY += paragraph.ParagraphFormatting.SpacingBeforePt;
 
-            foreach (var line in lines)
+            for (int lineIndex = 0; lineIndex < lines.Count; lineIndex++)
             {
-                // Calcola line spacing corretto usando font metrics
-                var lineSpacing = line.GetLineSpacing();
+                var line = lines[lineIndex];
+                // Calcola line spacing corretto usando le impostazioni del paragrafo
+                var defaultSpacing = line.GetLineSpacing();
+                var resolvedLineSpacing = paragraph.ParagraphFormatting.ResolveLineSpacing(defaultSpacing);
 
                 // Verifica se serve una nuova pagina
-                if (currentY + lineSpacing > pageSize.HeightPt - margins.Bottom)
+                if (currentY + resolvedLineSpacing > pageSize.HeightPt - margins.Bottom)
                 {
                     // Nuova pagina
                     pdfBuilder.EndPage();
@@ -98,12 +120,21 @@ public sealed class DocxToPdfConverter
                 // Allineamento paragrafo
                 var availableWidth = line.AvailableWidthPt;
                 var extraSpace = Math.Max(0f, availableWidth - line.WidthPt);
-                currentX += paragraph.ParagraphFormatting.Alignment switch
+                var alignment = paragraph.ParagraphFormatting.Alignment;
+                currentX += alignment switch
                 {
                     ParagraphAlignment.Center => extraSpace / 2f,
                     ParagraphAlignment.Right => extraSpace,
                     _ => 0f
                 };
+                var shouldJustify = alignment == ParagraphAlignment.Justified && lineIndex < lines.Count - 1;
+                var shouldDistribute = alignment == ParagraphAlignment.Distributed;
+                var stretchableSpaces = (shouldJustify || shouldDistribute)
+                    ? line.Runs.Count(IsStretchableSpace)
+                    : 0;
+                var perSpaceAdvance = stretchableSpaces > 0
+                    ? extraSpace / stretchableSpaces
+                    : 0f;
 
                 if (paragraph.ListMarker != null && line.IsFirstLine)
                 {
@@ -116,8 +147,20 @@ public sealed class DocxToPdfConverter
                     currentX = margins.Left + paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt();
                 }
 
+                DrawBarTabs(page.Canvas, margins, paragraph, line, baseline);
+
+                DiagnosticsLogger?.Invoke(
+                    $"Paragraph {paragraphIndex} line {lineIndex + 1}: baseline={baseline:F2} currentY={currentY:F2} " +
+                    $"lineSpacing={resolvedLineSpacing:F2} width={line.WidthPt:F2}/{line.AvailableWidthPt:F2}");
+
                 foreach (var run in line.Runs)
                 {
+                    if (!run.IsDrawable)
+                    {
+                        currentX += run.AdvanceWidthOverride;
+                        continue;
+                    }
+
                     var color = new SKColor(run.Formatting.Color.R, run.Formatting.Color.G, run.Formatting.Color.B);
                     var width = _textRenderer.DrawShapedTextWithFallback(
                         page.Canvas,
@@ -129,10 +172,15 @@ public sealed class DocxToPdfConverter
                         color
                     );
                     currentX += width;
+
+                    if ((shouldJustify || shouldDistribute) && perSpaceAdvance > 0f && IsStretchableSpace(run))
+                    {
+                        currentX += perSpaceAdvance;
+                    }
                 }
 
                 // Avanza alla prossima riga usando line spacing
-                currentY += lineSpacing;
+                currentY += resolvedLineSpacing;
             }
 
             // Spazio dopo il paragrafo
@@ -142,7 +190,8 @@ public sealed class DocxToPdfConverter
         pdfBuilder.EndPage();
         pdfBuilder.Close();
 
-        NumberingDiagnostics.Sink = previousSink;
+        NumberingDiagnostics.Sink = previousNumberingSink;
+        TabDiagnostics.Sink = previousTabSink;
     }
 
     private void DrawListMarker(SKCanvas canvas, Margins margins, DocxParagraph paragraph, DocxListMarker marker, float baseline)
@@ -190,4 +239,31 @@ public sealed class DocxToPdfConverter
                 color);
         }
     }
+
+    private void DrawBarTabs(SKCanvas canvas, Margins margins, DocxParagraph paragraph, LayoutLine line, float baseline)
+    {
+        if (line.BarTabs.Count == 0)
+            return;
+
+        foreach (var bar in line.BarTabs)
+        {
+            var indent = line.IsFirstLine
+                ? paragraph.ParagraphFormatting.GetFirstLineOffsetPt()
+                : paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt();
+            var x = margins.Left + indent + bar.RelativePositionPt;
+            using var paint = new SKPaint
+            {
+                Color = new SKColor(bar.Formatting.Color.R, bar.Formatting.Color.G, bar.Formatting.Color.B),
+                IsAntialias = true,
+                StrokeWidth = Math.Max(0.5f, bar.Formatting.FontSizePt / 24f)
+            };
+
+            var top = baseline + line.MaxAscent;
+            var bottom = baseline + line.MaxDescent;
+            canvas.DrawLine(x, top, x, bottom, paint);
+        }
+    }
+
+    private static bool IsStretchableSpace(LayoutRun run) =>
+        run.IsDrawable && !string.IsNullOrEmpty(run.Text) && run.Text.All(static c => c == ' ');
 }

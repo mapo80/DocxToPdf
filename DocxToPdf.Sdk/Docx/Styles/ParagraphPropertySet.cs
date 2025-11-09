@@ -2,6 +2,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocxToPdf.Sdk.Docx.Formatting;
 using DocxToPdf.Sdk.Units;
+using System;
 using System.Collections.Generic;
 
 namespace DocxToPdf.Sdk.Docx.Styles;
@@ -13,7 +14,7 @@ internal sealed class ParagraphPropertySet
 {
     internal float? SpacingBeforePt { get; set; }
     internal float? SpacingAfterPt { get; set; }
-    internal float? LineSpacingPt { get; set; }
+    internal ParagraphLineSpacing? LineSpacing { get; set; }
     internal ParagraphAlignment? Alignment { get; set; }
     internal float? LeftIndentPt { get; set; }
     internal float? RightIndentPt { get; set; }
@@ -27,7 +28,7 @@ internal sealed class ParagraphPropertySet
         {
             SpacingBeforePt = SpacingBeforePt,
             SpacingAfterPt = SpacingAfterPt,
-            LineSpacingPt = LineSpacingPt,
+            LineSpacing = LineSpacing,
             Alignment = Alignment,
             LeftIndentPt = LeftIndentPt,
             RightIndentPt = RightIndentPt,
@@ -46,8 +47,8 @@ internal sealed class ParagraphPropertySet
             SpacingBeforePt = overlay.SpacingBeforePt;
         if (overlay.SpacingAfterPt.HasValue)
             SpacingAfterPt = overlay.SpacingAfterPt;
-        if (overlay.LineSpacingPt.HasValue)
-            LineSpacingPt = overlay.LineSpacingPt;
+        if (overlay.LineSpacing.HasValue)
+            LineSpacing = overlay.LineSpacing;
         if (overlay.Alignment.HasValue)
             Alignment = overlay.Alignment;
         if (overlay.LeftIndentPt.HasValue)
@@ -77,7 +78,7 @@ internal sealed class ParagraphPropertySet
         {
             SpacingBeforePt = SpacingBeforePt ?? 0f,
             SpacingAfterPt = SpacingAfterPt ?? 0f,
-            LineSpacingPt = LineSpacingPt,
+            LineSpacing = LineSpacing,
             Alignment = Alignment ?? ParagraphAlignment.Left,
             LeftIndentPt = LeftIndentPt ?? 0f,
             RightIndentPt = RightIndentPt ?? 0f,
@@ -101,8 +102,23 @@ internal sealed class ParagraphPropertySet
                 set.SpacingBeforePt = UnitConverter.DxaToPoints(beforeTwips);
             if (spacing.After?.Value is string after && int.TryParse(after, out var afterTwips))
                 set.SpacingAfterPt = UnitConverter.DxaToPoints(afterTwips);
-            if (spacing.Line?.Value is string line && int.TryParse(line, out var lineTwips))
-                set.LineSpacingPt = UnitConverter.DxaToPoints(lineTwips);
+            if (spacing.Line?.Value is string line && int.TryParse(line, out var lineValue))
+            {
+                var rule = spacing.LineRule?.Value;
+                if (rule == LineSpacingRuleValues.Exact)
+                {
+                    set.LineSpacing = ParagraphLineSpacing.Exact(UnitConverter.DxaToPoints(lineValue));
+                }
+                else if (rule == LineSpacingRuleValues.AtLeast)
+                {
+                    set.LineSpacing = ParagraphLineSpacing.AtLeast(UnitConverter.DxaToPoints(lineValue));
+                }
+                else
+                {
+                    var multiple = Math.Max(0.1f, lineValue / 240f);
+                    set.LineSpacing = ParagraphLineSpacing.Auto(multiple);
+                }
+            }
         }
 
         if (paragraphPropertiesElement.GetFirstChild<Indentation>() is { } indent)
@@ -125,6 +141,8 @@ internal sealed class ParagraphPropertySet
                 set.Alignment = ParagraphAlignment.Right;
             else if (jc.Val?.Value == JustificationValues.Both)
                 set.Alignment = ParagraphAlignment.Justified;
+            else if (jc.Val?.Value == JustificationValues.Distribute)
+                set.Alignment = ParagraphAlignment.Distributed;
             else
                 set.Alignment = ParagraphAlignment.Left;
         }

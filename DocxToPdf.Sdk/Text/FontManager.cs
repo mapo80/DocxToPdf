@@ -1,6 +1,7 @@
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DocxToPdf.Sdk.Text;
 
@@ -12,12 +13,16 @@ namespace DocxToPdf.Sdk.Text;
 public sealed class FontManager
 {
     private static readonly Lazy<FontManager> _instance = new(() => new FontManager());
-    private readonly Dictionary<string, SKTypeface> _cache = new();
+    private readonly Dictionary<string, SKTypeface> _cache = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, LocalFontFamily> _embeddedFamilies;
+    private readonly Dictionary<string, string> _fontAliases;
 
     public static FontManager Instance => _instance.Value;
 
     private FontManager()
     {
+        _embeddedFamilies = LoadEmbeddedFamilies();
+        _fontAliases = BuildAliases();
     }
 
     /// <summary>
@@ -34,7 +39,7 @@ public sealed class FontManager
         if (_cache.TryGetValue(key, out var cached))
             return cached;
 
-        var typeface = SKTypeface.FromFamilyName(familyName, style);
+        var typeface = CreateTypeface(familyName, style);
         _cache[key] = typeface;
         return typeface;
     }
@@ -63,7 +68,6 @@ public sealed class FontManager
     {
         var fontManager = SKFontManager.Default;
 
-        // SkiaSharp 3.x API: MatchCharacter(int character)
         var fallback = fontManager.MatchCharacter(codepoint);
 
         return fallback;
@@ -91,5 +95,118 @@ public sealed class FontManager
         }
 
         return false;
+    }
+    private SKTypeface CreateTypeface(string familyName, SKFontStyle style)
+    {
+        if (TryGetEmbeddedTypeface(familyName, style, out var typeface))
+            return typeface;
+
+        if (TryGetSystemTypeface(familyName, style, out typeface))
+            return typeface;
+
+        if (_fontAliases.TryGetValue(familyName, out var alias))
+        {
+            if (TryGetEmbeddedTypeface(alias, style, out typeface))
+                return typeface;
+            if (TryGetSystemTypeface(alias, style, out typeface))
+                return typeface;
+        }
+
+        typeface = SKTypeface.FromFamilyName(familyName, style);
+        return typeface ?? SKTypeface.Default;
+    }
+
+    private bool TryGetSystemTypeface(string familyName, SKFontStyle style, out SKTypeface typeface)
+    {
+        typeface = SKTypeface.FromFamilyName(familyName, style);
+        if (typeface == null)
+            return false;
+
+        if (string.Equals(typeface.FamilyName, familyName, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        typeface.Dispose();
+        typeface = null!;
+        return false;
+    }
+
+    private bool TryGetEmbeddedTypeface(string familyName, SKFontStyle style, out SKTypeface typeface)
+    {
+        typeface = null!;
+        if (!_embeddedFamilies.TryGetValue(familyName, out var family))
+            return false;
+
+        var path = family.Resolve(style);
+        if (path == null || !File.Exists(path))
+            return false;
+
+        typeface = SKTypeface.FromFile(path);
+        return typeface != null;
+    }
+
+    private Dictionary<string, LocalFontFamily> LoadEmbeddedFamilies()
+    {
+        var dict = new Dictionary<string, LocalFontFamily>(StringComparer.OrdinalIgnoreCase);
+        var baseDir = AppContext.BaseDirectory;
+        var fontsDir = Path.Combine(baseDir, "Fonts");
+        if (!Directory.Exists(fontsDir))
+            return dict;
+
+        void TryAdd(string familyName, string regular, string bold, string italic, string boldItalic)
+        {
+            var family = LocalFontFamily.Create(fontsDir, regular, bold, italic, boldItalic);
+            if (family != null)
+                dict[familyName] = family;
+        }
+
+        TryAdd("Caladea", "Caladea-Regular.ttf", "Caladea-Bold.ttf", "Caladea-Italic.ttf", "Caladea-BoldItalic.ttf");
+        TryAdd("Carlito", "Carlito-Regular.ttf", "Carlito-Bold.ttf", "Carlito-Italic.ttf", "Carlito-BoldItalic.ttf");
+
+        return dict;
+    }
+
+    private static Dictionary<string, string> BuildAliases() =>
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Cambria"] = "Caladea",
+            ["Cambria Math"] = "Caladea",
+            ["Calibri"] = "Carlito",
+            ["Calibri Light"] = "Carlito"
+        };
+
+    private sealed record LocalFontFamily(string RegularPath, string? BoldPath, string? ItalicPath, string? BoldItalicPath)
+    {
+        public string? Resolve(SKFontStyle style)
+        {
+            var isBold = style.Weight >= (int)SKFontStyleWeight.SemiBold;
+            var isItalic = style.Slant == SKFontStyleSlant.Italic || style.Slant == SKFontStyleSlant.Oblique;
+
+            if (isBold && isItalic && !string.IsNullOrEmpty(BoldItalicPath))
+                return BoldItalicPath;
+            if (isBold && !string.IsNullOrEmpty(BoldPath))
+                return BoldPath;
+            if (isItalic && !string.IsNullOrEmpty(ItalicPath))
+                return ItalicPath;
+            return RegularPath;
+        }
+
+        public static LocalFontFamily? Create(string fontsDir, string regular, string bold, string italic, string boldItalic)
+        {
+            var regularPath = Path.Combine(fontsDir, regular);
+            if (!File.Exists(regularPath))
+                return null;
+
+            string? GetOptional(string relativePath)
+            {
+                var path = Path.Combine(fontsDir, relativePath);
+                return File.Exists(path) ? path : null;
+            }
+
+            return new LocalFontFamily(
+                regularPath,
+                GetOptional(bold),
+                GetOptional(italic),
+                GetOptional(boldItalic));
+        }
     }
 }
