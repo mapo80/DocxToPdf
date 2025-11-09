@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocxToPdf.Sdk", "DocxToPdf.Sdk\DocxToPdf.Sdk.csproj", "{D1835C4E-E123-4251-AE1F-8D988525E6C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocxToPdf.Demo", "DocxToPdf.Demo\DocxToPdf.Demo.csproj", "{5DF902F3-F3D1-4F2C-8834-348C2059AA13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocxToPdf.Tests", "DocxToPdf.Tests\DocxToPdf.Tests.csproj", "{A30548A0-61EE-4761-8819-63CD701754A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1835C4E-E123-4251-AE1F-8D988525E6C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1835C4E-E123-4251-AE1F-8D988525E6C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1835C4E-E123-4251-AE1F-8D988525E6C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1835C4E-E123-4251-AE1F-8D988525E6C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DF902F3-F3D1-4F2C-8834-348C2059AA13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DF902F3-F3D1-4F2C-8834-348C2059AA13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DF902F3-F3D1-4F2C-8834-348C2059AA13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DF902F3-F3D1-4F2C-8834-348C2059AA13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30548A0-61EE-4761-8819-63CD701754A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30548A0-61EE-4761-8819-63CD701754A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30548A0-61EE-4761-8819-63CD701754A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30548A0-61EE-4761-8819-63CD701754A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

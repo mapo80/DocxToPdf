@@ -1,0 +1,60 @@
+# .NET artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+.vs/
+.vscode/
+.idea/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+
+# Generated PDFs (demo output)
+*.pdf
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
