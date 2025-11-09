@@ -54,6 +54,17 @@ public sealed class RunPropertySetTests
     }
 
     [Fact]
+    public void FromOpenXml_ParsesKerningThreshold()
+    {
+        var props = new RunProperties(
+            new Kern { Val = 28U }
+        );
+
+        var set = RunPropertySet.FromOpenXml(props);
+        set.KerningMinFontPt.Should().Be(14);
+    }
+
+    [Fact]
     public void Apply_MergesValuesAndCloneProducesDeepCopy()
     {
         var baseSet = RunPropertySet.FromOpenXml(new RunProperties(

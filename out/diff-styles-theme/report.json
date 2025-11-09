@@ -1,0 +1,1077 @@
+{
+  "passed": false,
+  "exitCode": 1,
+  "diffPdf": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-styles-theme/diff.pdf",
+  "stdout": "page 0 has 136985 pixels that differ\npage 0 differs\n1 of 1 pages differ.\n",
+  "stderr": "",
+  "baseline": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden/styles-theme.pdf",
+  "candidate": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/styles-theme-sdk.pdf",
+  "pages": null,
+  "dpi": 300,
+  "difference": {
+    "totalPixels": 8699840,
+    "differingPixels": 136985,
+    "ratio": 0.015745691874793098,
+    "percent": 1.5745691874793097
+  },
+  "pageStats": [
+    {
+      "pageNumber": 1,
+      "widthPx": 2480,
+      "heightPx": 3508,
+      "totalPixels": 8699840,
+      "diffPixels": 136985,
+      "ratio": 0.015745691874793098,
+      "percent": 1.5745691874793097
+    }
+  ],
+  "geometry": {
+    "passed": false,
+    "tolerancePt": 0.25,
+    "pages": [
+      {
+        "pageNumber": 1,
+        "expectedWordCount": 63,
+        "actualWordCount": 62,
+        "mismatches": [
+          {
+            "index": 1,
+            "expectedText": "Kickoff",
+            "actualText": "Kicko\uFB00",
+            "expected": {
+              "x": 109.97000000000001,
+              "y": 735.389,
+              "width": 39.56400000000001,
+              "height": 9.8369140625,
+              "centerX": 129.752,
+              "centerY": 740.30745703125
+            },
+            "actual": {
+              "x": 109.925781,
+              "y": 735.5,
+              "width": 39.607421875,
+              "height": 9.8369140625,
+              "centerX": 129.7294919375,
+              "centerY": 740.41845703125
+            },
+            "delta": {
+              "deltaX": -0.02250806250000892,
+              "deltaY": 0.11099999999999,
+              "deltaWidth": 0.04342187499999284,
+              "deltaHeight": 0,
+              "maxDeviation": 0.11099999999999
+            }
+          },
+          {
+            "index": 6,
+            "expectedText": "Palette",
+            "actualText": "Pale\u0000e",
+            "expected": {
+              "x": 156.65199999999993,
+              "y": 706.489,
+              "width": 38.10299999999995,
+              "height": 9.12158203125,
+              "centerX": 175.7034999999999,
+              "centerY": 711.049791015625
+            },
+            "actual": {
+              "x": 156.677734,
+              "y": 706.59668,
+              "width": 38.1494140625,
+              "height": 9.12158203125,
+              "centerX": 175.75244103125,
+              "centerY": 711.157471015625
+            },
+            "delta": {
+              "deltaX": 0.04894103125008087,
+              "deltaY": 0.10767999999995936,
+              "deltaWidth": 0.0464140625000482,
+              "deltaHeight": 0,
+              "maxDeviation": 0.10767999999995936
+            }
+          },
+          {
+            "index": 28,
+            "expectedText": "Centered",
+            "actualText": "Centered",
+            "expected": {
+              "x": 239.25,
+              "y": 636.689,
+              "width": 49.516999999999996,
+              "height": 9.12158203125,
+              "centerX": 264.0085,
+              "centerY": 641.249791015625
+            },
+            "actual": {
+              "x": 239.10556,
+              "y": 626.69565,
+              "width": 49.59423828124997,
+              "height": 9.12158203125,
+              "centerX": 263.90267914062497,
+              "centerY": 631.256441015625
+            },
+            "delta": {
+              "deltaX": -0.10582085937505781,
+              "deltaY": -9.993349999999964,
+              "deltaWidth": 0.07723828124997567,
+              "deltaHeight": 0,
+              "maxDeviation": 9.993349999999964
+            }
+          },
+          {
+            "index": 29,
+            "expectedText": "status",
+            "actualText": "status",
+            "expected": {
+              "x": 291.692,
+              "y": 636.689,
+              "width": 32.74699999999996,
+              "height": 8.201171875,
+              "centerX": 308.0655,
+              "centerY": 640.7895859375
+            },
+            "actual": {
+              "x": 291.63876,
+              "y": 626.69565,
+              "width": 32.779296875,
+              "height": 8.201171875,
+              "centerX": 308.0284084375,
+              "centerY": 630.7962359375
+            },
+            "delta": {
+              "deltaX": -0.037091562499995234,
+              "deltaY": -9.993349999999964,
+              "deltaWidth": 0.032296875000042746,
+              "deltaHeight": 0,
+              "maxDeviation": 9.993349999999964
+            }
+          },
+          {
+            "index": 30,
+            "expectedText": "block",
+            "actualText": "block",
+            "expected": {
+              "x": 327.38999999999993,
+              "y": 636.689,
+              "width": 28.743000000000052,
+              "height": 9.12158203125,
+              "centerX": 341.76149999999996,
+              "centerY": 641.249791015625
+            },
+            "actual": {
+              "x": 327.35703,
+              "y": 626.69565,
+              "width": 28.83740234375,
+              "height": 9.12158203125,
+              "centerX": 341.775731171875,
+              "centerY": 631.256441015625
+            },
+            "delta": {
+              "deltaX": 0.014231171875053406,
+              "deltaY": -9.993349999999964,
+              "deltaWidth": 0.09440234374994816,
+              "deltaHeight": 0,
+              "maxDeviation": 9.993349999999964
+            }
+          },
+          {
+            "index": 31,
+            "expectedText": "First-line",
+            "actualText": "First-line",
+            "expected": {
+              "x": 144.1,
+              "y": 607.789,
+              "width": 43.097999999999985,
+              "height": 7.66700000000003,
+              "centerX": 165.649,
+              "centerY": 611.6225
+            },
+            "actual": {
+              "x": 144,
+              "y": 597.74617,
+              "width": 43.16400540000001,
+              "height": 7.66700000000003,
+              "centerX": 165.5820027,
+              "centerY": 601.5796700000001
+            },
+            "delta": {
+              "deltaX": -0.06699729999999704,
+              "deltaY": -10.042829999999867,
+              "deltaWidth": 0.06600540000002297,
+              "deltaHeight": 0,
+              "maxDeviation": 10.042829999999867
+            }
+          },
+          {
+            "index": 32,
+            "expectedText": "indent",
+            "actualText": "indent",
+            "expected": {
+              "x": 189.61799999999997,
+              "y": 607.789,
+              "width": 30.502999999999986,
+              "height": 7.66700000000003,
+              "centerX": 204.86949999999996,
+              "centerY": 611.6225
+            },
+            "actual": {
+              "x": 189.584,
+              "y": 597.74617,
+              "width": 30.524991599999993,
+              "height": 7.66700000000003,
+              "centerX": 204.8464958,
+              "centerY": 601.5796700000001
+            },
+            "delta": {
+              "deltaX": -0.02300419999994574,
+              "deltaY": -10.042829999999867,
+              "deltaWidth": 0.021991600000006883,
+              "deltaHeight": 0,
+              "maxDeviation": 10.042829999999867
+            }
+          },
+          {
+            "index": 33,
+            "expectedText": "paragraph",
+            "actualText": "paragraph",
+            "expected": {
+              "x": 222.54099999999994,
+              "y": 607.789,
+              "width": 48.93900000000002,
+              "height": 7.66700000000003,
+              "centerX": 247.01049999999995,
+              "centerY": 611.6225
+            },
+            "actual": {
+              "x": 222.52901,
+              "y": 597.74617,
+              "width": 48.95000600000006,
+              "height": 7.66700000000003,
+              "centerX": 247.00401300000004,
+              "centerY": 601.5796700000001
+            },
+            "delta": {
+              "deltaX": -0.006486999999907539,
+              "deltaY": -10.042829999999867,
+              "deltaWidth": 0.011006000000037375,
+              "deltaHeight": 0,
+              "maxDeviation": 10.042829999999867
+            }
+          },
+          {
+            "index": 34,
+            "expectedText": "to",
+            "actualText": "to",
+            "expected": {
+              "x": 273.856,
+              "y": 607.789,
+              "width": 9.581000000000017,
+              "height": 6.203999999999951,
+              "centerX": 278.6465,
+              "centerY": 610.891
+            },
+            "actual": {
+              "x": 273.89902,
+              "y": 597.74617,
+              "width": 9.558987100000024,
+              "height": 6.204000000000065,
+              "centerX": 278.67851355000005,
+              "centerY": 600.84817
+            },
+            "delta": {
+              "deltaX": 0.03201355000004469,
+              "deltaY": -10.04282999999998,
+              "deltaWidth": -0.022012899999992896,
+              "deltaHeight": 1.1368683772161603E-13,
+              "maxDeviation": 10.04282999999998
+            }
+          },
+          {
+            "index": 35,
+            "expectedText": "validate",
+            "actualText": "validate",
+            "expected": {
+              "x": 285.83500000000004,
+              "y": 607.789,
+              "width": 37.488,
+              "height": 7.66700000000003,
+              "centerX": 304.57900000000006,
+              "centerY": 611.6225
+            },
+            "actual": {
+              "x": 285.87799,
+              "y": 597.74617,
+              "width": 37.50999839999997,
+              "height": 7.66700000000003,
+              "centerX": 304.6329892,
+              "centerY": 601.5796700000001
+            },
+            "delta": {
+              "deltaX": 0.05398919999993268,
+              "deltaY": -10.042829999999867,
+              "deltaWidth": 0.021998399999972662,
+              "deltaHeight": 0,
+              "maxDeviation": 10.042829999999867
+            }
+          },
+          {
+            "index": 36,
+            "expectedText": "spacing",
+            "actualText": "spacing",
+            "expected": {
+              "x": 325.74300000000005,
+              "y": 607.789,
+              "width": 35.650999999999954,
+              "height": 7.216000000000008,
+              "centerX": 343.56850000000003,
+              "centerY": 611.3969999999999
+            },
+            "actual": {
+              "x": 325.80798,
+              "y": 597.74617,
+              "width": 35.694986400000005,
+              "height": 7.216000000000008,
+              "centerX": 343.65547319999996,
+              "centerY": 601.3541700000001
+            },
+            "delta": {
+              "deltaX": 0.0869731999999317,
+              "deltaY": -10.042829999999867,
+              "deltaWidth": 0.04398640000005116,
+              "deltaHeight": 0,
+              "maxDeviation": 10.042829999999867
+            }
+          },
+          {
+            "index": 37,
+            "expectedText": "logic.",
+            "actualText": "logic.",
+            "expected": {
+              "x": 363.79200000000003,
+              "y": 607.789,
+              "width": 24.376000000000033,
+              "height": 7.66700000000003,
+              "centerX": 375.98,
+              "centerY": 611.6225
+            },
+            "actual": {
+              "x": 363.92297,
+              "y": 597.74617,
+              "width": 24.420008599999903,
+              "height": 7.66700000000003,
+              "centerX": 376.1329743,
+              "centerY": 601.5796700000001
+            },
+            "delta": {
+              "deltaX": 0.15297429999998258,
+              "deltaY": -10.042829999999867,
+              "deltaWidth": 0.04400859999987006,
+              "deltaHeight": 0,
+              "maxDeviation": 10.042829999999867
+            }
+          },
+          {
+            "index": 38,
+            "expectedText": "Hanging",
+            "actualText": "Hanging",
+            "expected": {
+              "x": 90.1,
+              "y": 582.989,
+              "width": 39.06100000000001,
+              "height": 7.336999999999989,
+              "centerX": 109.6305,
+              "centerY": 586.6575
+            },
+            "actual": {
+              "x": 90,
+              "y": 572.92041,
+              "width": 39.12700080000002,
+              "height": 7.336999999999989,
+              "centerX": 109.56350040000001,
+              "centerY": 576.5889099999999
+            },
+            "delta": {
+              "deltaX": -0.06699959999998839,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.06600080000001185,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 39,
+            "expectedText": "indent",
+            "actualText": "indent",
+            "expected": {
+              "x": 131.559,
+              "y": 582.989,
+              "width": 30.54699999999997,
+              "height": 7.66700000000003,
+              "centerX": 146.83249999999998,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 131.546997,
+              "y": 572.92041,
+              "width": 30.525006899999994,
+              "height": 7.66700000000003,
+              "centerX": 146.80950045,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": -0.022999549999980218,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": -0.021993099999974675,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 40,
+            "expectedText": "sample",
+            "actualText": "sample",
+            "expected": {
+              "x": 164.48199999999997,
+              "y": 582.989,
+              "width": 33.692999999999984,
+              "height": 7.66700000000003,
+              "centerX": 181.32849999999996,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 164.491989,
+              "y": 572.92041,
+              "width": 33.71500009999997,
+              "height": 7.66700000000003,
+              "centerX": 181.34948905,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.0209890500000256,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.022000099999985423,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 41,
+            "expectedText": "that",
+            "actualText": "that",
+            "expected": {
+              "x": 200.59499999999994,
+              "y": 582.989,
+              "width": 18.853999999999985,
+              "height": 7.66700000000003,
+              "centerX": 210.02199999999993,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 200.627,
+              "y": 572.92041,
+              "width": 18.876004799999976,
+              "height": 7.66700000000003,
+              "centerX": 210.0650024,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.043002400000062835,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.02200479999999061,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 42,
+            "expectedText": "should",
+            "actualText": "should",
+            "expected": {
+              "x": 221.86899999999991,
+              "y": 582.989,
+              "width": 31.778999999999996,
+              "height": 7.66700000000003,
+              "centerX": 237.7584999999999,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 221.923,
+              "y": 572.92041,
+              "width": 31.80101429999999,
+              "height": 7.66700000000003,
+              "centerX": 237.82350715,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.06500715000009905,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.022014299999995046,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 43,
+            "expectedText": "wrap",
+            "actualText": "wrap",
+            "expected": {
+              "x": 256.04599999999994,
+              "y": 582.989,
+              "width": 24.551999999999964,
+              "height": 5.246999999999957,
+              "centerX": 268.3219999999999,
+              "centerY": 585.6125
+            },
+            "actual": {
+              "x": 256.14401,
+              "y": 572.92041,
+              "width": 24.552004699999998,
+              "height": 5.247000000000071,
+              "centerX": 268.42001235,
+              "centerY": 575.54391
+            },
+            "delta": {
+              "deltaX": 0.09801235000009001,
+              "deltaY": -10.068589999999972,
+              "deltaWidth": 4.700000033608376E-06,
+              "deltaHeight": 1.1368683772161603E-13,
+              "maxDeviation": 10.068589999999972
+            }
+          },
+          {
+            "index": 44,
+            "expectedText": "and",
+            "actualText": "and",
+            "expected": {
+              "x": 283.0289999999999,
+              "y": 582.989,
+              "width": 17.589,
+              "height": 7.66700000000003,
+              "centerX": 291.82349999999985,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 283.11603,
+              "y": 572.92041,
+              "width": 17.61098149999998,
+              "height": 7.66700000000003,
+              "centerX": 291.92152075,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.09802075000015975,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.021981499999981224,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 45,
+            "expectedText": "push",
+            "actualText": "push",
+            "expected": {
+              "x": 303.0159999999999,
+              "y": 582.989,
+              "width": 23.001000000000033,
+              "height": 7.66700000000003,
+              "centerX": 314.51649999999995,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 303.14703,
+              "y": 572.92041,
+              "width": 22.989999300000022,
+              "height": 7.66700000000003,
+              "centerX": 314.64202965,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.1255296500000327,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": -0.011000700000010966,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 46,
+            "expectedText": "subsequent",
+            "actualText": "subsequent",
+            "expected": {
+              "x": 328.43699999999995,
+              "y": 582.989,
+              "width": 54.164000000000044,
+              "height": 7.66700000000003,
+              "centerX": 355.519,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 328.55701,
+              "y": 572.92041,
+              "width": 54.230024100000094,
+              "height": 7.66700000000003,
+              "centerX": 355.67202205,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.15302205000000413,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.06602410000004966,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 47,
+            "expectedText": "lines",
+            "actualText": "lines",
+            "expected": {
+              "x": 385.021,
+              "y": 582.989,
+              "width": 22.25299999999993,
+              "height": 7.66700000000003,
+              "centerX": 396.1475,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 385.20703,
+              "y": 572.92041,
+              "width": 22.275013400000034,
+              "height": 7.66700000000003,
+              "centerX": 396.3445367,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.1970367000000124,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.02201340000010532,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 48,
+            "expectedText": "to",
+            "actualText": "to",
+            "expected": {
+              "x": 409.68299999999994,
+              "y": 582.989,
+              "width": 9.537000000000035,
+              "height": 6.203999999999951,
+              "centerX": 414.45149999999995,
+              "centerY": 586.091
+            },
+            "actual": {
+              "x": 409.90207,
+              "y": 572.92041,
+              "width": 9.558987100000024,
+              "height": 6.204000000000065,
+              "centerX": 414.68156354999996,
+              "centerY": 576.02241
+            },
+            "delta": {
+              "deltaX": 0.23006355000001122,
+              "deltaY": -10.068589999999972,
+              "deltaWidth": 0.021987099999989823,
+              "deltaHeight": 1.1368683772161603E-13,
+              "maxDeviation": 10.068589999999972
+            }
+          },
+          {
+            "index": 49,
+            "expectedText": "the",
+            "actualText": "the",
+            "expected": {
+              "x": 421.618,
+              "y": 582.989,
+              "width": 15.158000000000015,
+              "height": 7.66700000000003,
+              "centerX": 429.197,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 421.88107,
+              "y": 572.92041,
+              "width": 15.157978100000037,
+              "height": 7.66700000000003,
+              "centerX": 429.46005905000004,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.26305905000003804,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": -2.1899999978813867E-05,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 50,
+            "expectedText": "right",
+            "actualText": "right",
+            "expected": {
+              "x": 439.196,
+              "y": 582.989,
+              "width": 22.802999999999997,
+              "height": 7.66700000000003,
+              "centerX": 450.5975,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 439.45908,
+              "y": 572.92041,
+              "width": 22.835981000000004,
+              "height": 7.66700000000003,
+              "centerX": 450.87707049999995,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.27957049999992023,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.03298100000000659,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 51,
+            "expectedText": "for",
+            "actualText": "for",
+            "expected": {
+              "x": 464.41900000000004,
+              "y": 582.989,
+              "width": 13.694999999999993,
+              "height": 7.798999999999978,
+              "centerX": 471.26650000000006,
+              "centerY": 586.8885
+            },
+            "actual": {
+              "x": 464.71506,
+              "y": 572.92041,
+              "width": 13.728011199999969,
+              "height": 7.798999999999978,
+              "centerX": 471.5790656,
+              "centerY": 576.8199099999999
+            },
+            "delta": {
+              "deltaX": 0.31256559999991396,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.033011199999975815,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 52,
+            "expectedText": "a",
+            "actualText": "a",
+            "expected": {
+              "x": 480.55600000000004,
+              "y": 582.989,
+              "width": 5.367999999999995,
+              "height": 5.23599999999999,
+              "centerX": 483.24,
+              "centerY": 585.607
+            },
+            "actual": {
+              "x": 480.86307,
+              "y": 572.92041,
+              "width": 5.367999999999995,
+              "height": 5.236000000000104,
+              "centerX": 483.54706999999996,
+              "centerY": 575.53841
+            },
+            "delta": {
+              "deltaX": 0.3070699999999533,
+              "deltaY": -10.068589999999972,
+              "deltaWidth": 0,
+              "deltaHeight": 1.1368683772161603E-13,
+              "maxDeviation": 10.068589999999972
+            }
+          },
+          {
+            "index": 53,
+            "expectedText": "clean",
+            "actualText": "clean",
+            "expected": {
+              "x": 488.34400000000005,
+              "y": 582.989,
+              "width": 24.673000000000002,
+              "height": 7.66700000000003,
+              "centerX": 500.68050000000005,
+              "centerY": 586.8225
+            },
+            "actual": {
+              "x": 488.65109,
+              "y": 572.92041,
+              "width": 24.706023700000117,
+              "height": 7.66700000000003,
+              "centerX": 501.0041018500001,
+              "centerY": 576.7539099999999
+            },
+            "delta": {
+              "deltaX": 0.3236018500000455,
+              "deltaY": -10.068590000000086,
+              "deltaWidth": 0.033023700000114786,
+              "deltaHeight": 0,
+              "maxDeviation": 10.068590000000086
+            }
+          },
+          {
+            "index": 54,
+            "expectedText": "list-like",
+            "actualText": "list-like",
+            "expected": {
+              "x": 108.1,
+              "y": 568.189,
+              "width": 35.244,
+              "height": 7.66700000000003,
+              "centerX": 125.722,
+              "centerY": 572.0225
+            },
+            "actual": {
+              "x": 108,
+              "y": 558.0946,
+              "width": 35.31001660000001,
+              "height": 7.66700000000003,
+              "centerX": 125.6550083,
+              "centerY": 561.9281000000001
+            },
+            "delta": {
+              "deltaX": -0.06699169999998844,
+              "deltaY": -10.09439999999995,
+              "deltaWidth": 0.06601660000001175,
+              "deltaHeight": 0,
+              "maxDeviation": 10.09439999999995
+            }
+          },
+          {
+            "index": 55,
+            "expectedText": "appearance.",
+            "actualText": "appearance.",
+            "expected": {
+              "x": 145.76399999999998,
+              "y": 568.189,
+              "width": 56.815000000000026,
+              "height": 5.246999999999957,
+              "centerX": 174.17149999999998,
+              "centerY": 570.8125
+            },
+            "actual": {
+              "x": 145.730042,
+              "y": 558.0946,
+              "width": 56.870020900000014,
+              "height": 5.246999999999957,
+              "centerX": 174.16505245000002,
+              "centerY": 560.7181
+            },
+            "delta": {
+              "deltaX": -0.006447549999961666,
+              "deltaY": -10.09439999999995,
+              "deltaWidth": 0.05502089999998816,
+              "deltaHeight": 0,
+              "maxDeviation": 10.09439999999995
+            }
+          },
+          {
+            "index": 56,
+            "expectedText": "Hyperlink",
+            "actualText": "Hyperlink",
+            "expected": {
+              "x": 72.1,
+              "y": 535.389,
+              "width": 47.036,
+              "height": 7.66700000000003,
+              "centerX": 95.618,
+              "centerY": 539.2225000000001
+            },
+            "actual": {
+              "x": 72,
+              "y": 525.26886,
+              "width": 47.07999430000001,
+              "height": 7.66700000000003,
+              "centerX": 95.53999715,
+              "centerY": 529.1023600000001
+            },
+            "delta": {
+              "deltaX": -0.07800284999999008,
+              "deltaY": -10.120139999999992,
+              "deltaWidth": 0.04399430000000848,
+              "deltaHeight": 0,
+              "maxDeviation": 10.120139999999992
+            }
+          },
+          {
+            "index": 57,
+            "expectedText": "color",
+            "actualText": "color",
+            "expected": {
+              "x": 121.56700000000001,
+              "y": 535.389,
+              "width": 24.034999999999997,
+              "height": 7.66700000000003,
+              "centerX": 133.5845,
+              "centerY": 539.2225000000001
+            },
+            "actual": {
+              "x": 121.5,
+              "y": 525.26886,
+              "width": 24.068007499999993,
+              "height": 7.66700000000003,
+              "centerX": 133.53400375,
+              "centerY": 529.1023600000001
+            },
+            "delta": {
+              "deltaX": -0.05049624999998059,
+              "deltaY": -10.120139999999992,
+              "deltaWidth": 0.033007499999996526,
+              "deltaHeight": 0,
+              "maxDeviation": 10.120139999999992
+            }
+          },
+          {
+            "index": 58,
+            "expectedText": "mapping",
+            "actualText": "mapping",
+            "expected": {
+              "x": 148,
+              "y": 535.389,
+              "width": 41.37100000000001,
+              "height": 7.216000000000008,
+              "centerX": 168.6855,
+              "centerY": 538.9970000000001
+            },
+            "actual": {
+              "x": 147.987991,
+              "y": 525.26886,
+              "width": 41.3819828,
+              "height": 7.216000000000008,
+              "centerX": 168.6789824,
+              "centerY": 528.8768600000001
+            },
+            "delta": {
+              "deltaX": -0.006517599999995127,
+              "deltaY": -10.120139999999992,
+              "deltaWidth": 0.010982799999993631,
+              "deltaHeight": 0,
+              "maxDeviation": 10.120139999999992
+            }
+          },
+          {
+            "index": 59,
+            "expectedText": "vs.",
+            "actualText": "vs.",
+            "expected": {
+              "x": 191.84799999999998,
+              "y": 535.389,
+              "width": 12.49600000000001,
+              "height": 5.225000000000023,
+              "centerX": 198.096,
+              "centerY": 538.0015000000001
+            },
+            "actual": {
+              "x": 191.78998,
+              "y": 525.26886,
+              "width": 12.529001999999991,
+              "height": 5.225000000000023,
+              "centerX": 198.054481,
+              "centerY": 527.8813600000001
+            },
+            "delta": {
+              "deltaX": -0.041518999999993866,
+              "deltaY": -10.120139999999992,
+              "deltaWidth": 0.03300199999998199,
+              "deltaHeight": 0,
+              "maxDeviation": 10.120139999999992
+            }
+          },
+          {
+            "index": 60,
+            "expectedText": "followed",
+            "actualText": "followed",
+            "expected": {
+              "x": 206.78599999999997,
+              "y": 535.389,
+              "width": 40.90899999999996,
+              "height": 7.798999999999978,
+              "centerX": 227.24049999999994,
+              "centerY": 539.2885
+            },
+            "actual": {
+              "x": 206.73898,
+              "y": 525.26886,
+              "width": 40.96399359999998,
+              "height": 7.798999999999978,
+              "centerX": 227.2209768,
+              "centerY": 529.16836
+            },
+            "delta": {
+              "deltaX": -0.019523199999952112,
+              "deltaY": -10.120139999999992,
+              "deltaWidth": 0.054993600000017295,
+              "deltaHeight": 0,
+              "maxDeviation": 10.120139999999992
+            }
+          },
+          {
+            "index": 61,
+            "expectedText": "state",
+            "actualText": "state.",
+            "expected": {
+              "x": 250.13699999999992,
+              "y": 535.389,
+              "width": 22.84700000000001,
+              "height": 6.203999999999951,
+              "centerX": 261.56049999999993,
+              "centerY": 538.491
+            },
+            "actual": {
+              "x": 250.12297,
+              "y": 525.26886,
+              "width": 25.156992899999977,
+              "height": 6.204000000000065,
+              "centerX": 262.70146645,
+              "centerY": 528.37086
+            },
+            "delta": {
+              "deltaX": 1.1409664500000645,
+              "deltaY": -10.120139999999992,
+              "deltaWidth": 2.309992899999969,
+              "deltaHeight": 1.1368683772161603E-13,
+              "maxDeviation": 10.120139999999992
+            }
+          },
+          {
+            "index": 62,
+            "expectedText": ".",
+            "actualText": "\u003Cmissing\u003E",
+            "expected": {
+              "x": 273.0059999999999,
+              "y": 535.389,
+              "width": 2.2549999999999955,
+              "height": 1.1989999999999554,
+              "centerX": 274.1334999999999,
+              "centerY": 535.9884999999999
+            },
+            "actual": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "centerX": 0,
+              "centerY": 0
+            },
+            "delta": {
+              "deltaX": 0,
+              "deltaY": 0,
+              "deltaWidth": 0,
+              "deltaHeight": 0,
+              "maxDeviation": 0
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

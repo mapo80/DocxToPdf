@@ -6,6 +6,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace DocxToPdf.Sdk.Layout;
@@ -58,6 +59,7 @@ public sealed class TextLayoutEngine
         var elements = paragraph.InlineElements.Count > 0
             ? paragraph.InlineElements
             : paragraph.Runs.Select(r => (DocxInlineElement)new DocxTextInline(r.Text, r.Formatting)).ToArray();
+        var shapedCache = new Dictionary<DocxTextInline, TextRenderer.ShapedText>(ReferenceEqualityComparer<DocxTextInline>.Instance);
 
         void CommitLine()
         {
@@ -121,21 +123,20 @@ public sealed class TextLayoutEngine
                 {
                     case DocxTextInline textInline:
                         var typeface = GetTypefaceForFormatting(textInline.Formatting);
-                        var width = _textRenderer.MeasureTextWithFallback(textInline.Text, typeface, textInline.Formatting.FontSizePt);
+                        var shaped = GetOrCreateShapedText(textInline, typeface);
 
                         if (!hasDecimal)
                         {
                             var decimalIndex = FindDecimalIndex(textInline.Text);
                             if (decimalIndex >= 0)
                             {
-                                var prefix = textInline.Text[..decimalIndex];
-                                var prefixWidth = _textRenderer.MeasureTextWithFallback(prefix, typeface, textInline.Formatting.FontSizePt);
+                                var prefixWidth = shaped.MeasureRange(0, decimalIndex);
                                 widthBeforeDecimal = total + prefixWidth;
                                 hasDecimal = true;
                             }
                         }
 
-                        total += width;
+                        total += shaped.Width;
                         break;
                     case DocxTabInline:
                     case DocxPositionalTabInline:
@@ -219,6 +220,16 @@ public sealed class TextLayoutEngine
 
         return lines;
 
+        TextRenderer.ShapedText GetOrCreateShapedText(DocxTextInline textInline, SKTypeface typeface)
+        {
+            if (shapedCache.TryGetValue(textInline, out var cached))
+                return cached;
+
+            var shaped = _textRenderer.Shape(textInline.Text, typeface, textInline.Formatting.FontSizePt, textInline.Formatting.KerningEnabled);
+            shapedCache[textInline] = shaped;
+            return shaped;
+        }
+
         void ProcessTextInline(DocxTextInline textInline)
         {
             if (string.IsNullOrEmpty(textInline.Text))
@@ -226,22 +237,23 @@ public sealed class TextLayoutEngine
 
             var typeface = GetTypefaceForFormatting(textInline.Formatting);
             var fontSize = textInline.Formatting.FontSizePt;
+            var shaped = GetOrCreateShapedText(textInline, typeface);
             var metrics = _textRenderer.GetFontMetrics(typeface, fontSize);
-            var words = SplitIntoWords(textInline.Text);
+            var slices = SplitIntoSlices(textInline.Text);
 
-            foreach (var word in words)
+            foreach (var slice in slices)
             {
-                var wordWidth = _textRenderer.MeasureTextWithFallback(word, typeface, fontSize);
+                var width = shaped.MeasureRange(slice.Start, slice.Length, textInline.Formatting.CharacterSpacingPt);
 
-                if (currentLine.Count > 0 && currentLineWidth + wordWidth > currentLineLimit)
+                if (currentLine.Count > 0 && currentLineWidth + width > currentLineLimit)
                 {
                     CommitLine();
-                    typeface = GetTypefaceForFormatting(textInline.Formatting);
                     metrics = _textRenderer.GetFontMetrics(typeface, fontSize);
                 }
 
-                currentLine.Add(new LayoutRun(word, typeface, fontSize, textInline.Formatting));
-                currentLineWidth += wordWidth;
+                var textSegment = textInline.Text.Substring(slice.Start, slice.Length);
+                currentLine.Add(new LayoutRun(textSegment, typeface, fontSize, textInline.Formatting, true, 0f, shaped, slice.Start, slice.Length));
+                currentLineWidth += width;
                 currentMaxAscent = Math.Min(currentMaxAscent, metrics.Ascent);
                 currentMaxDescent = Math.Max(currentMaxDescent, metrics.Descent);
                 currentMaxLeading = Math.Max(currentMaxLeading, metrics.Leading);
@@ -396,38 +408,44 @@ public sealed class TextLayoutEngine
         return -1;
     }
 
-    private static List<string> SplitIntoWords(string text)
+    private readonly record struct TextSlice(int Start, int Length);
+
+    private static List<TextSlice> SplitIntoSlices(string text)
     {
-        var words = new List<string>();
-        var currentWord = new StringBuilder();
+        var slices = new List<TextSlice>();
+        if (string.IsNullOrEmpty(text))
+            return slices;
 
-        foreach (var ch in text)
+        int i = 0;
+        while (i < text.Length)
         {
-            if (char.IsWhiteSpace(ch))
+            var start = i;
+            if (char.IsWhiteSpace(text, i))
             {
-                // Salva la parola corrente
-                if (currentWord.Length > 0)
+                do
                 {
-                    words.Add(currentWord.ToString());
-                    currentWord.Clear();
-                }
-
-                // Aggiungi lo spazio come token separato
-                words.Add(ch.ToString());
+                    i = AdvanceByRune(text, i);
+                } while (i < text.Length && char.IsWhiteSpace(text, i));
             }
             else
             {
-                currentWord.Append(ch);
+                do
+                {
+                    i = AdvanceByRune(text, i);
+                } while (i < text.Length && !char.IsWhiteSpace(text, i));
             }
+
+            slices.Add(new TextSlice(start, i - start));
         }
 
-        // Aggiungi l'ultima parola
-        if (currentWord.Length > 0)
-        {
-            words.Add(currentWord.ToString());
-        }
+        return slices;
+    }
 
-        return words;
+    private static int AdvanceByRune(string text, int index)
+    {
+        if (index + 1 < text.Length && char.IsHighSurrogate(text[index]) && char.IsLowSurrogate(text[index + 1]))
+            return index + 2;
+        return index + 1;
     }
 }
 
@@ -461,10 +479,27 @@ public sealed record LayoutRun(
     float FontSizePt,
     RunFormatting Formatting,
     bool IsDrawable = true,
-    float AdvanceWidthOverride = 0f)
+    float AdvanceWidthOverride = 0f,
+    Text.TextRenderer.ShapedText? Shaped = null,
+    int ShapedStart = 0,
+    int ShapedLength = 0)
 {
     public static LayoutRun Placeholder(float widthPt) =>
         new(string.Empty, FontManager.Instance.GetDefaultTypeface(), 1f, RunFormatting.Default, false, widthPt);
 }
 
 public sealed record BarTabInstruction(float RelativePositionPt, RunFormatting Formatting);
+
+internal sealed class ReferenceEqualityComparer<T> : IEqualityComparer<T>
+    where T : class
+{
+    public static readonly ReferenceEqualityComparer<T> Instance = new();
+
+    private ReferenceEqualityComparer()
+    {
+    }
+
+    public bool Equals(T? x, T? y) => ReferenceEquals(x, y);
+
+    public int GetHashCode(T obj) => RuntimeHelpers.GetHashCode(obj);
+}

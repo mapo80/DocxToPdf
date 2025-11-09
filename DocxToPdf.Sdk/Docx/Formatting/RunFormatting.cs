@@ -9,7 +9,9 @@ public sealed record RunFormatting
     {
         FontFamily = "Arial",
         FontSizePt = 11f,
-        Color = RgbColor.Black
+        Color = RgbColor.Black,
+        CharacterSpacingPt = 0f,
+        KerningEnabled = false
     };
 
     public string FontFamily { get; init; } = "Arial";
@@ -19,5 +21,7 @@ public sealed record RunFormatting
     public bool Underline { get; init; }
     public bool Strike { get; init; }
     public bool SmallCaps { get; init; }
+    public float CharacterSpacingPt { get; init; }
+    public bool KerningEnabled { get; init; }
     public RgbColor Color { get; init; } = RgbColor.Black;
 }

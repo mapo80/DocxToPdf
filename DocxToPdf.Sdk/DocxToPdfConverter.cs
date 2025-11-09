@@ -162,16 +162,57 @@ public sealed class DocxToPdfConverter
                     }
 
                     var color = new SKColor(run.Formatting.Color.R, run.Formatting.Color.G, run.Formatting.Color.B);
-                    var width = _textRenderer.DrawShapedTextWithFallback(
-                        page.Canvas,
-                        run.Text,
-                        currentX,
-                        baseline,
-                        run.Typeface,
-                        run.FontSizePt,
-                        color
-                    );
+                    float width;
+                    float startXForText = currentX;
+                    string? literalSegment;
+                    if (DiagnosticsLogger != null && (run.Text.Contains("©") || run.Text.Contains("™")))
+                    {
+                        DiagnosticsLogger.Invoke($"Literal candidate text='{run.Text}' chars={run.Text.Length}");
+                    }
+                    if (run.Shaped is { } shaped && run.ShapedLength > 0)
+                    {
+                        width = shaped.DrawRange(
+                            page.Canvas,
+                            currentX,
+                            baseline,
+                            color,
+                            run.ShapedStart,
+                            run.ShapedLength,
+                            run.Formatting.CharacterSpacingPt);
+                        literalSegment = run.Text;
+                    }
+                    else
+                    {
+                        width = _textRenderer.DrawShapedTextWithFallback(
+                            page.Canvas,
+                            run.Text,
+                            currentX,
+                            baseline,
+                            run.Typeface,
+                            run.FontSizePt,
+                            color,
+                            run.Formatting.CharacterSpacingPt,
+                            run.Formatting.KerningEnabled
+                        );
+                        literalSegment = run.Text;
+                    }
                     currentX += width;
+
+                    if (!string.IsNullOrEmpty(literalSegment) && ContainsNonAscii(literalSegment))
+                    {
+                        _textRenderer.DrawInvisibleText(
+                            page.Canvas,
+                            literalSegment,
+                            startXForText,
+                            baseline,
+                            run.Typeface,
+                            run.FontSizePt);
+                    }
+
+                    if (run.Text.Contains('\u2122'))
+                    {
+                        DiagnosticsLogger?.Invoke($"Trademark run text='{run.Text}' width={width:F2}");
+                    }
 
                     if ((shouldJustify || shouldDistribute) && perSpaceAdvance > 0f && IsStretchableSpace(run))
                     {
@@ -204,7 +245,13 @@ public sealed class DocxToPdfConverter
         var areaStart = Math.Min(markerAreaStart, contentStart);
         var rawAreaWidth = contentStart - areaStart;
         var markerWidth = _textRenderer.MeasureTextWithFallback(marker.Text, typeface, marker.Formatting.FontSizePt);
-        var suffixText = marker.Suffix == LevelSuffixValues.Space ? " " : string.Empty;
+        string suffixText;
+        if (marker.Suffix == LevelSuffixValues.Space)
+            suffixText = " ";
+        else if (marker.Suffix == LevelSuffixValues.Tab)
+            suffixText = "\t";
+        else
+            suffixText = string.Empty;
         var suffixWidth = string.IsNullOrEmpty(suffixText)
             ? 0f
             : _textRenderer.MeasureTextWithFallback(suffixText, typeface, marker.Formatting.FontSizePt);
@@ -229,14 +276,23 @@ public sealed class DocxToPdfConverter
 
         if (!string.IsNullOrEmpty(suffixText))
         {
+            var suffixX = markerX + markerWidth;
             _textRenderer.DrawShapedTextWithFallback(
                 canvas,
                 suffixText,
-                markerX + markerWidth,
+                suffixX,
                 baseline,
                 typeface,
                 marker.Formatting.FontSizePt,
                 color);
+
+            _textRenderer.DrawInvisibleText(
+                canvas,
+                suffixText,
+                suffixX,
+                baseline,
+                typeface,
+                marker.Formatting.FontSizePt);
         }
     }
 
@@ -266,4 +322,14 @@ public sealed class DocxToPdfConverter
 
     private static bool IsStretchableSpace(LayoutRun run) =>
         run.IsDrawable && !string.IsNullOrEmpty(run.Text) && run.Text.All(static c => c == ' ');
+
+    private static bool ContainsNonAscii(string text)
+    {
+        foreach (var ch in text)
+        {
+            if (ch > 127)
+                return true;
+        }
+        return false;
+    }
 }

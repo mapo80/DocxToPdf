@@ -2,81 +2,40 @@ using SkiaSharp;
 using SkiaSharp.HarfBuzz;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DocxToPdf.Sdk.Text;
 
 /// <summary>
-/// Renderer di testo con shaping avanzato tramite HarfBuzz.
-/// Gestisce legature, diacritici, script complessi e posizionamento preciso dei glifi.
+/// Renderer di testo basato su Skia + HarfBuzz con supporto a font fallback e accesso ai glifi shapati.
 /// </summary>
 public sealed class TextRenderer
 {
+    private readonly FontManager _fontManager = FontManager.Instance;
+
     /// <summary>
-    /// Disegna testo con full text shaping (legature, kerning, script complessi).
+    /// Shapa il testo completo usando HarfBuzz e restituisce un oggetto riutilizzabile.
     /// </summary>
-    /// <param name="canvas">Canvas SkiaSharp su cui disegnare</param>
-    /// <param name="text">Testo da renderizzare</param>
-    /// <param name="x">Coordinata X baseline in pt</param>
-    /// <param name="y">Coordinata Y baseline in pt</param>
-    /// <param name="typeface">Font typeface</param>
-    /// <param name="sizePt">Dimensione font in pt</param>
-    /// <param name="color">Colore del testo</param>
-    /// <returns>Larghezza del testo renderizzato in pt</returns>
-    public float DrawShapedText(
-        SKCanvas canvas,
-        string text,
-        float x,
-        float y,
-        SKTypeface typeface,
-        float sizePt,
-        SKColor color)
+    public ShapedText Shape(string text, SKTypeface primaryTypeface, float sizePt, bool enableKerning = false)
     {
-        if (string.IsNullOrEmpty(text))
-            return 0f;
-
-        using var font = new SKFont(typeface, sizePt)
+        text ??= string.Empty;
+        var runs = SplitIntoFontRuns(text, primaryTypeface);
+        var shapedRuns = new List<ShapedRun>(runs.Count);
+        int offset = 0;
+        foreach (var run in runs)
         {
-            Subpixel = true,
-            Edging = SKFontEdging.Antialias // Antialiasing per PDF
-        };
-
-        using var paint = new SKPaint
-        {
-            Color = color,
-            IsAntialias = true
-        };
-
-        using var shaper = new SKShaper(typeface);
-
-        // Shape del testo: HarfBuzz analizza il testo e restituisce i glifi posizionati
-        var result = shaper.Shape(text, font);
-
-        // Disegna i glifi posizionati
-        canvas.DrawShapedText(shaper, text, x, y, SKTextAlign.Left, font, paint);
-
-        return GetAdvanceWidth(result, font, text);
+            if (run.Text.Length == 0)
+                continue;
+            shapedRuns.Add(ShapedRun.Create(run.Text, run.Typeface, sizePt, offset, enableKerning));
+            offset += run.Text.Length;
+        }
+        return new ShapedText(text, shapedRuns);
     }
 
-    /// <summary>
-    /// Misura la larghezza del testo con shaping.
-    /// </summary>
-    public float MeasureText(string text, SKTypeface typeface, float sizePt)
-    {
-        if (string.IsNullOrEmpty(text))
-            return 0f;
+    public float MeasureTextWithFallback(string text, SKTypeface primaryTypeface, float sizePt, bool enableKerning = false) =>
+        Shape(text, primaryTypeface, sizePt, enableKerning).Width;
 
-        using var font = new SKFont(typeface, sizePt);
-        using var shaper = new SKShaper(typeface);
-
-        var result = shaper.Shape(text, font);
-        return GetAdvanceWidth(result, font, text);
-    }
-
-    /// <summary>
-    /// Disegna testo con font fallback automatico per caratteri non supportati (emoji, CJK, etc).
-    /// Spezza il testo in run con font appropriati per ogni segmento.
-    /// </summary>
     public float DrawShapedTextWithFallback(
         SKCanvas canvas,
         string text,
@@ -84,220 +43,328 @@ public sealed class TextRenderer
         float y,
         SKTypeface primaryTypeface,
         float sizePt,
-        SKColor color)
+        SKColor color,
+        float letterSpacingPt = 0f,
+        bool enableKerning = false)
     {
-        if (string.IsNullOrEmpty(text))
-            return 0f;
-
-        var fontManager = FontManager.Instance;
-        var runs = SplitTextIntoFontRuns(text, primaryTypeface, fontManager);
-
-        float currentX = x;
-
-        foreach (var run in runs)
-        {
-            var width = DrawShapedText(canvas, run.Text, currentX, y, run.Typeface, sizePt, color);
-            currentX += width;
-        }
-
-        return currentX - x; // Ritorna la larghezza totale
+        var shaped = Shape(text, primaryTypeface, sizePt, enableKerning);
+        return shaped.DrawRange(canvas, x, y, color, 0, text.Length, letterSpacingPt);
     }
 
-    /// <summary>
-    /// Misura la larghezza del testo con font fallback automatico.
-    /// </summary>
-    public float MeasureTextWithFallback(string text, SKTypeface primaryTypeface, float sizePt)
+    public float DrawShapedText(SKCanvas canvas, string text, float x, float y, SKTypeface typeface, float sizePt, SKColor color)
     {
-        if (string.IsNullOrEmpty(text))
-            return 0f;
-
-        var fontManager = FontManager.Instance;
-        var runs = SplitTextIntoFontRuns(text, primaryTypeface, fontManager);
-
-        float totalWidth = 0f;
-
-        foreach (var run in runs)
-        {
-            totalWidth += MeasureText(run.Text, run.Typeface, sizePt);
-        }
-
-        return totalWidth;
+        var shaped = Shape(text, typeface, sizePt);
+        return shaped.Draw(canvas, x, y, color);
     }
 
-    /// <summary>
-    /// Calcola le metriche del font per una data typeface e dimensione.
-    /// Restituisce ascent (negativo), descent (positivo) e leading.
-    /// </summary>
+    public void DrawCenteredText(SKCanvas canvas, string text, float centerX, float y, float maxWidth, SKTypeface typeface, float sizePt, SKColor color)
+    {
+        var shaped = Shape(text, typeface, sizePt);
+        var textWidth = shaped.Width;
+        var clampedWidth = Math.Min(textWidth, maxWidth);
+        var startX = centerX - clampedWidth / 2f;
+        shaped.Draw(canvas, startX, y, color);
+        DrawInvisibleText(canvas, text, startX, y, typeface, sizePt);
+    }
+
+    public void DrawInvisibleText(SKCanvas canvas, string text, float x, float y, SKTypeface typeface, float sizePt)
+    {
+        if (string.IsNullOrEmpty(text))
+            return;
+
+        using var paint = new SKPaint
+        {
+            Color = new SKColor(0, 0, 0, 1),
+            IsStroke = false,
+            IsAntialias = false,
+            TextEncoding = SKTextEncoding.Utf16
+        };
+
+        var runs = SplitIntoFontRuns(text, typeface);
+        float cursor = x;
+        foreach (var run in runs)
+        {
+            using var font = new SKFont(run.Typeface, sizePt)
+            {
+                Subpixel = true,
+                Edging = SKFontEdging.Antialias
+            };
+            canvas.DrawText(run.Text, cursor, y, SKTextAlign.Left, font, paint);
+            cursor += font.MeasureText(run.Text);
+        }
+    }
+
     public SKFontMetrics GetFontMetrics(SKTypeface typeface, float sizePt)
     {
         using var font = new SKFont(typeface, sizePt);
         return font.Metrics;
     }
 
-    /// <summary>
-    /// Calcola l'altezza della riga (line spacing) per un dato font.
-    /// Line spacing = descent - ascent + leading
-    /// </summary>
     public float GetLineSpacing(SKTypeface typeface, float sizePt)
     {
         var metrics = GetFontMetrics(typeface, sizePt);
         return metrics.Descent - metrics.Ascent + metrics.Leading;
     }
 
-    /// <summary>
-    /// Disegna testo centrato orizzontalmente nell'area specificata.
-    /// </summary>
-    public void DrawCenteredText(
-        SKCanvas canvas,
-        string text,
-        float centerX,
-        float y,
-        float maxWidth,
-        SKTypeface typeface,
-        float sizePt,
-        SKColor color)
-    {
-        var textWidth = MeasureTextWithFallback(text, typeface, sizePt);
-        var x = centerX - (textWidth / 2f);
-
-        // Clamp per evitare overflow
-        if (x < 0) x = 0;
-        if (x + textWidth > maxWidth) x = maxWidth - textWidth;
-
-        DrawShapedTextWithFallback(canvas, text, x, y, typeface, sizePt, color);
-    }
-
-    /// <summary>
-    /// Rappresenta un segmento di testo con un font specifico.
-    /// </summary>
-    private record struct FontRun(string Text, SKTypeface Typeface);
-
-    /// <summary>
-    /// Spezza il testo in run, ognuno con un font appropriato che supporta i suoi caratteri.
-    /// </summary>
-    private List<FontRun> SplitTextIntoFontRuns(string text, SKTypeface primaryTypeface, FontManager fontManager)
+    private List<FontRun> SplitIntoFontRuns(string text, SKTypeface primaryTypeface)
     {
         var runs = new List<FontRun>();
-        var currentRun = new StringBuilder();
-        SKTypeface? currentTypeface = null;
+        if (string.IsNullOrEmpty(text))
+        {
+            runs.Add(new FontRun(string.Empty, primaryTypeface));
+            return runs;
+        }
+
+        var currentFont = primaryTypeface;
+        var buffer = new System.Text.StringBuilder();
 
         for (int i = 0; i < text.Length; i++)
         {
-            int codepoint;
+            var codepoint = char.ConvertToUtf32(text, i);
+            if (char.IsHighSurrogate(text[i]))
+                i++;
 
-            // Gestisci surrogate pairs per emoji e caratteri oltre U+FFFF
-            if (char.IsHighSurrogate(text[i]) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
-            {
-                codepoint = char.ConvertToUtf32(text[i], text[i + 1]);
-            }
-            else
-            {
-                codepoint = text[i];
-            }
+            var typeface = _fontManager.TypefaceContainsGlyph(currentFont, codepoint)
+                ? currentFont
+                : _fontManager.FindFallbackTypeface(codepoint, currentFont) ?? currentFont;
 
-            // Determina quale font usare per questo carattere
-            SKTypeface typefaceForChar;
-
-            if (fontManager.TypefaceContainsGlyph(primaryTypeface, codepoint))
+            if (codepoint == 0x2122)
             {
-                typefaceForChar = primaryTypeface;
-            }
-            else
-            {
-                // Cerca un font fallback
-                var fallback = fontManager.FindFallbackTypeface(codepoint, primaryTypeface);
-                typefaceForChar = fallback ?? primaryTypeface; // Usa primario se fallback non trovato
+                Console.WriteLine($"SplitIntoFontRuns selects {typeface.FamilyName} for TM (current {currentFont.FamilyName})");
             }
 
-            // Se il font cambia, salva il run corrente e iniziane uno nuovo
-            if (currentTypeface != null && currentTypeface != typefaceForChar)
+            if (typeface != currentFont && buffer.Length > 0)
             {
-                if (currentRun.Length > 0)
-                {
-                    runs.Add(new FontRun(currentRun.ToString(), currentTypeface));
-                    currentRun.Clear();
-                }
+                runs.Add(new FontRun(buffer.ToString(), currentFont));
+                buffer.Clear();
             }
 
-            currentTypeface = typefaceForChar;
-
-            // Aggiungi il carattere al run corrente
-            if (char.IsHighSurrogate(text[i]) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
-            {
-                currentRun.Append(text[i]);
-                currentRun.Append(text[i + 1]);
-                i++; // Salta il low surrogate
-            }
-            else
-            {
-                currentRun.Append(text[i]);
-            }
+            currentFont = typeface;
+            buffer.Append(char.ConvertFromUtf32(codepoint));
         }
 
-        // Aggiungi l'ultimo run
-        if (currentRun.Length > 0 && currentTypeface != null)
-        {
-            runs.Add(new FontRun(currentRun.ToString(), currentTypeface));
-        }
+        if (buffer.Length > 0)
+            runs.Add(new FontRun(buffer.ToString(), currentFont));
 
         return runs;
     }
-    /// <summary>
-    /// Restituisce la larghezza avanzata di un testo shappato. HarfBuzz può non produrre
-    /// glifi per stringhe composte solo da whitespace, quindi in quel caso stimiamo la
-    /// larghezza calcolando direttamente gli advance dei glifi tramite SKFont.
-    /// </summary>
-    private static float GetAdvanceWidth(
-        SKShaper.Result result,
-        SKFont font,
-        string text)
+
+    private record struct FontRun(string Text, SKTypeface Typeface);
+
+    #region Shaped types
+
+    public sealed class ShapedText
     {
-        if (result.Width > 0)
+        private readonly IReadOnlyList<ShapedRun> _runs;
+        public string Source { get; }
+        public float Width { get; }
+
+        internal ShapedText(string source, IReadOnlyList<ShapedRun> runs)
         {
-            return result.Width;
+            Source = source;
+            _runs = runs;
+            float width = 0f;
+            foreach (var run in runs)
+                width += run.Width;
+            Width = width;
         }
 
-        var points = result.Points;
-        if (points.Length > 0)
+        public float Draw(SKCanvas canvas, float x, float y, SKColor color, float letterSpacingPt = 0f)
         {
-            return points[^1].X;
+            float cursor = x;
+            foreach (var run in _runs)
+            {
+                cursor += run.Draw(canvas, cursor, y, color, 0, run.Length, letterSpacingPt);
+            }
+            return cursor - x;
         }
 
-        return MeasureWithFont(font, text);
+        public float DrawRange(SKCanvas canvas, float x, float y, SKColor color, int start, int length, float letterSpacingPt = 0f)
+        {
+            float cursor = x;
+            int end = start + length;
+            foreach (var run in _runs)
+            {
+                if (!run.Overlaps(start, end))
+                    continue;
+                var localStart = Math.Max(start, run.StartIndex);
+                var localEnd = Math.Min(end, run.EndIndex);
+                cursor += run.Draw(canvas, cursor, y, color, localStart - run.StartIndex, localEnd - localStart, letterSpacingPt);
+            }
+            return cursor - x;
+        }
+        public float MeasureRange(int start, int length, float letterSpacingPt = 0f)
+        {
+            if (length <= 0)
+                return 0f;
+            float width = 0f;
+            int end = start + length;
+            foreach (var run in _runs)
+            {
+                if (!run.Overlaps(start, end))
+                    continue;
+                var localStart = Math.Max(start, run.StartIndex);
+                var localEnd = Math.Min(end, run.EndIndex);
+                width += run.Measure(localStart - run.StartIndex, localEnd - localStart, letterSpacingPt);
+            }
+            return width;
+        }
+
+        public IEnumerable<ShapedRun> Runs => _runs;
     }
 
-    private static float MeasureWithFont(SKFont font, string text)
+    public sealed class ShapedRun
     {
-        if (string.IsNullOrEmpty(text))
+        private readonly ushort[] _glyphs;
+        private readonly SKPoint[] _positions;
+        private readonly uint[] _clusters;
+        private readonly float[] _advances;
+
+        private ShapedRun(string text, SKTypeface typeface, float sizePt, int startIndex, ushort[] glyphs, SKPoint[] positions, uint[] clusters, float width)
         {
+            Text = text;
+            Typeface = typeface;
+            SizePt = sizePt;
+            StartIndex = startIndex;
+            Width = width;
+            _glyphs = glyphs;
+            _positions = positions;
+            _clusters = clusters;
+            _advances = new float[_glyphs.Length + 1];
+            _advances[0] = 0f;
+            for (int i = 0; i < _glyphs.Length; i++)
+            {
+                var boundary = (i + 1 < _positions.Length) ? _positions[i + 1].X : width;
+                _advances[i + 1] = boundary;
+            }
+            BaselineOffset = ComputeBaselineOffset(typeface, sizePt);
+        }
+
+        public string Text { get; }
+        public SKTypeface Typeface { get; }
+        public float SizePt { get; }
+        public int StartIndex { get; }
+        public int EndIndex => StartIndex + Text.Length;
+        public int Length => Text.Length;
+        public float Width { get; }
+        public float BaselineOffset { get; }
+
+        public static ShapedRun Create(string text, SKTypeface typeface, float sizePt, int startIndex, bool enableKerning)
+        {
+            using var font = new SKFont(typeface, sizePt)
+            {
+                Subpixel = true,
+                Edging = SKFontEdging.Antialias
+            };
+            using var shaper = new SKShaper(typeface);
+            var result = shaper.Shape(text, font);
+            var glyphs = Array.ConvertAll(result.Codepoints, c => (ushort)c);
+            var positions = result.Points;
+            var clusters = result.Clusters;
+            var width = result.Width;
+
+            if (!enableKerning && glyphs.Length > 0)
+            {
+                using var widthsPaint = new SKPaint();
+                var newPositions = new SKPoint[positions.Length];
+                var glyphWidths = font.GetGlyphWidths(glyphs.AsSpan(), widthsPaint);
+                float cursor = 0f;
+                for (int i = 0; i < glyphs.Length; i++)
+                {
+                    newPositions[i] = new SKPoint(cursor, positions[i].Y);
+                    cursor += glyphWidths[i];
+                }
+                positions = newPositions;
+                width = cursor;
+            }
+
+            return new ShapedRun(text, typeface, sizePt, startIndex, glyphs, positions, clusters, width);
+        }
+
+        public bool Overlaps(int start, int end) => start < EndIndex && end > StartIndex;
+
+        private int FindGlyphIndex(int localCharIndex)
+        {
+            for (int i = 0; i < _clusters.Length; i++)
+            {
+                if (_clusters[i] >= localCharIndex)
+                    return i;
+            }
+            return _clusters.Length;
+        }
+
+        public float Measure(int localStart, int localLength, float letterSpacingPt = 0f)
+        {
+            var localEnd = localStart + localLength;
+            var startGlyph = FindGlyphIndex(localStart);
+            var endGlyph = FindGlyphIndex(localEnd);
+            var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : Width;
+            var endAdvance = endGlyph < _advances.Length ? _advances[endGlyph] : Width;
+            var baseWidth = endAdvance - startAdvance;
+            var glyphCount = Math.Max(0, endGlyph - startGlyph);
+            if (glyphCount > 1 && Math.Abs(letterSpacingPt) > 0.0001f)
+                baseWidth += letterSpacingPt * (glyphCount - 1);
+            return baseWidth;
+        }
+
+        public float Draw(
+            SKCanvas canvas,
+            float x,
+            float y,
+            SKColor color,
+            int localStart,
+            int localLength,
+            float letterSpacingPt = 0f)
+        {
+            var glyphCount = _glyphs.Length;
+            if (glyphCount == 0 || localLength <= 0)
+                return 0f;
+
+            var localEnd = localStart + localLength;
+            var startGlyph = FindGlyphIndex(localStart);
+            var endGlyph = FindGlyphIndex(localEnd);
+            if (endGlyph <= startGlyph)
+                return 0f;
+
+            using var font = new SKFont(Typeface, SizePt)
+            {
+                Subpixel = true,
+                Edging = SKFontEdging.Antialias
+            };
+            using var paint = new SKPaint
+            {
+                IsAntialias = true,
+                Color = color
+            };
+            using var builder = new SKTextBlobBuilder();
+            var count = endGlyph - startGlyph;
+            var buffer = builder.AllocatePositionedRun(font, count);
+            var glyphSpan = buffer.Glyphs;
+            var posSpan = buffer.Positions;
+            var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : Width;
+            float extraOffset = 0f;
+            for (int i = 0; i < count; i++)
+            {
+                var glyphIndex = startGlyph + i;
+                glyphSpan[i] = _glyphs[glyphIndex];
+                var pos = _positions[glyphIndex];
+                posSpan[i] = new SKPoint(pos.X - startAdvance + x + extraOffset, y + pos.Y + BaselineOffset);
+                if (i < count - 1 && Math.Abs(letterSpacingPt) > 0.0001f)
+                    extraOffset += letterSpacingPt;
+            }
+            using var blob = builder.Build();
+            canvas.DrawText(blob, 0, 0, paint);
+
+            return Measure(localStart, localLength, letterSpacingPt);
+        }
+
+        private static float ComputeBaselineOffset(SKTypeface typeface, float sizePt)
+        {
+            if (string.Equals(typeface.FamilyName, "Apple Color Emoji", StringComparison.OrdinalIgnoreCase))
+                return sizePt * 0.35f;
             return 0f;
         }
-
-        var textSpan = text.AsSpan();
-        var glyphCount = font.CountGlyphs(textSpan);
-        if (glyphCount == 0)
-        {
-            return 0f;
-        }
-
-        Span<ushort> glyphBuffer = text.Length <= 256
-            ? stackalloc ushort[text.Length]
-            : new ushort[text.Length];
-
-        font.GetGlyphs(textSpan, glyphBuffer);
-
-        Span<float> widthBuffer = glyphCount <= 256
-            ? stackalloc float[glyphCount]
-            : new float[glyphCount];
-
-        font.GetGlyphWidths(glyphBuffer[..glyphCount], widthBuffer, Span<SKRect>.Empty, null);
-
-        float total = 0f;
-        for (int i = 0; i < glyphCount; i++)
-        {
-            total += widthBuffer[i];
-        }
-
-        return total;
     }
+
+    #endregion
 }

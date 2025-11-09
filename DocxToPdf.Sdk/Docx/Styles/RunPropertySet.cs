@@ -20,6 +20,8 @@ internal sealed class RunPropertySet
     internal ThemeFontValues? ComplexScriptTheme { get; set; }
     internal ThemeFontValues? EastAsiaTheme { get; set; }
     internal double? FontSizePt { get; set; }
+    internal double? CharacterSpacingPt { get; set; }
+    internal double? KerningMinFontPt { get; set; }
     internal bool? Bold { get; set; }
     internal bool? Italic { get; set; }
     internal bool? Underline { get; set; }
@@ -42,6 +44,8 @@ internal sealed class RunPropertySet
             ComplexScriptTheme = ComplexScriptTheme,
             EastAsiaTheme = EastAsiaTheme,
             FontSizePt = FontSizePt,
+            CharacterSpacingPt = CharacterSpacingPt,
+            KerningMinFontPt = KerningMinFontPt,
             Bold = Bold,
             Italic = Italic,
             Underline = Underline,
@@ -78,6 +82,10 @@ internal sealed class RunPropertySet
 
         if (overlay.FontSizePt.HasValue)
             FontSizePt = overlay.FontSizePt;
+        if (overlay.CharacterSpacingPt.HasValue)
+            CharacterSpacingPt = overlay.CharacterSpacingPt;
+        if (overlay.KerningMinFontPt.HasValue)
+            KerningMinFontPt = overlay.KerningMinFontPt;
 
         if (overlay.Bold.HasValue)
             Bold = overlay.Bold;
@@ -132,6 +140,10 @@ internal sealed class RunPropertySet
             Underline = Underline ?? false,
             Strike = Strike ?? false,
             SmallCaps = SmallCaps ?? false,
+            CharacterSpacingPt = (float)(CharacterSpacingPt ?? 0d),
+            KerningEnabled = KerningMinFontPt.HasValue
+                ? fontSize >= KerningMinFontPt.Value
+                : false,
             Color = color
         };
     }
@@ -165,6 +177,18 @@ internal sealed class RunPropertySet
             double.TryParse(runProps.FontSizeComplexScript.Val.Value, out var csHalfPoints))
         {
             set.FontSizePt = csHalfPoints / 2d;
+        }
+
+        var spacingValue = runProps.GetFirstChild<Spacing>()?.Val?.Value;
+        if (spacingValue != null)
+        {
+            var spacingTwentieths = Convert.ToDouble(spacingValue);
+            set.CharacterSpacingPt = spacingTwentieths / 20d;
+        }
+
+        if (runProps.Kern?.Val?.Value is UInt32 kernHalfPoints)
+        {
+            set.KerningMinFontPt = kernHalfPoints / 2d;
         }
 
         set.Bold = ExtractOnOff(runProps.Bold);

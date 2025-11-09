@@ -6,6 +6,7 @@ using DocxToPdf.Sdk.Text;
 using FluentAssertions;
 using System;
 using System.Linq;
+using DocxToPdf.Tests.Helpers;
 using Xunit;
 
 namespace DocxToPdf.Tests.Layout;
@@ -139,6 +140,25 @@ public sealed class TextLayoutEngineTests
         var startRun = line.Runs.First(r => r.Text == "Start");
         var startWidth = renderer.MeasureTextWithFallback(startRun.Text, startRun.Typeface, startRun.FontSizePt);
         placeholder!.AdvanceWidthOverride.Should().BeApproximately(target - startWidth, 1f);
+    }
+
+    [Fact]
+    public void LayoutParagraphKeepsTrademarkCharacterFromLoremSample()
+    {
+        using var doc = DocxDocument.Open(TestFiles.GetSamplePath("lorem.docx"));
+        var paragraph = doc.GetParagraphs().ElementAt(3); // paragraph with special chars
+        paragraph.GetFullText().Should().Contain("™,");
+        var section = doc.GetSection();
+        var contentWidth = section.Margins.GetContentWidth(section.PageSize.WidthPt);
+        var engine = new TextLayoutEngine();
+        var lines = engine.LayoutParagraph(paragraph, contentWidth);
+
+        var tmRun = lines.SelectMany(line => line.Runs)
+            .Where(run => run.IsDrawable && !string.IsNullOrEmpty(run.Text))
+            .FirstOrDefault(run => run.Text.Contains("™"));
+
+        tmRun.Should().NotBeNull();
+        tmRun!.ShapedLength.Should().BeGreaterThan(0);
     }
 
     private static DocxParagraph CreateParagraph(DocxInlineElement[] inlineElements, ParagraphFormatting? formattingOverride = null)
