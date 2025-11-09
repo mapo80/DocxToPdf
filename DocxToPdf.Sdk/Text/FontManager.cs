@@ -320,9 +320,33 @@ public sealed class FontManager
                 using var stream = File.OpenRead(path);
                 using var reader = new BinaryReader(stream);
 
-                uint ReadUInt32BE() => (uint)((reader.ReadByte() << 24) | (reader.ReadByte() << 16) | (reader.ReadByte() << 8) | reader.ReadByte());
-                ushort ReadUInt16BE() => (ushort)((reader.ReadByte() << 8) | reader.ReadByte());
+                uint ReadUInt32BE()
+                {
+                    var bytes = reader.ReadBytes(4);
+                    return (uint)(bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]);
+                }
 
+                ushort ReadUInt16BE()
+                {
+                    var bytes = reader.ReadBytes(2);
+                    return (ushort)(bytes[0] << 8 | bytes[1]);
+                }
+
+                void WriteUInt32BE(BinaryWriter writer, uint value)
+                {
+                    writer.Write((byte)(value >> 24));
+                    writer.Write((byte)(value >> 16));
+                    writer.Write((byte)(value >> 8));
+                    writer.Write((byte)value);
+                }
+
+                void WriteUInt16BE(BinaryWriter writer, ushort value)
+                {
+                    writer.Write((byte)(value >> 8));
+                    writer.Write((byte)value);
+                }
+
+                // Verify TTC header
                 if (ReadUInt32BE() != 0x74746366) // 'ttcf'
                     return false;
 
@@ -331,48 +355,77 @@ public sealed class FontManager
                 if (faceIndex < 0 || faceIndex >= numFonts)
                     return false;
 
+                // Read font offsets
                 var offsets = new uint[numFonts];
                 for (int i = 0; i < numFonts; i++)
                     offsets[i] = ReadUInt32BE();
 
-                var start = offsets[faceIndex];
-                stream.Seek(start, SeekOrigin.Begin);
+                var faceOffset = offsets[faceIndex];
+                stream.Seek(faceOffset, SeekOrigin.Begin);
 
-                ReadUInt32BE(); // sfntVersion
+                // Read font directory
+                var sfntVersion = ReadUInt32BE();
                 var numTables = ReadUInt16BE();
-                ReadUInt16BE(); // searchRange
-                ReadUInt16BE(); // entrySelector
-                ReadUInt16BE(); // rangeShift
+                var searchRange = ReadUInt16BE();
+                var entrySelector = ReadUInt16BE();
+                var rangeShift = ReadUInt16BE();
 
-                long end = start + 12 + numTables * 16;
+                // Read table directory entries
+                var tableEntries = new List<(uint tag, uint checksum, uint offset, uint length)>();
                 for (int i = 0; i < numTables; i++)
                 {
-                    ReadUInt32BE(); // tag
-                    ReadUInt32BE(); // checksum
-                    var tableOffset = ReadUInt32BE();
-                    var tableLength = ReadUInt32BE();
-                    var padded = (tableLength + 3) & ~3u;
-                    var tableEnd = start + tableOffset + padded;
-                    if (tableEnd > end)
-                        end = tableEnd;
+                    var tag = ReadUInt32BE();
+                    var checksum = ReadUInt32BE();
+                    var offset = ReadUInt32BE();
+                    var length = ReadUInt32BE();
+                    tableEntries.Add((tag, checksum, offset, length));
                 }
 
-                var length = end - start;
-                stream.Seek(start, SeekOrigin.Begin);
-                var buffer = new byte[length];
-                int read = 0;
-                while (read < buffer.Length)
+                // Build standalone TTF with corrected offsets
+                using var outputStream = new MemoryStream();
+                using var writer = new BinaryWriter(outputStream);
+
+                // Write offset table
+                WriteUInt32BE(writer, sfntVersion);
+                WriteUInt16BE(writer, (ushort)numTables);
+                WriteUInt16BE(writer, searchRange);
+                WriteUInt16BE(writer, entrySelector);
+                WriteUInt16BE(writer, rangeShift);
+
+                // Calculate new table offsets (start after table directory)
+                uint newOffset = (uint)(12 + numTables * 16);
+                var newTableEntries = new List<(uint tag, uint checksum, uint newOffset, uint length, uint srcOffset)>();
+
+                foreach (var (tag, checksum, offset, length) in tableEntries)
                 {
-                    var bytes = stream.Read(buffer, read, buffer.Length - read);
-                    if (bytes == 0)
-                        break;
-                    read += bytes;
+                    newTableEntries.Add((tag, checksum, newOffset, length, offset));
+                    // Pad to 4-byte boundary
+                    newOffset += (length + 3) & ~3u;
                 }
 
-                if (read != buffer.Length)
-                    return false;
+                // Write table directory with new offsets
+                foreach (var (tag, checksum, newOff, length, _) in newTableEntries)
+                {
+                    WriteUInt32BE(writer, tag);
+                    WriteUInt32BE(writer, checksum);
+                    WriteUInt32BE(writer, newOff);
+                    WriteUInt32BE(writer, length);
+                }
 
-                data = SKData.CreateCopy(buffer);
+                // Write table data
+                foreach (var (_, _, _, length, srcOffset) in newTableEntries)
+                {
+                    stream.Seek(srcOffset, SeekOrigin.Begin);
+                    var tableData = reader.ReadBytes((int)length);
+                    writer.Write(tableData);
+
+                    // Pad to 4-byte boundary
+                    var padding = (int)((length + 3) & ~3u) - (int)length;
+                    for (int i = 0; i < padding; i++)
+                        writer.Write((byte)0);
+                }
+
+                data = SKData.CreateCopy(outputStream.ToArray());
                 return true;
             }
             catch (Exception ex)
