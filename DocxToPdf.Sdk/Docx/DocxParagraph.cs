@@ -19,8 +19,14 @@ public sealed record DocxParagraph
     public IReadOnlyList<DocxInlineElement> InlineElements { get; init; } = Array.Empty<DocxInlineElement>();
     public DocxListMarker? ListMarker { get; init; }
     public float DefaultTabStopPt { get; init; }
+    public char DecimalSymbol { get; init; } = '.';
 
-    internal static DocxParagraph FromParagraph(Paragraph paragraph, DocxStyleResolver styleResolver, NumberingResolver numberingResolver, float defaultTabStopPt)
+    internal static DocxParagraph FromParagraph(
+        Paragraph paragraph,
+        DocxStyleResolver styleResolver,
+        NumberingResolver numberingResolver,
+        float defaultTabStopPt,
+        char decimalSymbol)
     {
         var context = styleResolver.CreateParagraphContext(paragraph);
         var numberingResult = numberingResolver.Resolve(paragraph, context.ParagraphProperties, styleResolver);
@@ -43,7 +49,8 @@ public sealed record DocxParagraph
             Runs = runs,
             InlineElements = inlineElements,
             ListMarker = numberingResult?.Marker,
-            DefaultTabStopPt = defaultTabStopPt
+            DefaultTabStopPt = defaultTabStopPt,
+            DecimalSymbol = decimalSymbol
         };
     }
 

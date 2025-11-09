@@ -41,6 +41,7 @@ public sealed class TextLayoutEngine
         float currentMaxAscent = 0f;
         float currentMaxDescent = 0f;
         float currentMaxLeading = 0f;
+        float currentLineSpacingRequirement = 0f;
 
         var formatting = paragraph.ParagraphFormatting;
         var firstLineOffset = formatting.GetFirstLineOffsetPt();
@@ -59,6 +60,7 @@ public sealed class TextLayoutEngine
         var elements = paragraph.InlineElements.Count > 0
             ? paragraph.InlineElements
             : paragraph.Runs.Select(r => (DocxInlineElement)new DocxTextInline(r.Text, r.Formatting)).ToArray();
+        var paragraphDecimalSymbol = paragraph.DecimalSymbol == '\0' ? '.' : paragraph.DecimalSymbol;
         var shapedCache = new Dictionary<DocxTextInline, TextRenderer.ShapedText>(ReferenceEqualityComparer<DocxTextInline>.Instance);
 
         void CommitLine()
@@ -72,6 +74,7 @@ public sealed class TextLayoutEngine
                 currentMaxAscent,
                 currentMaxDescent,
                 currentMaxLeading,
+                currentLineSpacingRequirement,
                 isFirstLine,
                 currentLineLimit,
                 new List<BarTabInstruction>(currentBarTabs)
@@ -83,6 +86,7 @@ public sealed class TextLayoutEngine
             currentMaxAscent = 0f;
             currentMaxDescent = 0f;
             currentMaxLeading = 0f;
+            currentLineSpacingRequirement = 0f;
             isFirstLine = false;
             currentLineLimit = otherLinesWidth;
             currentLineIndent = subsequentOffset;
@@ -111,7 +115,7 @@ public sealed class TextLayoutEngine
                 _ => relativeTarget
             };
 
-        SegmentMeasurement MeasureSegment(IReadOnlyList<DocxInlineElement> source, int startIndex)
+        SegmentMeasurement MeasureSegment(IReadOnlyList<DocxInlineElement> source, int startIndex, char decimalSymbol)
         {
             float total = 0f;
             float widthBeforeDecimal = 0f;
@@ -127,7 +131,7 @@ public sealed class TextLayoutEngine
 
                         if (!hasDecimal)
                         {
-                            var decimalIndex = FindDecimalIndex(textInline.Text);
+                            var decimalIndex = FindDecimalIndex(textInline.Text, decimalSymbol);
                             if (decimalIndex >= 0)
                             {
                                 var prefixWidth = shaped.MeasureRange(0, decimalIndex);
@@ -212,6 +216,7 @@ public sealed class TextLayoutEngine
                 defaultMetrics.Ascent,
                 defaultMetrics.Descent,
                 defaultMetrics.Leading,
+                _textRenderer.GetLineSpacing(defaultTypeface, defaultFontSize),
                 true,
                 firstLineWidth,
                 Array.Empty<BarTabInstruction>()
@@ -238,7 +243,8 @@ public sealed class TextLayoutEngine
             var typeface = GetTypefaceForFormatting(textInline.Formatting);
             var fontSize = textInline.Formatting.FontSizePt;
             var shaped = GetOrCreateShapedText(textInline, typeface);
-            var metrics = _textRenderer.GetFontMetrics(typeface, fontSize);
+                var metrics = _textRenderer.GetFontMetrics(typeface, fontSize);
+                var desiredLineSpacing = _textRenderer.GetLineSpacing(typeface, fontSize);
             var slices = SplitIntoSlices(textInline.Text);
 
             foreach (var slice in slices)
@@ -257,6 +263,7 @@ public sealed class TextLayoutEngine
                 currentMaxAscent = Math.Min(currentMaxAscent, metrics.Ascent);
                 currentMaxDescent = Math.Max(currentMaxDescent, metrics.Descent);
                 currentMaxLeading = Math.Max(currentMaxLeading, metrics.Leading);
+                currentLineSpacingRequirement = Math.Max(currentLineSpacingRequirement, desiredLineSpacing);
             }
         }
 
@@ -296,10 +303,16 @@ public sealed class TextLayoutEngine
                 }
 
                 var measurement = NeedsLookAhead(currentResolution.Alignment)
-                    ? MeasureSegment(sourceElements, inlineIndex + 1)
+                    ? MeasureSegment(sourceElements, inlineIndex + 1, paragraphDecimalSymbol)
                     : SegmentMeasurement.Empty;
 
                 var desiredStart = ComputeDesiredStart(relativeTarget, currentResolution.Alignment, measurement);
+
+                if (currentResolution.Alignment == TabAlignment.Decimal)
+                {
+                    TabDiagnostics.Write(
+                        $"Decimal target={currentResolution.TargetAbsolutePositionPt:F1} currentWidth={currentLineWidth:F1} beforeDecimal={measurement.WidthBeforeDecimal:F1} total={measurement.TotalWidth:F1} hasDecimal={measurement.HasDecimal}");
+                }
                 if (desiredStart < currentLineWidth - 0.1f && currentLine.Count > 0)
                 {
                     CommitLine();
@@ -397,15 +410,12 @@ public sealed class TextLayoutEngine
         return string.Concat(Enumerable.Repeat(glyph, repetitions));
     }
 
-    private static int FindDecimalIndex(string text)
+    private static int FindDecimalIndex(string text, char decimalSymbol)
     {
-        for (var i = 0; i < text.Length; i++)
-        {
-            if (text[i] == '.' || text[i] == ',')
-                return i;
-        }
+        if (char.IsControl(decimalSymbol))
+            return -1;
 
-        return -1;
+        return text.IndexOf(decimalSymbol);
     }
 
     private readonly record struct TextSlice(int Start, int Length);
@@ -458,6 +468,7 @@ public sealed record LayoutLine(
     float MaxAscent,
     float MaxDescent,
     float MaxLeading,
+    float ExplicitLineSpacingPt,
     bool IsFirstLine,
     float AvailableWidthPt,
     IReadOnlyList<BarTabInstruction> BarTabs
@@ -465,9 +476,14 @@ public sealed record LayoutLine(
 {
     /// <summary>
     /// Calcola l'altezza totale della riga (line spacing).
-    /// Line spacing = descent - ascent + leading
+    /// Quando disponibile usa l'esplicito calcolato per Word (basato sul font),
+    /// altrimenti ricade su descent - ascent + leading.
     /// </summary>
-    public float GetLineSpacing() => MaxDescent - MaxAscent + MaxLeading;
+    public float GetLineSpacing()
+    {
+        var fallback = MaxDescent - MaxAscent + MaxLeading;
+        return ExplicitLineSpacingPt > 0 ? Math.Max(ExplicitLineSpacingPt, fallback) : fallback;
+    }
 };
 
 /// <summary>

@@ -106,6 +106,7 @@ public sealed class FontManager
 
         if (_fontAliases.TryGetValue(familyName, out var alias))
         {
+            LogFontInfo($"Falling back '{familyName}' to alias '{alias}'");
             if (TryGetEmbeddedTypeface(alias, style, out typeface))
                 return typeface;
             if (TryGetSystemTypeface(alias, style, out typeface))
@@ -136,11 +137,11 @@ public sealed class FontManager
         if (!_embeddedFamilies.TryGetValue(familyName, out var family))
             return false;
 
-        var path = family.Resolve(style);
-        if (path == null || !File.Exists(path))
+        var source = family.Resolve(style);
+        if (source == null)
             return false;
 
-        typeface = SKTypeface.FromFile(path);
+        typeface = source.CreateTypeface();
         return typeface != null;
     }
 
@@ -154,13 +155,53 @@ public sealed class FontManager
 
         void TryAdd(string familyName, string regular, string bold, string italic, string boldItalic)
         {
-            var family = LocalFontFamily.Create(fontsDir, regular, bold, italic, boldItalic);
-            if (family != null)
-                dict[familyName] = family;
+            try
+            {
+                var family = LocalFontFamily.Create(fontsDir, regular, bold, italic, boldItalic);
+                if (family != null)
+                    dict[familyName] = family;
+            }
+            catch (Exception ex)
+            {
+                LogFontWarning($"Failed to load embedded font '{familyName}' from {fontsDir}: {ex.Message}");
+            }
         }
 
         TryAdd("Caladea", "Caladea-Regular.ttf", "Caladea-Bold.ttf", "Caladea-Italic.ttf", "Caladea-BoldItalic.ttf");
         TryAdd("Carlito", "Carlito-Regular.ttf", "Carlito-Bold.ttf", "Carlito-Italic.ttf", "Carlito-BoldItalic.ttf");
+
+        var wordFontsDir = "/Applications/Microsoft Word.app/Contents/Resources/DFonts";
+        if (Directory.Exists(wordFontsDir))
+        {
+            void TryAddWordFont(string familyName, string regular, string bold, string italic, string boldItalic)
+            {
+                try
+                {
+                    var family = LocalFontFamily.CreateFromPaths(
+                        Path.Combine(wordFontsDir, regular),
+                        Path.Combine(wordFontsDir, bold),
+                        Path.Combine(wordFontsDir, italic),
+                        Path.Combine(wordFontsDir, boldItalic));
+                    if (family != null)
+                    {
+                        dict[familyName] = family;
+                        LogFontInfo($"Loaded Word font '{familyName}'");
+                    }
+                    else
+                    {
+                        LogFontWarning($"Font '{familyName}' not found in Word resources.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogFontWarning($"Failed to load Word font '{familyName}': {ex.Message}");
+                }
+            }
+
+            TryAddWordFont("Aptos", "Aptos.ttf", "Aptos-Bold.ttf", "Aptos-Italic.ttf", "Aptos-Bold-Italic.ttf");
+            TryAddWordFont("Cambria", "Cambria.ttc", "Cambriab.ttf", "Cambriai.ttf", "Cambriaz.ttf");
+            TryAddWordFont("Calibri", "Calibri.ttf", "Calibrib.ttf", "Calibrii.ttf", "Calibriz.ttf");
+        }
 
         return dict;
     }
@@ -174,26 +215,30 @@ public sealed class FontManager
             ["Calibri Light"] = "Carlito"
         };
 
-    private sealed record LocalFontFamily(string RegularPath, string? BoldPath, string? ItalicPath, string? BoldItalicPath)
+    private sealed record LocalFontFamily(FontSource Regular, FontSource? Bold, FontSource? Italic, FontSource? BoldItalic)
     {
-        public string? Resolve(SKFontStyle style)
+        public FontSource? Resolve(SKFontStyle style)
         {
             var isBold = style.Weight >= (int)SKFontStyleWeight.SemiBold;
             var isItalic = style.Slant == SKFontStyleSlant.Italic || style.Slant == SKFontStyleSlant.Oblique;
 
-            if (isBold && isItalic && !string.IsNullOrEmpty(BoldItalicPath))
-                return BoldItalicPath;
-            if (isBold && !string.IsNullOrEmpty(BoldPath))
-                return BoldPath;
-            if (isItalic && !string.IsNullOrEmpty(ItalicPath))
-                return ItalicPath;
-            return RegularPath;
+            if (isBold && isItalic && BoldItalic != null)
+                return BoldItalic;
+            if (isBold && Bold != null)
+                return Bold;
+            if (isItalic && Italic != null)
+                return Italic;
+            return Regular;
         }
 
         public static LocalFontFamily? Create(string fontsDir, string regular, string bold, string italic, string boldItalic)
         {
             var regularPath = Path.Combine(fontsDir, regular);
             if (!File.Exists(regularPath))
+                return null;
+
+            var regularSource = FontSource.Create(regularPath);
+            if (regularSource == null)
                 return null;
 
             string? GetOptional(string relativePath)
@@ -203,10 +248,153 @@ public sealed class FontManager
             }
 
             return new LocalFontFamily(
-                regularPath,
-                GetOptional(bold),
-                GetOptional(italic),
-                GetOptional(boldItalic));
+                regularSource,
+                FontSource.Create(GetOptional(bold)),
+                FontSource.Create(GetOptional(italic)),
+                FontSource.Create(GetOptional(boldItalic)));
         }
+
+        public static LocalFontFamily? CreateFromPaths(string regularPath, string? boldPath, string? italicPath, string? boldItalicPath)
+        {
+            if (string.IsNullOrEmpty(regularPath) || !File.Exists(regularPath))
+                return null;
+
+            var regularSource = FontSource.Create(regularPath);
+            if (regularSource == null)
+                return null;
+
+            string? Normalize(string? path) => string.IsNullOrEmpty(path) || !File.Exists(path) ? null : path;
+
+            return new LocalFontFamily(
+                regularSource,
+                FontSource.Create(Normalize(boldPath)),
+                FontSource.Create(Normalize(italicPath)),
+                FontSource.Create(Normalize(boldItalicPath)));
+        }
+    }
+
+    private sealed record FontSource(string Path, int? FaceIndex = null)
+    {
+        public static FontSource? Create(string? path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            if (System.IO.Path.GetExtension(path).Equals(".ttc", StringComparison.OrdinalIgnoreCase))
+            {
+                LogFontInfo($"Using TTC face 0 for '{path}'");
+                return new FontSource(path, 0);
+            }
+
+            return new FontSource(path, null);
+        }
+
+        public SKTypeface? CreateTypeface()
+        {
+            if (FaceIndex.HasValue)
+            {
+                if (TryExtractTtcFace(Path, FaceIndex.Value, out var fontData))
+                {
+                    using var stream = new SKMemoryStream(fontData);
+                    var typeface = SKTypeface.FromStream(stream);
+                    if (typeface != null)
+                    {
+                        LogFontInfo($"Embedded TTF slice for '{Path}'");
+                        return typeface;
+                    }
+
+                    LogFontWarning($"SKTypeface.FromData failed for '{Path}', falling back to direct TTC access.");
+                }
+
+                return SKTypeface.FromFile(Path, FaceIndex.Value);
+            }
+
+            return SKTypeface.FromFile(Path);
+        }
+
+        private static bool TryExtractTtcFace(string path, int faceIndex, out SKData data)
+        {
+            data = null!;
+            try
+            {
+                using var stream = File.OpenRead(path);
+                using var reader = new BinaryReader(stream);
+
+                uint ReadUInt32BE() => (uint)((reader.ReadByte() << 24) | (reader.ReadByte() << 16) | (reader.ReadByte() << 8) | reader.ReadByte());
+                ushort ReadUInt16BE() => (ushort)((reader.ReadByte() << 8) | reader.ReadByte());
+
+                if (ReadUInt32BE() != 0x74746366) // 'ttcf'
+                    return false;
+
+                ReadUInt32BE(); // version
+                var numFonts = ReadUInt32BE();
+                if (faceIndex < 0 || faceIndex >= numFonts)
+                    return false;
+
+                var offsets = new uint[numFonts];
+                for (int i = 0; i < numFonts; i++)
+                    offsets[i] = ReadUInt32BE();
+
+                var start = offsets[faceIndex];
+                stream.Seek(start, SeekOrigin.Begin);
+
+                ReadUInt32BE(); // sfntVersion
+                var numTables = ReadUInt16BE();
+                ReadUInt16BE(); // searchRange
+                ReadUInt16BE(); // entrySelector
+                ReadUInt16BE(); // rangeShift
+
+                long end = start + 12 + numTables * 16;
+                for (int i = 0; i < numTables; i++)
+                {
+                    ReadUInt32BE(); // tag
+                    ReadUInt32BE(); // checksum
+                    var tableOffset = ReadUInt32BE();
+                    var tableLength = ReadUInt32BE();
+                    var padded = (tableLength + 3) & ~3u;
+                    var tableEnd = start + tableOffset + padded;
+                    if (tableEnd > end)
+                        end = tableEnd;
+                }
+
+                var length = end - start;
+                stream.Seek(start, SeekOrigin.Begin);
+                var buffer = new byte[length];
+                int read = 0;
+                while (read < buffer.Length)
+                {
+                    var bytes = stream.Read(buffer, read, buffer.Length - read);
+                    if (bytes == 0)
+                        break;
+                    read += bytes;
+                }
+
+                if (read != buffer.Length)
+                    return false;
+
+                data = SKData.CreateCopy(buffer);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogFontWarning($"Failed to extract TTC face from '{path}': {ex.Message}");
+                return false;
+            }
+        }
+    }
+
+    private static bool ShouldLogFonts =>
+        Environment.GetEnvironmentVariable("DOCXTOPDF_LOG_FONTS") == "1";
+
+    private static void LogFontInfo(string message)
+    {
+        if (ShouldLogFonts)
+            Console.Error.WriteLine($"[FontManager] {message}");
+    }
+
+    private static void LogFontWarning(string message)
+    {
+        if (ShouldLogFonts)
+            Console.Error.WriteLine($"[FontManager][WARN] {message}");
     }
 }

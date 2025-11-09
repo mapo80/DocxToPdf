@@ -198,7 +198,7 @@ public sealed class DocxToPdfConverter
                     }
                     currentX += width;
 
-                    if (!string.IsNullOrEmpty(literalSegment) && ContainsNonAscii(literalSegment))
+                    if (!string.IsNullOrEmpty(literalSegment))
                     {
                         _textRenderer.DrawInvisibleText(
                             page.Canvas,
@@ -252,6 +252,7 @@ public sealed class DocxToPdfConverter
             suffixText = "\t";
         else
             suffixText = string.Empty;
+        var markerAndSuffixText = string.Concat(marker.Text, suffixText);
         var suffixWidth = string.IsNullOrEmpty(suffixText)
             ? 0f
             : _textRenderer.MeasureTextWithFallback(suffixText, typeface, marker.Formatting.FontSizePt);
@@ -286,10 +287,14 @@ public sealed class DocxToPdfConverter
                 marker.Formatting.FontSizePt,
                 color);
 
+        }
+
+        if (!string.IsNullOrEmpty(markerAndSuffixText))
+        {
             _textRenderer.DrawInvisibleText(
                 canvas,
-                suffixText,
-                suffixX,
+                markerAndSuffixText,
+                markerX,
                 baseline,
                 typeface,
                 marker.Formatting.FontSizePt);
@@ -323,13 +328,4 @@ public sealed class DocxToPdfConverter
     private static bool IsStretchableSpace(LayoutRun run) =>
         run.IsDrawable && !string.IsNullOrEmpty(run.Text) && run.Text.All(static c => c == ' ');
 
-    private static bool ContainsNonAscii(string text)
-    {
-        foreach (var ch in text)
-        {
-            if (ch > 127)
-                return true;
-        }
-        return false;
-    }
 }

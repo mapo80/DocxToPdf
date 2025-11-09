@@ -103,7 +103,9 @@ public sealed class TextRenderer
     public float GetLineSpacing(SKTypeface typeface, float sizePt)
     {
         var metrics = GetFontMetrics(typeface, sizePt);
-        return metrics.Descent - metrics.Ascent + metrics.Leading;
+        var naturalSpacing = metrics.Descent - metrics.Ascent;
+        var wordDefaultSpacing = sizePt * 1.1667f;
+        return Math.Max(naturalSpacing, wordDefaultSpacing);
     }
 
     private List<FontRun> SplitIntoFontRuns(string text, SKTypeface primaryTypeface)
@@ -334,26 +336,30 @@ public sealed class TextRenderer
             using var paint = new SKPaint
             {
                 IsAntialias = true,
-                Color = color
+                Color = color,
+                Style = SKPaintStyle.Fill
             };
-            using var builder = new SKTextBlobBuilder();
             var count = endGlyph - startGlyph;
-            var buffer = builder.AllocatePositionedRun(font, count);
-            var glyphSpan = buffer.Glyphs;
-            var posSpan = buffer.Positions;
             var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : Width;
             float extraOffset = 0f;
             for (int i = 0; i < count; i++)
             {
                 var glyphIndex = startGlyph + i;
-                glyphSpan[i] = _glyphs[glyphIndex];
+                var glyphId = _glyphs[glyphIndex];
+                using var path = font.GetGlyphPath(glyphId);
+                if (path == null)
+                    continue;
+
                 var pos = _positions[glyphIndex];
-                posSpan[i] = new SKPoint(pos.X - startAdvance + x + extraOffset, y + pos.Y + BaselineOffset);
+                var tx = pos.X - startAdvance + x + extraOffset;
+                var ty = y + pos.Y + BaselineOffset;
+                var matrix = SKMatrix.CreateTranslation(tx, ty);
+                path.Transform(matrix);
+                canvas.DrawPath(path, paint);
+
                 if (i < count - 1 && Math.Abs(letterSpacingPt) > 0.0001f)
                     extraOffset += letterSpacingPt;
             }
-            using var blob = builder.Build();
-            canvas.DrawText(blob, 0, 0, paint);
 
             return Measure(localStart, localLength, letterSpacingPt);
         }

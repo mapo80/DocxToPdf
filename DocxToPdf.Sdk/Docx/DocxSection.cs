@@ -14,11 +14,11 @@ public sealed record DocxSection
     public PageOrientationValues Orientation { get; init; }
 
     /// <summary>
-    /// Sezione di default: A4 portrait con margini 1" (compatibile Word).
+    /// Sezione di default: Letter portrait con margini 1" (coerente con il template Normal.dotm di Word).
     /// </summary>
     public static readonly DocxSection Default = new()
     {
-        PageSize = PaperSize.A4,
+        PageSize = PaperSize.Letter,
         Margins = Units.Margins.Default,
         Orientation = PageOrientationValues.Portrait
     };
@@ -44,7 +44,7 @@ public sealed record DocxSection
     {
         var pgSz = sectPr.GetFirstChild<PageSize>();
         if (pgSz == null)
-            return PaperSize.A4;
+            return PaperSize.Letter;
 
         // PageSize in DOCX è in twips (1/20 pt, 1440 twips = 1 inch = 72 pt)
         // Width/Height possono essere uint?, dobbiamo gestire null

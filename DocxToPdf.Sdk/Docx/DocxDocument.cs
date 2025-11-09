@@ -17,14 +17,21 @@ public sealed class DocxDocument : IDisposable
     private readonly Styles.DocxStyleResolver _styleResolver;
     private readonly NumberingResolver _numberingResolver;
     private readonly float _defaultTabStopPt;
+    private readonly DocxDocumentSettings _settings;
     private bool _disposed;
 
-    private DocxDocument(WordprocessingDocument document, Styles.DocxStyleResolver styleResolver, NumberingResolver numberingResolver, float defaultTabStopPt)
+    private DocxDocument(
+        WordprocessingDocument document,
+        Styles.DocxStyleResolver styleResolver,
+        NumberingResolver numberingResolver,
+        float defaultTabStopPt,
+        DocxDocumentSettings settings)
     {
         _document = document;
         _styleResolver = styleResolver;
         _numberingResolver = numberingResolver;
         _defaultTabStopPt = defaultTabStopPt;
+        _settings = settings;
     }
 
     /// <summary>
@@ -39,7 +46,8 @@ public sealed class DocxDocument : IDisposable
         var styleResolver = Styles.DocxStyleResolver.Load(document);
         var numberingResolver = new NumberingResolver(NumberingDefinitions.Load(document));
         var defaultTab = GetDefaultTabStopPt(document);
-        return new DocxDocument(document, styleResolver, numberingResolver, defaultTab);
+        var settings = DocxDocumentSettings.Load(document);
+        return new DocxDocument(document, styleResolver, numberingResolver, defaultTab, settings);
     }
 
     /// <summary>
@@ -51,7 +59,8 @@ public sealed class DocxDocument : IDisposable
         var styleResolver = Styles.DocxStyleResolver.Load(document);
         var numberingResolver = new NumberingResolver(NumberingDefinitions.Load(document));
         var defaultTab = GetDefaultTabStopPt(document);
-        return new DocxDocument(document, styleResolver, numberingResolver, defaultTab);
+        var settings = DocxDocumentSettings.Load(document);
+        return new DocxDocument(document, styleResolver, numberingResolver, defaultTab, settings);
     }
 
     /// <summary>
@@ -82,7 +91,7 @@ public sealed class DocxDocument : IDisposable
 
         foreach (var para in body.Elements<Paragraph>())
         {
-            yield return DocxParagraph.FromParagraph(para, _styleResolver, _numberingResolver, _defaultTabStopPt);
+            yield return DocxParagraph.FromParagraph(para, _styleResolver, _numberingResolver, _defaultTabStopPt, _settings.EffectiveDecimalSymbol);
         }
     }
 
@@ -100,5 +109,22 @@ public sealed class DocxDocument : IDisposable
 
         _document?.Dispose();
         _disposed = true;
+    }
+}
+
+internal sealed record DocxDocumentSettings(char EffectiveDecimalSymbol, char? DocumentDecimalSymbol)
+{
+    public static DocxDocumentSettings Load(WordprocessingDocument document)
+    {
+        var settings = document.MainDocumentPart?.DocumentSettingsPart?.Settings;
+        const char effective = '.';
+        char? documentSymbol = null;
+        var docValue = settings?.GetFirstChild<DecimalSymbol>()?.Val?.Value;
+        if (!string.IsNullOrEmpty(docValue))
+        {
+            documentSymbol = docValue[0];
+        }
+
+        return new DocxDocumentSettings(effective, documentSymbol);
     }
 }
