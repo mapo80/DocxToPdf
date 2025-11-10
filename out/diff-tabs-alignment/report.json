@@ -2,7 +2,7 @@
   "passed": false,
   "exitCode": 1,
   "diffPdf": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/diff.pdf",
-  "stdout": "page 0 has 70398 pixels that differ\npage 0 differs\n1 of 1 pages differ.\n",
+  "stdout": "page 0 has 70494 pixels that differ\npage 0 differs\n1 of 1 pages differ.\n",
   "stderr": "",
   "baseline": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden/tabs-alignment.pdf",
   "candidate": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/tabs-alignment-sdk.pdf",
@@ -10,9 +10,9 @@
   "dpi": 300,
   "difference": {
     "totalPixels": 8415000,
-    "differingPixels": 70398,
-    "ratio": 0.008365775401069519,
-    "percent": 0.8365775401069518
+    "differingPixels": 70494,
+    "ratio": 0.008377183600713012,
+    "percent": 0.8377183600713012
   },
   "pageStats": [
     {
@@ -20,9 +20,9 @@
       "widthPx": 2550,
       "heightPx": 3300,
       "totalPixels": 8415000,
-      "diffPixels": 70398,
-      "ratio": 0.008365775401069519,
-      "percent": 0.8365775401069518
+      "diffPixels": 70494,
+      "ratio": 0.008377183600713012,
+      "percent": 0.8377183600713012
     }
   ],
   "geometry": {
@@ -37,7 +37,7 @@
           {
             "index": 0,
             "expectedText": "Tabs",
-            "actualText": "Tabs",
+            "actualText": "TTaabbss",
             "expected": {
               "x": 72.1,
               "y": 711.75,
@@ -65,7 +65,7 @@
           {
             "index": 1,
             "expectedText": "\u0026",
-            "actualText": "\u0026",
+            "actualText": "\u0026\u0026",
             "expected": {
               "x": 94.331,
               "y": 711.75,
@@ -93,7 +93,7 @@
           {
             "index": 2,
             "expectedText": "Alignment",
-            "actualText": "Alignment",
+            "actualText": "AAlliiggnnmmeenntt",
             "expected": {
               "x": 104.319,
               "y": 711.75,
@@ -121,7 +121,7 @@
           {
             "index": 3,
             "expectedText": "Sample",
-            "actualText": "Sample",
+            "actualText": "SSaammppllee",
             "expected": {
               "x": 152.752,
               "y": 711.75,
@@ -149,7 +149,7 @@
           {
             "index": 4,
             "expectedText": "Left",
-            "actualText": "Le\u0000",
+            "actualText": "LLee\u0000ft",
             "expected": {
               "x": 72.1,
               "y": 698.3,
@@ -161,23 +161,135 @@
             "actual": {
               "x": 72,
               "y": 698.322266,
-              "width": 16.87060546875,
+              "width": 17.13916015625,
               "height": 7.541015625,
-              "centerX": 80.435302734375,
+              "centerX": 80.569580078125,
               "centerY": 702.0927738125
             },
             "delta": {
-              "deltaX": -0.04669726562499932,
+              "deltaX": 0.08758007812500068,
               "deltaY": 0.02226600000005874,
-              "deltaWidth": 0.1066054687500042,
+              "deltaWidth": 0.3751601562500042,
               "deltaHeight": 0,
-              "maxDeviation": 0.1066054687500042
+              "maxDeviation": 0.3751601562500042
+            }
+          },
+          {
+            "index": 5,
+            "expectedText": "Center",
+            "actualText": "CCeenntteerr",
+            "expected": {
+              "x": 144.1,
+              "y": 698.3,
+              "width": 29.865000000000038,
+              "height": 7.13818359375,
+              "centerX": 159.03250000000003,
+              "centerY": 701.869091796875
+            },
+            "actual": {
+              "x": 144,
+              "y": 698.322266,
+              "width": 30.1103515625,
+              "height": 7.13818359375,
+              "centerX": 159.05517578125,
+              "centerY": 701.891357796875
+            },
+            "delta": {
+              "deltaX": 0.022675781249972715,
+              "deltaY": 0.02226600000005874,
+              "deltaWidth": 0.24535156249996248,
+              "deltaHeight": 0,
+              "maxDeviation": 0.24535156249996248
+            }
+          },
+          {
+            "index": 6,
+            "expectedText": "Right",
+            "actualText": "RRiigghhtt",
+            "expected": {
+              "x": 204.6,
+              "y": 698.3,
+              "width": 23.012,
+              "height": 7.6376953125,
+              "centerX": 216.106,
+              "centerY": 702.11884765625
+            },
+            "actual": {
+              "x": 204.43066,
+              "y": 698.322266,
+              "width": 23.138671875,
+              "height": 7.6376953125,
+              "centerX": 215.9999959375,
+              "centerY": 702.14111365625
+            },
+            "delta": {
+              "deltaX": -0.1060040625000056,
+              "deltaY": 0.02226600000005874,
+              "deltaWidth": 0.12667187499999955,
+              "deltaHeight": 0,
+              "maxDeviation": 0.12667187499999955
+            }
+          },
+          {
+            "index": 7,
+            "expectedText": "Budget",
+            "actualText": "BBuuddggeett",
+            "expected": {
+              "x": 72.1,
+              "y": 684.85,
+              "width": 31.668999999999997,
+              "height": 7.6376953125,
+              "centerX": 87.93449999999999,
+              "centerY": 688.66884765625
+            },
+            "actual": {
+              "x": 72,
+              "y": 684.894531,
+              "width": 31.87744140625,
+              "height": 7.6376953125,
+              "centerX": 87.938720703125,
+              "centerY": 688.71337865625
+            },
+            "delta": {
+              "deltaX": 0.0042207031250143245,
+              "deltaY": 0.044531000000006316,
+              "deltaWidth": 0.20844140625000307,
+              "deltaHeight": 0,
+              "maxDeviation": 0.20844140625000307
+            }
+          },
+          {
+            "index": 8,
+            "expectedText": "123.45",
+            "actualText": "112233..4455",
+            "expected": {
+              "x": 199.4,
+              "y": 684.85,
+              "width": 30.603999999999985,
+              "height": 7.13818359375,
+              "centerX": 214.702,
+              "centerY": 688.419091796875
+            },
+            "actual": {
+              "x": 199.27441,
+              "y": 684.894531,
+              "width": 30.65283203125,
+              "height": 7.13818359375,
+              "centerX": 214.600826015625,
+              "centerY": 688.463622796875
+            },
+            "delta": {
+              "deltaX": -0.10117398437500924,
+              "deltaY": 0.044531000000006316,
+              "deltaWidth": 0.04883203125001501,
+              "deltaHeight": 0,
+              "maxDeviation": 0.10117398437500924
             }
           },
           {
             "index": 9,
             "expectedText": "67,89",
-            "actualText": "67,89",
+            "actualText": "6677,,8899",
             "expected": {
               "x": 263.1,
               "y": 684.85,
@@ -203,9 +315,37 @@
             }
           },
           {
+            "index": 10,
+            "expectedText": "Agenda",
+            "actualText": "AAggeennddaa",
+            "expected": {
+              "x": 72.1,
+              "y": 671.4,
+              "width": 33.70400000000001,
+              "height": 7.6376953125,
+              "centerX": 88.952,
+              "centerY": 675.21884765625
+            },
+            "actual": {
+              "x": 72,
+              "y": 671.466797,
+              "width": 33.84326171875,
+              "height": 7.6376953125,
+              "centerX": 88.921630859375,
+              "centerY": 675.28564465625
+            },
+            "delta": {
+              "deltaX": -0.03036914062499818,
+              "deltaY": 0.06679700000006505,
+              "deltaWidth": 0.13926171874999227,
+              "deltaHeight": 0,
+              "maxDeviation": 0.13926171874999227
+            }
+          },
+          {
             "index": 11,
             "expectedText": "09:00",
-            "actualText": "09:00",
+            "actualText": "0099::0000",
             "expected": {
               "x": 180.1,
               "y": 671.4,
@@ -233,7 +373,7 @@
           {
             "index": 12,
             "expectedText": "Kickoff",
-            "actualText": "Kicko\uFB00",
+            "actualText": "KKiicckkoo\uFB00ff",
             "expected": {
               "x": 207.776,
               "y": 671.4,
@@ -245,23 +385,23 @@
             "actual": {
               "x": 243.73096,
               "y": 671.466797,
-              "width": 30.11035156249997,
+              "width": 30.40576171874997,
               "height": 7.6376953125,
-              "centerX": 258.78613578125,
+              "centerX": 258.933840859375,
               "centerY": 675.28564465625
             },
             "delta": {
-              "deltaX": 36.13813578124996,
+              "deltaX": 36.28584085937496,
               "deltaY": 0.06679700000006505,
-              "deltaWidth": 0.3663515624999718,
+              "deltaWidth": 0.6617617187499718,
               "deltaHeight": 0,
-              "maxDeviation": 36.13813578124996
+              "maxDeviation": 36.28584085937496
             }
           },
           {
             "index": 13,
             "expectedText": "Default",
-            "actualText": "Default",
+            "actualText": "DDeeffaauulltt",
             "expected": {
               "x": 72.1,
               "y": 657.95,
@@ -289,7 +429,7 @@
           {
             "index": 14,
             "expectedText": "Tabs",
-            "actualText": "Tabs",
+            "actualText": "TTaabbss",
             "expected": {
               "x": 107.55,
               "y": 657.95,
@@ -317,7 +457,7 @@
           {
             "index": 15,
             "expectedText": "Spacing",
-            "actualText": "Spacing",
+            "actualText": "SSppaacciinngg",
             "expected": {
               "x": 143,
               "y": 657.95,
@@ -345,7 +485,7 @@
           {
             "index": 16,
             "expectedText": "Justified",
-            "actualText": "Jus\u0000\uFB01ed",
+            "actualText": "JJuuss\u0000ti\uFB01fieedd",
             "expected": {
               "x": 72.1,
               "y": 644.5,
@@ -357,23 +497,23 @@
             "actual": {
               "x": 72,
               "y": 644.611328,
-              "width": 36.7919921875,
+              "width": 36.931640625,
               "height": 7.6376953125,
-              "centerX": 90.39599609375,
+              "centerX": 90.4658203125,
               "centerY": 648.43017565625
             },
             "delta": {
-              "deltaX": -0.013503906249994202,
+              "deltaX": 0.0563203125000058,
               "deltaY": 0.11132799999995768,
-              "deltaWidth": 0.17299218750000023,
+              "deltaWidth": 0.3126406250000002,
               "deltaHeight": 0,
-              "maxDeviation": 0.17299218750000023
+              "maxDeviation": 0.3126406250000002
             }
           },
           {
             "index": 17,
             "expectedText": "text",
-            "actualText": "text",
+            "actualText": "tteexxtt",
             "expected": {
               "x": 111.216,
               "y": 644.5,
@@ -401,7 +541,7 @@
           {
             "index": 18,
             "expectedText": "demonstrates",
-            "actualText": "demonstrates",
+            "actualText": "ddeemmoonnssttrraatteess",
             "expected": {
               "x": 130.994,
               "y": 644.5,
@@ -429,7 +569,7 @@
           {
             "index": 19,
             "expectedText": "spacing",
-            "actualText": "spacing",
+            "actualText": "ssppaacciinngg",
             "expected": {
               "x": 195.014,
               "y": 644.5,
@@ -457,7 +597,7 @@
           {
             "index": 20,
             "expectedText": "expansion",
-            "actualText": "expansion",
+            "actualText": "eexxppaannssiioonn",
             "expected": {
               "x": 230.962,
               "y": 644.5,
@@ -485,7 +625,7 @@
           {
             "index": 21,
             "expectedText": "across",
-            "actualText": "across",
+            "actualText": "aaccrroossss",
             "expected": {
               "x": 278.66900000000004,
               "y": 644.5,
@@ -513,7 +653,7 @@
           {
             "index": 22,
             "expectedText": "the",
-            "actualText": "the",
+            "actualText": "tthhee",
             "expected": {
               "x": 309.139,
               "y": 644.5,
@@ -541,7 +681,7 @@
           {
             "index": 23,
             "expectedText": "entire",
-            "actualText": "en\u0000re",
+            "actualText": "eenn\u0000tirree",
             "expected": {
               "x": 326.51899999999995,
               "y": 644.5,
@@ -553,23 +693,23 @@
             "actual": {
               "x": 328.0293,
               "y": 644.611328,
-              "width": 26.68896484375,
+              "width": 26.76953125,
               "height": 7.60546875,
-              "centerX": 341.373782421875,
+              "centerX": 341.414065625,
               "centerY": 648.414062375
             },
             "delta": {
-              "deltaX": 1.6327824218750493,
+              "deltaX": 1.6730656250000493,
               "deltaY": 0.11132799999995768,
-              "deltaWidth": 0.24496484375004002,
+              "deltaWidth": 0.32553125000004,
               "deltaHeight": 0,
-              "maxDeviation": 1.6327824218750493
+              "maxDeviation": 1.6730656250000493
             }
           },
           {
             "index": 24,
             "expectedText": "line",
-            "actualText": "line",
+            "actualText": "lliinnee",
             "expected": {
               "x": 355.4269999999999,
               "y": 644.5,
@@ -597,7 +737,7 @@
           {
             "index": 25,
             "expectedText": "for",
-            "actualText": "for",
+            "actualText": "ffoorr",
             "expected": {
               "x": 374.19299999999987,
               "y": 644.5,
@@ -625,7 +765,7 @@
           {
             "index": 26,
             "expectedText": "classic",
-            "actualText": "classic",
+            "actualText": "ccllaassssiicc",
             "expected": {
               "x": 389.4169999999999,
               "y": 644.5,
@@ -653,7 +793,7 @@
           {
             "index": 27,
             "expectedText": "prose",
-            "actualText": "prose",
+            "actualText": "pprroossee",
             "expected": {
               "x": 420.0739999999999,
               "y": 644.5,
@@ -681,7 +821,7 @@
           {
             "index": 28,
             "expectedText": "layouts.",
-            "actualText": "layouts.",
+            "actualText": "llaayyoouuttss..",
             "expected": {
               "x": 447.55199999999985,
               "y": 644.5,
@@ -709,7 +849,7 @@
           {
             "index": 29,
             "expectedText": "Distributed",
-            "actualText": "Distributed",
+            "actualText": "DDiissttrriibbuutteedd",
             "expected": {
               "x": 72.1,
               "y": 631.05,
@@ -735,9 +875,37 @@
             }
           },
           {
+            "index": 30,
+            "expectedText": "alignment",
+            "actualText": "aalliiggnnmmeenntt",
+            "expected": {
+              "x": 142.22500000000002,
+              "y": 631.05,
+              "width": 44.82500000000002,
+              "height": 7.6376953125,
+              "centerX": 164.63750000000005,
+              "centerY": 634.86884765625
+            },
+            "actual": {
+              "x": 142.356613,
+              "y": 631.183594,
+              "width": 44.9990234375,
+              "height": 7.6376953125,
+              "centerX": 164.85612471875,
+              "centerY": 635.00244165625
+            },
+            "delta": {
+              "deltaX": 0.21862471874996459,
+              "deltaY": 0.13359400000001642,
+              "deltaWidth": 0.17402343749998295,
+              "deltaHeight": 0,
+              "maxDeviation": 0.21862471874996459
+            }
+          },
+          {
             "index": 31,
             "expectedText": "keeps",
-            "actualText": "keeps",
+            "actualText": "kkeeeeppss",
             "expected": {
               "x": 207.40000000000003,
               "y": 631.05,
@@ -765,7 +933,7 @@
           {
             "index": 32,
             "expectedText": "columns",
-            "actualText": "columns",
+            "actualText": "ccoolluummnnss",
             "expected": {
               "x": 253.31400000000005,
               "y": 631.05,
@@ -777,23 +945,23 @@
             "actual": {
               "x": 253.82961,
               "y": 631.183594,
-              "width": 37.62449643125001,
+              "width": 37.62451171875,
               "height": 7.6376953125,
-              "centerX": 272.641858215625,
+              "centerX": 272.641865859375,
               "centerY": 635.00244165625
             },
             "delta": {
-              "deltaX": 0.5673582156249495,
+              "deltaX": 0.5673658593749451,
               "deltaY": 0.13359400000001642,
-              "deltaWidth": 0.10349643124996533,
+              "deltaWidth": 0.10351171874995657,
               "deltaHeight": 0,
-              "maxDeviation": 0.5673582156249495
+              "maxDeviation": 0.5673658593749451
             }
           },
           {
             "index": 33,
             "expectedText": "balanced",
-            "actualText": "balanced",
+            "actualText": "bbaallaanncceedd",
             "expected": {
               "x": 311.10800000000006,
               "y": 631.05,
@@ -821,7 +989,7 @@
           {
             "index": 34,
             "expectedText": "even",
-            "actualText": "even",
+            "actualText": "eevveenn",
             "expected": {
               "x": 371.9270000000001,
               "y": 631.05,
@@ -849,7 +1017,7 @@
           {
             "index": 35,
             "expectedText": "on",
-            "actualText": "on",
+            "actualText": "oonn",
             "expected": {
               "x": 413.73800000000006,
               "y": 631.05,
@@ -877,7 +1045,7 @@
           {
             "index": 36,
             "expectedText": "the",
-            "actualText": "the",
+            "actualText": "tthhee",
             "expected": {
               "x": 445.6050000000001,
               "y": 631.05,
@@ -905,7 +1073,7 @@
           {
             "index": 37,
             "expectedText": "final",
-            "actualText": "\uFB01nal",
+            "actualText": "\uFB01finnaall",
             "expected": {
               "x": 480.86000000000007,
               "y": 631.05,
@@ -917,23 +1085,23 @@
             "actual": {
               "x": 481.30399,
               "y": 631.183594,
-              "width": 19.39501953125,
+              "width": 19.4541015625,
               "height": 7.6376953125,
-              "centerX": 491.001499765625,
+              "centerX": 491.03104078125,
               "centerY": 635.00244165625
             },
             "delta": {
-              "deltaX": 0.4669997656249052,
+              "deltaX": 0.4965407812499052,
               "deltaY": 0.13359400000001642,
-              "deltaWidth": 0.046019531249953616,
+              "deltaWidth": 0.10510156249995362,
               "deltaHeight": 0,
-              "maxDeviation": 0.4669997656249052
+              "maxDeviation": 0.4965407812499052
             }
           },
           {
             "index": 38,
             "expectedText": "line.",
-            "actualText": "line.",
+            "actualText": "lliinnee..",
             "expected": {
               "x": 520.5150000000001,
               "y": 631.05,
@@ -961,7 +1129,7 @@
           {
             "index": 39,
             "expectedText": "Positional",
-            "actualText": "Posi\u0000onal",
+            "actualText": "PPoossii\u0000tioonnaall",
             "expected": {
               "x": 72.1,
               "y": 617.6,
@@ -973,23 +1141,23 @@
             "actual": {
               "x": 72,
               "y": 617.75586,
-              "width": 43.81201171875,
+              "width": 43.892578125,
               "height": 7.6376953125,
-              "centerX": 93.906005859375,
+              "centerX": 93.9462890625,
               "centerY": 621.57470765625
             },
             "delta": {
-              "deltaX": 0.03700585937500023,
+              "deltaX": 0.07728906250000023,
               "deltaY": 0.15585999999996147,
-              "deltaWidth": 0.2740117187499891,
+              "deltaWidth": 0.3545781249999891,
               "deltaHeight": 0,
-              "maxDeviation": 0.2740117187499891
+              "maxDeviation": 0.3545781249999891
             }
           },
           {
             "index": 40,
             "expectedText": "tab",
-            "actualText": "tab",
+            "actualText": "ttaabb",
             "expected": {
               "x": 118.102,
               "y": 617.6,
