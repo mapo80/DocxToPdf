@@ -19,6 +19,7 @@ public sealed record ParagraphFormatting
     public float FirstLineIndentPt { get; init; }
     public float HangingIndentPt { get; init; }
     public IReadOnlyList<TabStopDefinition> TabStops { get; init; } = Array.Empty<TabStopDefinition>();
+    public bool SuppressSpacingBetweenSameStyle { get; init; }
 
     /// <summary>
     /// Calcola l'indentazione applicata alla prima riga considerando special e hanging.

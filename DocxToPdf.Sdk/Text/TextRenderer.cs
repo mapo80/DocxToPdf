@@ -13,6 +13,7 @@ namespace DocxToPdf.Sdk.Text;
 public sealed class TextRenderer
 {
     private readonly FontManager _fontManager = FontManager.Instance;
+    public Action<string>? DiagnosticsLogger { get; set; }
 
     /// <summary>
     /// Shapa il testo completo usando HarfBuzz e restituisce un oggetto riutilizzabile.
@@ -27,7 +28,7 @@ public sealed class TextRenderer
         {
             if (run.Text.Length == 0)
                 continue;
-            shapedRuns.Add(ShapedRun.Create(run.Text, run.Typeface, sizePt, offset, enableKerning));
+            shapedRuns.Add(ShapedRun.Create(run.Text, run.Typeface, sizePt, offset, enableKerning, DiagnosticsLogger));
             offset += run.Text.Length;
         }
         return new ShapedText(text, shapedRuns);
@@ -64,35 +65,6 @@ public sealed class TextRenderer
         var clampedWidth = Math.Min(textWidth, maxWidth);
         var startX = centerX - clampedWidth / 2f;
         shaped.Draw(canvas, startX, y, color);
-        DrawInvisibleText(canvas, text, startX, y, typeface, sizePt);
-    }
-
-    public void DrawInvisibleText(SKCanvas canvas, string text, float x, float y, SKTypeface typeface, float sizePt)
-    {
-        if (string.IsNullOrEmpty(text))
-            return;
-
-        using var paint = new SKPaint
-        {
-            Color = new SKColor(0, 0, 0, 1),
-            IsStroke = false,
-            IsAntialias = false,
-            TextEncoding = SKTextEncoding.Utf16
-        };
-
-        var runs = SplitIntoFontRuns(text, typeface);
-        float cursor = x;
-        foreach (var run in runs)
-        {
-            using var font = new SKFont(run.Typeface, sizePt)
-            {
-                Subpixel = false,
-                Hinting = SKFontHinting.Full,
-                Edging = SKFontEdging.SubpixelAntialias
-            };
-            canvas.DrawText(run.Text, cursor, y, SKTextAlign.Left, font, paint);
-            cursor += font.MeasureText(run.Text);
-        }
     }
 
     public SKFontMetrics GetFontMetrics(SKTypeface typeface, float sizePt)
@@ -103,10 +75,14 @@ public sealed class TextRenderer
 
     public float GetLineSpacing(SKTypeface typeface, float sizePt)
     {
+        var preferredScale = WordLineMetricsProvider.GetLineHeightScale(typeface);
+        if (preferredScale.HasValue)
+            return sizePt * preferredScale.Value;
+
         var metrics = GetFontMetrics(typeface, sizePt);
-        var naturalSpacing = metrics.Descent - metrics.Ascent;
-        var wordDefaultSpacing = sizePt * 1.1667f;
-        return Math.Max(naturalSpacing, wordDefaultSpacing);
+        var naturalSpacing = metrics.Descent - metrics.Ascent + metrics.Leading;
+        var fallbackSpacing = sizePt * 1.1667f;
+        return Math.Max(naturalSpacing, fallbackSpacing);
     }
 
     private List<FontRun> SplitIntoFontRuns(string text, SKTypeface primaryTypeface)
@@ -222,8 +198,18 @@ public sealed class TextRenderer
         private readonly SKPoint[] _positions;
         private readonly uint[] _clusters;
         private readonly float[] _advances;
+        private readonly Action<string>? _diagnostics;
 
-        private ShapedRun(string text, SKTypeface typeface, float sizePt, int startIndex, ushort[] glyphs, SKPoint[] positions, uint[] clusters, float width)
+        private ShapedRun(
+            string text,
+            SKTypeface typeface,
+            float sizePt,
+            int startIndex,
+            ushort[] glyphs,
+            SKPoint[] positions,
+            uint[] clusters,
+            float width,
+            Action<string>? diagnostics)
         {
             Text = text;
             Typeface = typeface;
@@ -241,6 +227,7 @@ public sealed class TextRenderer
                 _advances[i + 1] = boundary;
             }
             BaselineOffset = ComputeBaselineOffset(typeface, sizePt);
+            _diagnostics = diagnostics;
         }
 
         public string Text { get; }
@@ -252,12 +239,18 @@ public sealed class TextRenderer
         public float Width { get; }
         public float BaselineOffset { get; }
 
-        public static ShapedRun Create(string text, SKTypeface typeface, float sizePt, int startIndex, bool enableKerning)
+        public static ShapedRun Create(
+            string text,
+            SKTypeface typeface,
+            float sizePt,
+            int startIndex,
+            bool enableKerning,
+            Action<string>? diagnostics)
         {
             using var font = new SKFont(typeface, sizePt)
             {
-                Subpixel = false,
-                Hinting = SKFontHinting.Full,
+                Subpixel = true,
+                Hinting = SKFontHinting.None,
                 Edging = SKFontEdging.SubpixelAntialias
             };
             using var shaper = new SKShaper(typeface);
@@ -282,7 +275,7 @@ public sealed class TextRenderer
                 width = cursor;
             }
 
-            return new ShapedRun(text, typeface, sizePt, startIndex, glyphs, positions, clusters, width);
+            return new ShapedRun(text, typeface, sizePt, startIndex, glyphs, positions, clusters, width, diagnostics);
         }
 
         public bool Overlaps(int start, int end) => start < EndIndex && end > StartIndex;
@@ -320,28 +313,96 @@ public sealed class TextRenderer
             int localLength,
             float letterSpacingPt = 0f)
         {
-            var glyphCount = _glyphs.Length;
-            if (glyphCount == 0 || localLength <= 0)
+            if (localLength <= 0)
                 return 0f;
 
+            if (RequiresPathFallback(letterSpacingPt))
+            {
+                LogPathFallback(letterSpacingPt, localStart, localLength);
+                return DrawAsPaths(canvas, x, y, color, localStart, localLength, letterSpacingPt);
+            }
+
+            return DrawWithSelectableText(canvas, x, y, color, localStart, localLength);
+        }
+
+        private static float ComputeBaselineOffset(SKTypeface typeface, float sizePt)
+        {
+            if (string.Equals(typeface.FamilyName, "Apple Color Emoji", StringComparison.OrdinalIgnoreCase))
+                return sizePt * 0.35f;
+            return 0f;
+        }
+
+        private static bool RequiresPathFallback(float letterSpacingPt) =>
+            Math.Abs(letterSpacingPt) > 0.0001f;
+
+        private void LogPathFallback(float letterSpacingPt, int localStart, int localLength)
+        {
+            if (_diagnostics == null)
+                return;
+
+            var sample = DescribeSegment(localStart, localLength);
+            _diagnostics.Invoke(
+                $"Selectable text disabled for run '{sample}' ({Text.Length} chars) because letter-spacing {letterSpacingPt:F3} pt requires path rendering.");
+        }
+
+        private string DescribeSegment(int localStart, int localLength)
+        {
+            if (string.IsNullOrEmpty(Text))
+                return string.Empty;
+
+            const int maxPreview = 32;
+            var safeStart = Math.Clamp(localStart, 0, Math.Max(0, Text.Length - 1));
+            var remaining = Text.Length - safeStart;
+            var desiredLength = Math.Min(Math.Max(localLength, 1), remaining);
+            var previewLength = Math.Min(desiredLength, maxPreview);
+            var preview = Text.Substring(safeStart, previewLength);
+            return previewLength < desiredLength ? $"{preview}…" : preview;
+        }
+
+        private float DrawWithSelectableText(
+            SKCanvas canvas,
+            float x,
+            float y,
+            SKColor color,
+            int localStart,
+            int localLength)
+        {
             var localEnd = localStart + localLength;
             var startGlyph = FindGlyphIndex(localStart);
             var endGlyph = FindGlyphIndex(localEnd);
             if (endGlyph <= startGlyph)
                 return 0f;
 
-            using var font = new SKFont(Typeface, SizePt)
-            {
-                Subpixel = false,
-                Hinting = SKFontHinting.Full,
-                Edging = SKFontEdging.SubpixelAntialias
-            };
-            using var paint = new SKPaint
-            {
-                IsAntialias = true,
-                Color = color,
-                Style = SKPaintStyle.Fill
-            };
+            var glyphCount = endGlyph - startGlyph;
+            var spanWidth = Measure(localStart, localLength, 0f);
+            var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : 0f;
+            var originX = x - startAdvance;
+
+            using var paint = CreatePaint(color);
+            using var blob = BuildTextBlob(startGlyph, glyphCount);
+            SkiaInterop.DrawTextBlob(canvas, blob, originX, y + BaselineOffset, paint);
+
+            return spanWidth;
+        }
+
+        private float DrawAsPaths(
+            SKCanvas canvas,
+            float x,
+            float y,
+            SKColor color,
+            int localStart,
+            int localLength,
+            float letterSpacingPt)
+        {
+            var localEnd = localStart + localLength;
+            var startGlyph = FindGlyphIndex(localStart);
+            var endGlyph = FindGlyphIndex(localEnd);
+            if (endGlyph <= startGlyph)
+                return 0f;
+
+            using var font = CreateFont();
+            using var paint = CreatePaint(color);
+
             var count = endGlyph - startGlyph;
             var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : Width;
             float extraOffset = 0f;
@@ -367,12 +428,39 @@ public sealed class TextRenderer
             return Measure(localStart, localLength, letterSpacingPt);
         }
 
-        private static float ComputeBaselineOffset(SKTypeface typeface, float sizePt)
+        private SKFont CreateFont() => new(Typeface, SizePt)
         {
-            if (string.Equals(typeface.FamilyName, "Apple Color Emoji", StringComparison.OrdinalIgnoreCase))
-                return sizePt * 0.35f;
-            return 0f;
+            Subpixel = true,
+            Hinting = SKFontHinting.None,
+            Edging = SKFontEdging.SubpixelAntialias
+        };
+
+        private static SKPaint CreatePaint(SKColor color) => new()
+        {
+            IsAntialias = true,
+            Color = color,
+            Style = SKPaintStyle.Fill
+        };
+
+        private SKTextBlob BuildTextBlob(int startGlyph, int glyphCount)
+        {
+            using var builder = new SKTextBlobBuilder();
+            using var font = CreateFont();
+            var run = builder.AllocatePositionedRun(font, glyphCount);
+#pragma warning disable CS0618
+            var glyphSpan = run.GetGlyphSpan();
+            var posSpan = run.GetPositionSpan();
+#pragma warning restore CS0618
+            for (int i = 0; i < glyphCount; i++)
+            {
+                var glyphIndex = startGlyph + i;
+                glyphSpan[i] = _glyphs[glyphIndex];
+                var pos = _positions[glyphIndex];
+                posSpan[i] = pos;
+            }
+            return builder.Build();
         }
+
     }
 
     #endregion

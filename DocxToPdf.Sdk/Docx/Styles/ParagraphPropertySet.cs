@@ -22,6 +22,7 @@ internal sealed class ParagraphPropertySet
     internal float? HangingIndentPt { get; set; }
     internal RunPropertySet? RunProperties { get; set; }
     internal List<TabStopDefinition>? TabStops { get; set; }
+    internal bool? SuppressSpacingBetweenSameStyle { get; set; }
 
     public ParagraphPropertySet Clone() =>
         new()
@@ -35,7 +36,8 @@ internal sealed class ParagraphPropertySet
             FirstLineIndentPt = FirstLineIndentPt,
             HangingIndentPt = HangingIndentPt,
             RunProperties = RunProperties?.Clone(),
-            TabStops = TabStops != null ? new List<TabStopDefinition>(TabStops) : null
+            TabStops = TabStops != null ? new List<TabStopDefinition>(TabStops) : null,
+            SuppressSpacingBetweenSameStyle = SuppressSpacingBetweenSameStyle
         };
 
     public void Apply(ParagraphPropertySet? overlay)
@@ -70,6 +72,9 @@ internal sealed class ParagraphPropertySet
         {
             TabStops = new List<TabStopDefinition>(overlay.TabStops);
         }
+
+        if (overlay.SuppressSpacingBetweenSameStyle.HasValue)
+            SuppressSpacingBetweenSameStyle = overlay.SuppressSpacingBetweenSameStyle;
     }
 
     public ParagraphFormatting ToParagraphFormatting()
@@ -84,11 +89,20 @@ internal sealed class ParagraphPropertySet
             RightIndentPt = RightIndentPt ?? 0f,
             FirstLineIndentPt = FirstLineIndentPt ?? 0f,
             HangingIndentPt = HangingIndentPt ?? 0f,
-            TabStops = TabStops?.ToArray() ?? Array.Empty<TabStopDefinition>()
+            TabStops = TabStops?.ToArray() ?? Array.Empty<TabStopDefinition>(),
+            SuppressSpacingBetweenSameStyle = SuppressSpacingBetweenSameStyle ?? false
         };
     }
 
     public static ParagraphPropertySet Empty => new();
+
+    public static ParagraphPropertySet CreateWordDefaults() =>
+        new()
+        {
+            SpacingBeforePt = 0f,
+            SpacingAfterPt = UnitConverter.DxaToPoints(160), // Word default: 8 pt after paragraph
+            LineSpacing = ParagraphLineSpacing.Auto(1.15f)
+        };
 
     public static ParagraphPropertySet FromOpenXml(OpenXmlElement? paragraphPropertiesElement)
     {
@@ -131,6 +145,11 @@ internal sealed class ParagraphPropertySet
                 set.FirstLineIndentPt = UnitConverter.DxaToPoints(firstDxa);
             if (indent.Hanging?.Value is string hanging && int.TryParse(hanging, out var hangingDxa))
                 set.HangingIndentPt = UnitConverter.DxaToPoints(hangingDxa);
+        }
+
+        if (paragraphPropertiesElement.GetFirstChild<ContextualSpacing>() != null)
+        {
+            set.SuppressSpacingBetweenSameStyle = true;
         }
 
         if (paragraphPropertiesElement.GetFirstChild<Justification>() is { } jc)

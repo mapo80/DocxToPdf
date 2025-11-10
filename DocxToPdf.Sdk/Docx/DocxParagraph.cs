@@ -20,6 +20,7 @@ public sealed record DocxParagraph
     public DocxListMarker? ListMarker { get; init; }
     public float DefaultTabStopPt { get; init; }
     public char DecimalSymbol { get; init; } = '.';
+    public string StyleId { get; init; } = string.Empty;
 
     internal static DocxParagraph FromParagraph(
         Paragraph paragraph,
@@ -50,7 +51,8 @@ public sealed record DocxParagraph
             InlineElements = inlineElements,
             ListMarker = numberingResult?.Marker,
             DefaultTabStopPt = defaultTabStopPt,
-            DecimalSymbol = decimalSymbol
+            DecimalSymbol = decimalSymbol,
+            StyleId = context.ParagraphStyleId ?? string.Empty
         };
     }
 
@@ -88,11 +90,13 @@ public sealed record DocxParagraph
 
     private static bool TryGetPositionInPoints(PositionalTab positionalTab, out float positionPt)
     {
+        const float positionalTabScale = 1f / 5f; // Word stores w:ptab @pos in units 5× finer than DXA
         foreach (var attribute in positionalTab.GetAttributes())
         {
             if (attribute.LocalName == "pos" && int.TryParse(attribute.Value, out var dxa))
             {
-                positionPt = UnitConverter.DxaToPoints(dxa);
+                var rawPoints = UnitConverter.DxaToPoints(dxa);
+                positionPt = rawPoints * positionalTabScale;
                 return true;
             }
         }
