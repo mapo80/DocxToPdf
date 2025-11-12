@@ -22,6 +22,12 @@ class Program
             return;
         }
 
+        if (args.Length >= 1 && string.Equals(args[0], "render-pdfsharp", StringComparison.OrdinalIgnoreCase))
+        {
+            HandleRenderPdfSharpCommand(args);
+            return;
+        }
+
         if (args.Length >= 1 && args[0].EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
         {
             // Modalità conversione DOCX → PDF
@@ -90,6 +96,144 @@ class Program
             DiagnosticsLogger = enableDiagnostics ? message => Console.WriteLine(message) : null
         };
         ConvertDocxToPdf(inputPath, outputPath, converter);
+    }
+
+    static void HandleRenderPdfSharpCommand(string[] args)
+    {
+        if (args.Length < 2)
+        {
+            Console.WriteLine("Uso: DocxToPdf.Demo render-pdfsharp <input.docx> [-o <output.pdf>]");
+            Environment.Exit(1);
+        }
+
+        var inputPath = args[1];
+        string? outputPath = null;
+        for (int i = 2; i < args.Length; i++)
+        {
+            var current = args[i];
+            if (string.Equals(current, "-o", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(current, "--output", StringComparison.OrdinalIgnoreCase))
+            {
+                if (i + 1 >= args.Length)
+                {
+                    Console.WriteLine("Manca il percorso dopo -o/--output.");
+                    Environment.Exit(1);
+                }
+                outputPath = args[++i];
+            }
+        }
+
+        outputPath ??= Path.ChangeExtension(inputPath, ".pdf");
+        ConvertWithPdfSharp(inputPath, outputPath);
+    }
+
+    static void ConvertWithPdfSharp(string docxPath, string pdfPath)
+    {
+        Console.WriteLine($"Conversione DOCX → PDF (PdfSharp)\n  Input:  {docxPath}\n  Output: {pdfPath}\n");
+
+        Directory.CreateDirectory(Path.GetDirectoryName(pdfPath)!);
+
+        // PdfSharp (full) usa GDI+/WPF e i font di sistema; per il PoC non registriamo resolver custom.
+
+        using var doc = DocxToPdf.Sdk.Docx.DocxDocument.Open(docxPath);
+        var section = doc.GetSection();
+
+        var pdf = new PdfSharp.Pdf.PdfDocument();
+        var page = pdf.AddPage();
+        page.Width = section.PageSize.WidthPt;
+        page.Height = section.PageSize.HeightPt;
+
+        using var gfx = PdfSharp.Drawing.XGraphics.FromPdfPage(page);
+        var margins = section.Margins;
+        float pageWidth = (float)page.Width.Point;
+        float pageHeight = (float)page.Height.Point;
+        var contentWidth = margins.GetContentWidth(pageWidth);
+        var contentHeight = margins.GetContentHeight(pageHeight);
+
+        var layout = new DocxToPdf.Sdk.Layout.TextLayoutEngine();
+        float currentY = margins.Top;
+
+        foreach (var paragraph in doc.GetParagraphs())
+        {
+            var lines = layout.LayoutParagraph(paragraph, contentWidth);
+
+            // Spazio prima
+            currentY += paragraph.ParagraphFormatting.SpacingBeforePt;
+
+            for (int li = 0; li < lines.Count; li++)
+            {
+                var line = lines[li];
+                var defaultSpacing = line.GetLineSpacing();
+                var resolvedLineSpacing = paragraph.ParagraphFormatting.ResolveLineSpacing(defaultSpacing);
+
+                // Pagina nuova se necessario
+                // Per PoC semplice-spacing restiamo su una pagina A4.
+                // if (currentY + resolvedLineSpacing > pageHeight - margins.Bottom) { ... }
+
+                float indent = line.IsFirstLine
+                    ? paragraph.ParagraphFormatting.GetFirstLineOffsetPt()
+                    : paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt();
+                float currentX = (float)margins.Left + indent;
+
+                var availableWidth = line.AvailableWidthPt;
+                var extraSpace = Math.Max(0f, availableWidth - line.WidthPt);
+                switch (paragraph.ParagraphFormatting.Alignment)
+                {
+                    case DocxToPdf.Sdk.Docx.Formatting.ParagraphAlignment.Center:
+                        currentX += extraSpace / 2f; break;
+                    case DocxToPdf.Sdk.Docx.Formatting.ParagraphAlignment.Right:
+                        currentX += extraSpace; break;
+                }
+
+                // Baseline stimato come in motore originale
+                var baseline = currentY - line.MaxAscent;
+
+                // Disegna i run (approccio v0: string drawing)
+                foreach (var run in line.Runs)
+                {
+                    if (!run.IsDrawable)
+                    {
+                        currentX += run.AdvanceWidthOverride;
+                        continue;
+                    }
+
+                    var style = PdfSharp.Drawing.XFontStyle.Regular;
+                    if (run.Formatting.Bold && run.Formatting.Italic) style = PdfSharp.Drawing.XFontStyle.BoldItalic;
+                    else if (run.Formatting.Bold) style = PdfSharp.Drawing.XFontStyle.Bold;
+                    else if (run.Formatting.Italic) style = PdfSharp.Drawing.XFontStyle.Italic;
+
+                    string family = "Arial"; // PoC: forza Arial
+                    var font = new PdfSharp.Drawing.XFont(family, run.FontSizePt, style);
+                    var brush = new PdfSharp.Drawing.XSolidBrush(PdfSharp.Drawing.XColor.FromArgb(run.Formatting.Color.R, run.Formatting.Color.G, run.Formatting.Color.B));
+
+                    // DrawString usa baseline y
+                    gfx.DrawString(run.Text, font, brush, new PdfSharp.Drawing.XPoint(currentX, baseline));
+
+                    // Avanza X usando una misura approssimata
+                    var size = gfx.MeasureString(run.Text, font);
+                    currentX += (float)size.Width;
+                }
+
+                currentY += resolvedLineSpacing;
+            }
+
+            // Spazio dopo
+            currentY += paragraph.ParagraphFormatting.SpacingAfterPt;
+        }
+
+        using var fs = File.Create(pdfPath);
+        pdf.Save(fs);
+        Console.WriteLine("\n✓ PdfSharp render completato!\n");
+    }
+
+    static string ResolveFamilyForPdfSharp(string family)
+    {
+        if (string.IsNullOrWhiteSpace(family)) return "Arial";
+        var f = family;
+        if (string.Equals(f, "Cambria", StringComparison.OrdinalIgnoreCase)) return "Times New Roman"; // evita TTC
+        if (string.Equals(f, "Cambria Math", StringComparison.OrdinalIgnoreCase)) return "Times New Roman";
+        if (string.Equals(f, "Calibri Light", StringComparison.OrdinalIgnoreCase)) return "Calibri";
+        return f;
     }
 
     static void ConvertDocxToPdf(string docxPath, string pdfPath) =>
