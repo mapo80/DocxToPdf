@@ -1,3 +1,4 @@
+using HarfBuzzSharp;
 using SkiaSharp;
 using SkiaSharp.HarfBuzz;
 using System;
@@ -18,7 +19,12 @@ public sealed class TextRenderer
     /// <summary>
     /// Shapa il testo completo usando HarfBuzz e restituisce un oggetto riutilizzabile.
     /// </summary>
-    public ShapedText Shape(string text, SKTypeface primaryTypeface, float sizePt, bool enableKerning = false)
+    public ShapedText Shape(
+        string text,
+        SKTypeface primaryTypeface,
+        float sizePt,
+        bool enableKerning = false,
+        bool enableStandardLigatures = false)
     {
         text ??= string.Empty;
         var runs = SplitIntoFontRuns(text, primaryTypeface);
@@ -28,14 +34,26 @@ public sealed class TextRenderer
         {
             if (run.Text.Length == 0)
                 continue;
-            shapedRuns.Add(ShapedRun.Create(run.Text, run.Typeface, sizePt, offset, enableKerning, DiagnosticsLogger));
+            shapedRuns.Add(ShapedRun.Create(
+                run.Text,
+                run.Typeface,
+                sizePt,
+                offset,
+                enableKerning,
+                enableStandardLigatures,
+                DiagnosticsLogger));
             offset += run.Text.Length;
         }
         return new ShapedText(text, shapedRuns);
     }
 
-    public float MeasureTextWithFallback(string text, SKTypeface primaryTypeface, float sizePt, bool enableKerning = false) =>
-        Shape(text, primaryTypeface, sizePt, enableKerning).Width;
+    public float MeasureTextWithFallback(
+        string text,
+        SKTypeface primaryTypeface,
+        float sizePt,
+        bool enableKerning = false,
+        bool enableStandardLigatures = false) =>
+        Shape(text, primaryTypeface, sizePt, enableKerning, enableStandardLigatures).Width;
 
     public float DrawShapedTextWithFallback(
         SKCanvas canvas,
@@ -46,9 +64,10 @@ public sealed class TextRenderer
         float sizePt,
         SKColor color,
         float letterSpacingPt = 0f,
-        bool enableKerning = false)
+        bool enableKerning = false,
+        bool enableStandardLigatures = false)
     {
-        var shaped = Shape(text, primaryTypeface, sizePt, enableKerning);
+        var shaped = Shape(text, primaryTypeface, sizePt, enableKerning, enableStandardLigatures);
         return shaped.DrawRange(canvas, x, y, color, 0, text.Length, letterSpacingPt);
     }
 
@@ -194,6 +213,14 @@ public sealed class TextRenderer
 
     public sealed class ShapedRun
     {
+        private static readonly Feature[] DisabledLigatures =
+        {
+            new(Tag.Parse("liga"), 0, 0, uint.MaxValue),
+            new(Tag.Parse("clig"), 0, 0, uint.MaxValue),
+            new(Tag.Parse("hlig"), 0, 0, uint.MaxValue),
+            new(Tag.Parse("dlig"), 0, 0, uint.MaxValue)
+        };
+
         private readonly ushort[] _glyphs;
         private readonly SKPoint[] _positions;
         private readonly uint[] _clusters;
@@ -245,6 +272,7 @@ public sealed class TextRenderer
             float sizePt,
             int startIndex,
             bool enableKerning,
+            bool enableStandardLigatures,
             Action<string>? diagnostics)
         {
             using var font = new SKFont(typeface, sizePt)
@@ -253,7 +281,7 @@ public sealed class TextRenderer
                 Hinting = SKFontHinting.None,
                 Edging = SKFontEdging.SubpixelAntialias
             };
-            using var shaper = new SKShaper(typeface);
+            using var shaper = new HarfBuzzTextShaper(typeface, enableStandardLigatures ? Array.Empty<HarfBuzzSharp.Feature>() : DisabledLigatures);
             var result = shaper.Shape(text, font);
             var glyphs = Array.ConvertAll(result.Codepoints, c => (ushort)c);
             var positions = result.Points;
@@ -316,13 +344,7 @@ public sealed class TextRenderer
             if (localLength <= 0)
                 return 0f;
 
-            if (RequiresPathFallback(letterSpacingPt))
-            {
-                LogPathFallback(letterSpacingPt, localStart, localLength);
-                return DrawAsPaths(canvas, x, y, color, localStart, localLength, letterSpacingPt);
-            }
-
-            return DrawWithSelectableText(canvas, x, y, color, localStart, localLength);
+            return DrawWithSelectableText(canvas, x, y, color, localStart, localLength, letterSpacingPt);
         }
 
         private static float ComputeBaselineOffset(SKTypeface typeface, float sizePt)
@@ -332,60 +354,7 @@ public sealed class TextRenderer
             return 0f;
         }
 
-        private static bool RequiresPathFallback(float letterSpacingPt) =>
-            Math.Abs(letterSpacingPt) > 0.0001f;
-
-        private void LogPathFallback(float letterSpacingPt, int localStart, int localLength)
-        {
-            if (_diagnostics == null)
-                return;
-
-            var sample = DescribeSegment(localStart, localLength);
-            _diagnostics.Invoke(
-                $"Selectable text disabled for run '{sample}' ({Text.Length} chars) because letter-spacing {letterSpacingPt:F3} pt requires path rendering.");
-        }
-
-        private string DescribeSegment(int localStart, int localLength)
-        {
-            if (string.IsNullOrEmpty(Text))
-                return string.Empty;
-
-            const int maxPreview = 32;
-            var safeStart = Math.Clamp(localStart, 0, Math.Max(0, Text.Length - 1));
-            var remaining = Text.Length - safeStart;
-            var desiredLength = Math.Min(Math.Max(localLength, 1), remaining);
-            var previewLength = Math.Min(desiredLength, maxPreview);
-            var preview = Text.Substring(safeStart, previewLength);
-            return previewLength < desiredLength ? $"{preview}…" : preview;
-        }
-
         private float DrawWithSelectableText(
-            SKCanvas canvas,
-            float x,
-            float y,
-            SKColor color,
-            int localStart,
-            int localLength)
-        {
-            var localEnd = localStart + localLength;
-            var startGlyph = FindGlyphIndex(localStart);
-            var endGlyph = FindGlyphIndex(localEnd);
-            if (endGlyph <= startGlyph)
-                return 0f;
-
-            var glyphCount = endGlyph - startGlyph;
-            var spanWidth = Measure(localStart, localLength, 0f);
-            var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : 0f;
-            var originX = x - startAdvance;
-
-            using var paint = CreatePaint(color);
-            using var blob = BuildTextBlob(startGlyph, glyphCount);
-            SkiaInterop.DrawTextBlob(canvas, blob, originX, y + BaselineOffset, paint);
-
-            return spanWidth;
-        }
-
-        private float DrawAsPaths(
             SKCanvas canvas,
             float x,
             float y,
@@ -400,32 +369,16 @@ public sealed class TextRenderer
             if (endGlyph <= startGlyph)
                 return 0f;
 
-            using var font = CreateFont();
+            var glyphCount = endGlyph - startGlyph;
+            var spanWidth = Measure(localStart, localLength, letterSpacingPt);
+            var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : 0f;
+            var originX = x - startAdvance;
+
             using var paint = CreatePaint(color);
+            using var blob = BuildTextBlob(startGlyph, glyphCount, letterSpacingPt);
+            SkiaInterop.DrawTextBlob(canvas, blob, originX, y + BaselineOffset, paint);
 
-            var count = endGlyph - startGlyph;
-            var startAdvance = startGlyph < _advances.Length ? _advances[startGlyph] : Width;
-            float extraOffset = 0f;
-            for (int i = 0; i < count; i++)
-            {
-                var glyphIndex = startGlyph + i;
-                var glyphId = _glyphs[glyphIndex];
-                using var path = font.GetGlyphPath(glyphId);
-                if (path == null)
-                    continue;
-
-                var pos = _positions[glyphIndex];
-                var tx = pos.X - startAdvance + x + extraOffset;
-                var ty = y + pos.Y + BaselineOffset;
-                var matrix = SKMatrix.CreateTranslation(tx, ty);
-                path.Transform(matrix);
-                canvas.DrawPath(path, paint);
-
-                if (i < count - 1 && Math.Abs(letterSpacingPt) > 0.0001f)
-                    extraOffset += letterSpacingPt;
-            }
-
-            return Measure(localStart, localLength, letterSpacingPt);
+            return spanWidth;
         }
 
         private SKFont CreateFont() => new(Typeface, SizePt)
@@ -442,7 +395,7 @@ public sealed class TextRenderer
             Style = SKPaintStyle.Fill
         };
 
-        private SKTextBlob BuildTextBlob(int startGlyph, int glyphCount)
+        private SKTextBlob BuildTextBlob(int startGlyph, int glyphCount, float letterSpacingPt)
         {
             using var builder = new SKTextBlobBuilder();
             using var font = CreateFont();
@@ -456,7 +409,10 @@ public sealed class TextRenderer
                 var glyphIndex = startGlyph + i;
                 glyphSpan[i] = _glyphs[glyphIndex];
                 var pos = _positions[glyphIndex];
-                posSpan[i] = pos;
+                var extra = 0f;
+                if (i > 0 && Math.Abs(letterSpacingPt) > 0.0001f)
+                    extra = letterSpacingPt * i;
+                posSpan[i] = new SKPoint(pos.X + extra, pos.Y);
             }
             return builder.Build();
         }

@@ -27,7 +27,8 @@ public sealed record DocxParagraph
         DocxStyleResolver styleResolver,
         NumberingResolver numberingResolver,
         float defaultTabStopPt,
-        char decimalSymbol)
+        char decimalSymbol,
+        bool isInTable = false)
     {
         var context = styleResolver.CreateParagraphContext(paragraph);
         var numberingResult = numberingResolver.Resolve(paragraph, context.ParagraphProperties, styleResolver);
@@ -44,9 +45,23 @@ public sealed record DocxParagraph
             inlineElements.AddRange(ExtractInlineElements(run, runFormatting));
         }
 
+        // Marker di lista gestito a parte nel renderer; non va inserito nei run di testo.
+
+        var paragraphFormatting = context.ParagraphFormatting;
+        if (isInTable)
+        {
+            var lineSpacing = ParagraphLineSpacing.Auto(1f);
+            paragraphFormatting = paragraphFormatting with
+            {
+                SpacingBeforePt = 0f,
+                SpacingAfterPt = 0f,
+                LineSpacing = lineSpacing
+            };
+        }
+
         return new DocxParagraph
         {
-            ParagraphFormatting = context.ParagraphFormatting,
+            ParagraphFormatting = paragraphFormatting,
             Runs = runs,
             InlineElements = inlineElements,
             ListMarker = numberingResult?.Marker,
@@ -90,13 +105,12 @@ public sealed record DocxParagraph
 
     private static bool TryGetPositionInPoints(PositionalTab positionalTab, out float positionPt)
     {
-        const float positionalTabScale = 1f / 5f; // Word stores w:ptab @pos in units 5× finer than DXA
+        const float emuToPoint = 1f / 12700f; // 1 EMU = 1/12700 pt
         foreach (var attribute in positionalTab.GetAttributes())
         {
-            if (attribute.LocalName == "pos" && int.TryParse(attribute.Value, out var dxa))
+            if (attribute.LocalName == "pos" && long.TryParse(attribute.Value, out var emu))
             {
-                var rawPoints = UnitConverter.DxaToPoints(dxa);
-                positionPt = rawPoints * positionalTabScale;
+                positionPt = emu * emuToPoint;
                 return true;
             }
         }

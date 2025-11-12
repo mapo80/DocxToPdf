@@ -18,6 +18,7 @@ public sealed class DocxDocument : IDisposable
     private readonly NumberingResolver _numberingResolver;
     private readonly float _defaultTabStopPt;
     private readonly DocxDocumentSettings _settings;
+    private readonly IReadOnlyList<DocxBlock> _blocks;
     private bool _disposed;
 
     private DocxDocument(
@@ -32,6 +33,7 @@ public sealed class DocxDocument : IDisposable
         _numberingResolver = numberingResolver;
         _defaultTabStopPt = defaultTabStopPt;
         _settings = settings;
+        _blocks = BuildBlocks();
     }
 
     /// <summary>
@@ -85,15 +87,14 @@ public sealed class DocxDocument : IDisposable
     /// </summary>
     public IEnumerable<DocxParagraph> GetParagraphs()
     {
-        var body = _document.MainDocumentPart?.Document?.Body;
-        if (body == null)
-            yield break;
-
-        foreach (var para in body.Elements<Paragraph>())
+        foreach (var block in _blocks)
         {
-            yield return DocxParagraph.FromParagraph(para, _styleResolver, _numberingResolver, _defaultTabStopPt, _settings.EffectiveDecimalSymbol);
+            if (block is DocxParagraphBlock paragraphBlock)
+                yield return paragraphBlock.Paragraph;
         }
     }
+
+    internal IEnumerable<DocxBlock> GetBlocks() => _blocks;
 
     private static float GetDefaultTabStopPt(WordprocessingDocument document)
     {
@@ -109,6 +110,41 @@ public sealed class DocxDocument : IDisposable
 
         _document?.Dispose();
         _disposed = true;
+    }
+
+    private IReadOnlyList<DocxBlock> BuildBlocks()
+    {
+        var list = new List<DocxBlock>();
+        var body = _document.MainDocumentPart?.Document?.Body;
+        if (body == null)
+            return list;
+
+        foreach (var element in body.ChildElements)
+        {
+            switch (element)
+            {
+                case Paragraph paragraph:
+                    list.Add(new DocxParagraphBlock(DocxParagraph.FromParagraph(
+                        paragraph,
+                        _styleResolver,
+                        _numberingResolver,
+                        _defaultTabStopPt,
+                        _settings.EffectiveDecimalSymbol)));
+                    break;
+                case Table table:
+                    var docxTable = DocxTable.FromOpenXmlTable(
+                        table,
+                        _styleResolver,
+                        _numberingResolver,
+                        _defaultTabStopPt,
+                        _settings.EffectiveDecimalSymbol);
+                    if (docxTable != null)
+                        list.Add(new DocxTableBlock(docxTable));
+                    break;
+            }
+        }
+
+        return list;
     }
 }
 

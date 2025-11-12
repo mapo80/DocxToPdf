@@ -1,0 +1,202 @@
+[
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "text",
+    "left_width": 19.115997,
+    "right_width": 71.819992,
+    "base_gap": 5.592011000000014,
+    "cand_gap": 5.3167419999999765,
+    "delta": -0.27526900000003707
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "for",
+    "left_width": 14.015991,
+    "right_width": 36.527954,
+    "base_gap": 5.484009000000015,
+    "cand_gap": 5.232728000000009,
+    "delta": -0.25128100000000586
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "entire",
+    "left_width": 29.808014,
+    "right_width": 18.81601,
+    "base_gap": 5.664000999999985,
+    "cand_gap": 5.449219000000028,
+    "delta": -0.21478199999995695
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "expansion",
+    "left_width": 53.087982,
+    "right_width": 34.583954,
+    "base_gap": 5.627991000000009,
+    "cand_gap": 5.449311000000023,
+    "delta": -0.17867999999998574
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "final",
+    "left_width": 22.608002,
+    "right_width": 21.924011,
+    "base_gap": 15.120024999999998,
+    "cand_gap": 14.954376000000025,
+    "delta": -0.1656489999999735
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "the",
+    "left_width": 16.812012,
+    "right_width": 29.808014,
+    "base_gap": 5.412016999999992,
+    "cand_gap": 5.279814999999985,
+    "delta": -0.1322020000000066
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "line",
+    "left_width": 18.81601,
+    "right_width": 14.015991,
+    "base_gap": 5.412017999999989,
+    "cand_gap": 5.306914999999947,
+    "delta": -0.10510300000004236
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "columns",
+    "left_width": 45.311951,
+    "right_width": 48.947998,
+    "base_gap": 14.903990999999962,
+    "cand_gap": 14.993529999999964,
+    "delta": 0.08953900000000203
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "alignment",
+    "left_width": 51.611984,
+    "right_width": 30.56398,
+    "base_gap": 15.096008999999981,
+    "cand_gap": 15.007065000000011,
+    "delta": -0.08894399999996949
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "even",
+    "left_width": 24.37204,
+    "right_width": 13.115997,
+    "base_gap": 14.880004000000042,
+    "cand_gap": 14.95678700000002,
+    "delta": 0.07678299999997762
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "on",
+    "left_width": 13.115997,
+    "right_width": 16.812012,
+    "base_gap": 14.880006000000037,
+    "cand_gap": 14.943175999999994,
+    "delta": 0.06316999999995687
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "demonstrates",
+    "left_width": 71.819992,
+    "right_width": 40.536011,
+    "base_gap": 5.400009000000011,
+    "cand_gap": 5.461044000000015,
+    "delta": 0.06103500000000395
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "across",
+    "left_width": 34.583954,
+    "right_width": 16.812012,
+    "base_gap": 5.399993999999992,
+    "cand_gap": 5.4610289999999395,
+    "delta": 0.061034999999947104
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "Justified",
+    "left_width": 42.696007,
+    "right_width": 19.115997,
+    "base_gap": 5.507994999999994,
+    "cand_gap": 5.455177000000006,
+    "delta": -0.05281799999998782
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "keeps",
+    "left_width": 30.56398,
+    "right_width": 45.311951,
+    "base_gap": 14.927994000000012,
+    "cand_gap": 14.97583000000003,
+    "delta": 0.047836000000017975
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "the",
+    "left_width": 16.812012,
+    "right_width": 22.608002,
+    "base_gap": 14.916015000000016,
+    "cand_gap": 14.959198000000015,
+    "delta": 0.04318299999999908
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "spacing",
+    "left_width": 40.536011,
+    "right_width": 53.087982,
+    "base_gap": 5.42401099999995,
+    "cand_gap": 5.455169000000012,
+    "delta": 0.031158000000061747
+  },
+  {
+    "line_index": 6,
+    "alignment": "both",
+    "word": "classic",
+    "left_width": 36.527954,
+    "right_width": 29.31601,
+    "base_gap": 5.436005000000023,
+    "cand_gap": 5.461028999999996,
+    "delta": 0.025023999999973512
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "balanced",
+    "left_width": 48.947998,
+    "right_width": 24.37204,
+    "base_gap": 15.011994000000016,
+    "cand_gap": 14.991424999999992,
+    "delta": -0.020569000000023152
+  },
+  {
+    "line_index": 8,
+    "alignment": "distribute",
+    "word": "Distributed",
+    "left_width": 57.708,
+    "right_width": 51.611984,
+    "base_gap": 15.012008000000009,
+    "cand_gap": 15.00254799999999,
+    "delta": -0.009460000000018454
+  }
+]

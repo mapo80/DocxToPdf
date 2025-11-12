@@ -1,0 +1,254 @@
+{
+  "tabs-alignment": [
+    {
+      "paragraph": 1,
+      "alignment": "left",
+      "text": "Tabs &amp; Alignment Sample"
+    },
+    {
+      "paragraph": 2,
+      "alignment": "left",
+      "text": "Left Center Right"
+    },
+    {
+      "paragraph": 3,
+      "alignment": "left",
+      "text": "Budget 123.45 67,89"
+    },
+    {
+      "paragraph": 4,
+      "alignment": "left",
+      "text": "Agenda 09:00 Kickoff"
+    },
+    {
+      "paragraph": 5,
+      "alignment": "left",
+      "text": "Default Tabs Spacing"
+    },
+    {
+      "paragraph": 6,
+      "alignment": "both",
+      "text": "Justified text demonstrates spacing expansion across the entire line for classic prose layouts."
+    },
+    {
+      "paragraph": 7,
+      "alignment": "distribute",
+      "text": "Distributed alignment keeps columns balanced even on the final line."
+    },
+    {
+      "paragraph": 8,
+      "alignment": "left",
+      "text": "Positional tab ✓"
+    }
+  ],
+  "styles-theme": [
+    {
+      "paragraph": 1,
+      "alignment": "left",
+      "text": "Brand Kickoff Plan"
+    },
+    {
+      "paragraph": 2,
+      "alignment": "left",
+      "text": "Theme Fonts &amp; Palette"
+    },
+    {
+      "paragraph": 3,
+      "alignment": "left",
+      "text": "Emphasis style overlays run properties."
+    },
+    {
+      "paragraph": 4,
+      "alignment": "left",
+      "text": "with direct bold override."
+    },
+    {
+      "paragraph": 5,
+      "alignment": "center",
+      "text": "Centered status block"
+    },
+    {
+      "paragraph": 6,
+      "alignment": "left",
+      "text": "First-line indent paragraph to validate spacing logic."
+    },
+    {
+      "paragraph": 7,
+      "alignment": "left",
+      "text": "Hanging indent sample that should wrap and push subsequent lines to the right for a clean list-like appearance."
+    },
+    {
+      "paragraph": 8,
+      "alignment": "left",
+      "text": "Hyperlink color mapping"
+    }
+  ],
+  "styles-theme-alt": [
+    {
+      "paragraph": 1,
+      "alignment": "left",
+      "text": "Brand Kickoff Plan"
+    },
+    {
+      "paragraph": 2,
+      "alignment": "left",
+      "text": "Theme Fonts &amp; Palette"
+    },
+    {
+      "paragraph": 3,
+      "alignment": "left",
+      "text": "Emphasis style overlays run properties."
+    },
+    {
+      "paragraph": 4,
+      "alignment": "left",
+      "text": "with direct bold override."
+    },
+    {
+      "paragraph": 5,
+      "alignment": "center",
+      "text": "Centered status block"
+    },
+    {
+      "paragraph": 6,
+      "alignment": "left",
+      "text": "First-line indent paragraph to validate spacing logic."
+    },
+    {
+      "paragraph": 7,
+      "alignment": "left",
+      "text": "Hanging indent sample that should wrap and push subsequent lines to the right for a clean list-like appearance."
+    },
+    {
+      "paragraph": 8,
+      "alignment": "left",
+      "text": "Hyperlink color mapping"
+    }
+  ],
+  "simple-spacing": [
+    {
+      "paragraph": 1,
+      "alignment": "left",
+      "text": "Line 1 - Lorem ipsum"
+    },
+    {
+      "paragraph": 2,
+      "alignment": "left",
+      "text": "Line 2 - Lorem ipsum"
+    }
+  ],
+  "numbering-multilevel": [
+    {
+      "paragraph": 1,
+      "alignment": "left",
+      "text": "Phase 1"
+    },
+    {
+      "paragraph": 2,
+      "alignment": "left",
+      "text": "Research"
+    },
+    {
+      "paragraph": 3,
+      "alignment": "left",
+      "text": "Assets"
+    },
+    {
+      "paragraph": 4,
+      "alignment": "left",
+      "text": "Phase 2"
+    },
+    {
+      "paragraph": 5,
+      "alignment": "left",
+      "text": ""
+    },
+    {
+      "paragraph": 6,
+      "alignment": "left",
+      "text": "Restart"
+    },
+    {
+      "paragraph": 7,
+      "alignment": "left",
+      "text": ""
+    },
+    {
+      "paragraph": 8,
+      "alignment": "left",
+      "text": "Continue"
+    }
+  ],
+  "layout-stress": [
+    {
+      "paragraph": 1,
+      "alignment": "center",
+      "text": "Advanced Layout Stress Test"
+    },
+    {
+      "paragraph": 2,
+      "alignment": "center",
+      "text": "Mixed fonts, spacing, lists, tabs, and tables"
+    },
+    {
+      "paragraph": 3,
+      "alignment": "left",
+      "text": "Aptos body text with default spacing 1.15x. Includes italic, bold, and inline color. Bold segment italic portion"
+    },
+    {
+      "paragraph": 4,
+      "alignment": "left",
+      "text": "Times New Roman paragraph using 1.5 line spacing. Contains numbers 12345 and symbols ™ © ®. Bold segment italic portion"
+    },
+    {
+      "paragraph": 5,
+      "alignment": "left",
+      "text": "Calibri block at single spacing to verify baseline alignment across fonts. Bold segment italic portion"
+    },
+    {
+      "paragraph": 6,
+      "alignment": "left",
+      "text": "Bullet item in Aptos"
+    },
+    {
+      "paragraph": 7,
+      "alignment": "left",
+      "text": "Second bullet in Times"
+    },
+    {
+      "paragraph": 8,
+      "alignment": "left",
+      "text": "Numbered item one with 1.25 spacing."
+    },
+    {
+      "paragraph": 9,
+      "alignment": "left",
+      "text": "Numbered item two with embedded tabaligned content."
+    },
+    {
+      "paragraph": 10,
+      "alignment": "left",
+      "text": "Left labelCenter segmentRight tail"
+    },
+    {
+      "paragraph": 11,
+      "alignment": "left",
+      "text": "Paragraph with 18pt spacing before and after to test block separation."
+    },
+    {
+      "paragraph": 12,
+      "alignment": "both",
+      "text": "Justified paragraph spanning the entire width to stress extra space distribution across many words and punctuation marks."
+    },
+    {
+      "paragraph": 13,
+      "alignment": "left",
+      "text": "Positional tab demo ✓ (tick should align to the absolute tab)"
+    },
+    {
+      "paragraph": 14,
+      "alignment": "left",
+      "text": "--- End of stress sample additions ---"
+    }
+  ]
+}

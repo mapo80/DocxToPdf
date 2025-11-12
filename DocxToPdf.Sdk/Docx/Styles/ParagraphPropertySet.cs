@@ -23,6 +23,8 @@ internal sealed class ParagraphPropertySet
     internal RunPropertySet? RunProperties { get; set; }
     internal List<TabStopDefinition>? TabStops { get; set; }
     internal bool? SuppressSpacingBetweenSameStyle { get; set; }
+    internal int? NumberingId { get; set; }
+    internal int? NumberingLevel { get; set; }
 
     public ParagraphPropertySet Clone() =>
         new()
@@ -37,7 +39,9 @@ internal sealed class ParagraphPropertySet
             HangingIndentPt = HangingIndentPt,
             RunProperties = RunProperties?.Clone(),
             TabStops = TabStops != null ? new List<TabStopDefinition>(TabStops) : null,
-            SuppressSpacingBetweenSameStyle = SuppressSpacingBetweenSameStyle
+            SuppressSpacingBetweenSameStyle = SuppressSpacingBetweenSameStyle,
+            NumberingId = NumberingId,
+            NumberingLevel = NumberingLevel
         };
 
     public void Apply(ParagraphPropertySet? overlay)
@@ -75,6 +79,11 @@ internal sealed class ParagraphPropertySet
 
         if (overlay.SuppressSpacingBetweenSameStyle.HasValue)
             SuppressSpacingBetweenSameStyle = overlay.SuppressSpacingBetweenSameStyle;
+
+        if (overlay.NumberingId.HasValue)
+            NumberingId = overlay.NumberingId;
+        if (overlay.NumberingLevel.HasValue)
+            NumberingLevel = overlay.NumberingLevel;
     }
 
     public ParagraphFormatting ToParagraphFormatting()
@@ -180,6 +189,16 @@ internal sealed class ParagraphPropertySet
         if (paragraphPropertiesElement.GetFirstChild<Tabs>() is { } tabs)
         {
             set.TabStops = ParseTabStops(tabs);
+        }
+
+        if (paragraphPropertiesElement.GetFirstChild<NumberingProperties>() is { } numbering)
+        {
+            var numId = numbering.NumberingId?.Val?.Value;
+            var level = numbering.NumberingLevelReference?.Val?.Value;
+            if (numId.HasValue)
+                set.NumberingId = (int)numId.Value;
+            if (level.HasValue)
+                set.NumberingLevel = (int)level.Value;
         }
 
         return set;

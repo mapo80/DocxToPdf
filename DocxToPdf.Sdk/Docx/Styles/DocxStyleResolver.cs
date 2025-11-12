@@ -17,6 +17,9 @@ internal sealed class DocxStyleResolver
     private readonly string? _defaultParagraphStyleId;
     private readonly string? _defaultCharacterStyleId;
 
+    private const string WordDefaultFontFamily = "Aptos";
+    private const double WordDefaultFontSizePt = 12d;
+
     public string DefaultFontFamily { get; }
     public double DefaultFontSizePt { get; }
     public RgbColor DefaultTextColor { get; }
@@ -41,7 +44,7 @@ internal sealed class DocxStyleResolver
         _defaultCharacterStyleId = defaultCharacterStyleId;
 
         DefaultFontFamily = DetermineDefaultFontFamily();
-        DefaultFontSizePt = runDefaults.FontSizePt ?? 11d;
+        DefaultFontSizePt = runDefaults.FontSizePt ?? WordDefaultFontSizePt;
         DefaultTextColor = ResolveThemeColor(ThemeColorValues.Text1, null, null);
     }
 
@@ -71,10 +74,15 @@ internal sealed class DocxStyleResolver
         }
 
         var docDefaults = mainPart.StyleDefinitionsPart?.Styles?.DocDefaults;
-        var paragraphDefaults = ParagraphPropertySet.FromOpenXml(ExtractParagraphDefaults(docDefaults?.ParagraphPropertiesDefault))
-            ?? ParagraphPropertySet.Empty;
-        var runDefaults = RunPropertySet.FromOpenXml(ExtractRunDefaults(docDefaults?.RunPropertiesDefault))
-            ?? RunPropertySet.Empty;
+        var paragraphDefaultsElement = ExtractParagraphDefaults(docDefaults?.ParagraphPropertiesDefault);
+        var paragraphDefaults = paragraphDefaultsElement != null
+            ? ParagraphPropertySet.FromOpenXml(paragraphDefaultsElement)
+            : ParagraphPropertySet.CreateWordDefaults();
+
+        var runDefaultsElement = ExtractRunDefaults(docDefaults?.RunPropertiesDefault);
+        var runDefaults = runDefaultsElement != null
+            ? RunPropertySet.FromOpenXml(runDefaultsElement)
+            : RunPropertySet.Empty;
 
         var themeFonts = ThemeFontScheme.Load(mainPart.ThemePart);
         var themeColors = ThemeColorPalette.Load(mainPart.ThemePart);
@@ -259,7 +267,7 @@ internal sealed class DocxStyleResolver
             ?? ResolveThemeFont(_runDefaults.EastAsiaTheme)
             ?? ResolveThemeFont(_runDefaults.ComplexScriptTheme)
             ?? ResolveThemeFont(ThemeFontValues.MinorAscii)
-            ?? "Arial";
+            ?? WordDefaultFontFamily;
     }
 
     private string? ResolveThemeFont(ThemeFontValues? themeFont)

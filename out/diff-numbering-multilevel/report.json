@@ -1,376 +1,222 @@
 {
-  "passed": false,
-  "exitCode": 1,
-  "diffPdf": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/diff.pdf",
-  "stdout": "page 0 has 18571 pixels that differ\npage 0 differs\n1 of 1 pages differ.\n",
-  "stderr": "",
-  "baseline": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden/numbering-multilevel.pdf",
-  "candidate": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/numbering-multilevel-sdk.pdf",
-  "pages": null,
-  "dpi": 300,
-  "difference": {
-    "totalPixels": 8415000,
-    "differingPixels": 18571,
-    "ratio": 0.0022068924539512774,
-    "percent": 0.22068924539512774
+  "generatedAt": "2025-11-11T16:46:51.396759+00:00",
+  "summary": {
+    "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/numbering-multilevel.pdf",
+    "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/numbering-multilevel.pdf",
+    "BaselinePageCount": 1,
+    "CandidatePageCount": 1,
+    "ComparedPages": [
+      1
+    ],
+    "MissingFromBaseline": [],
+    "MissingFromCandidate": [],
+    "TotalAePixels": 22490,
+    "WeightedAePercent": 0.2584368306382666,
+    "ConsistentPages": 1,
+    "EngineOnlyPages": 0,
+    "CleanPages": 0,
+    "OverallStatus": 2,
+    "PageRangeExpression": null,
+    "Fuzz": null,
+    "UseCropBox": false,
+    "Dpi": 300,
+    "GeometryRequested": true,
+    "Thresholds": {
+      "WarningAePercent": 0.005,
+      "WarningSsim": 0.995,
+      "PassSsimTolerance": 1E-06,
+      "PassDssimTolerance": 1E-06
+    },
+    "SsimOptions": {
+      "Radius": null,
+      "Sigma": null,
+      "K1": null,
+      "K2": null,
+      "HasValues": false
+    },
+    "Tools": {
+      "ImageMagickVersion": "Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org",
+      "PopplerVersion": "pdftoppm version 25.11.0",
+      "GhostscriptVersion": "gs 10.05.1",
+      "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
+    },
+    "GeneratedAtUtc": "2025-11-11T16:46:51.396759+00:00",
+    "GeometryAnalysis": {
+      "TolerancePt": 0.25,
+      "Passed": false,
+      "Pages": [
+        {
+          "PageNumber": 1,
+          "MissingWords": [
+            {
+              "Text": "Assets",
+              "Baseline": {
+                "X": 144,
+                "Y": 125.490012,
+                "Width": 34.883972,
+                "Height": 7.71,
+                "CenterX": 161.44198599999999,
+                "CenterY": 129.345012
+              },
+              "Candidate": null,
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 50
+            }
+          ],
+          "ExtraWords": [],
+          "MovedWords": [],
+          "AddedGraphics": [],
+          "RemovedGraphics": [],
+          "ChangedGraphics": [],
+          "WordStatus": 0,
+          "WordStatusNote": null,
+          "IsClean": false
+        }
+      ]
+    }
   },
-  "pageStats": [
+  "pages": [
     {
-      "pageNumber": 1,
-      "widthPx": 2550,
-      "heightPx": 3300,
-      "totalPixels": 8415000,
-      "diffPixels": 18571,
-      "ratio": 0.0022068924539512774,
-      "percent": 0.22068924539512774
+      "PageNumber": 1,
+      "Poppler": {
+        "Engine": 0,
+        "Width": 2480,
+        "Height": 3509,
+        "Dpi": 300,
+        "AePixels": 22490,
+        "AePercent": 0.2584368306382666,
+        "Mae": 0.0017871,
+        "Rmse": 0.0395949,
+        "Psnr": 28.0472,
+        "Ssim": 0.99730186,
+        "Dssim": 0.00269814,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8702320
+      },
+      "Ghostscript": {
+        "Engine": 1,
+        "Width": 2479,
+        "Height": 3508,
+        "Dpi": 300,
+        "AePixels": 19637,
+        "AePercent": 0.22580784634257295,
+        "Mae": 0.00177282,
+        "Rmse": 0.0399834,
+        "Psnr": 27.9624,
+        "Ssim": 0.9972973,
+        "Dssim": 0.0027027,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8696332
+      },
+      "Classification": 1,
+      "Renderers": [
+        {
+          "Engine": 0,
+          "Width": 2480,
+          "Height": 3509,
+          "Dpi": 300,
+          "AePixels": 22490,
+          "AePercent": 0.2584368306382666,
+          "Mae": 0.0017871,
+          "Rmse": 0.0395949,
+          "Psnr": 28.0472,
+          "Ssim": 0.99730186,
+          "Dssim": 0.00269814,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8702320
+        },
+        {
+          "Engine": 1,
+          "Width": 2479,
+          "Height": 3508,
+          "Dpi": 300,
+          "AePixels": 19637,
+          "AePercent": 0.22580784634257295,
+          "Mae": 0.00177282,
+          "Rmse": 0.0399834,
+          "Psnr": 27.9624,
+          "Ssim": 0.9972973,
+          "Dssim": 0.0027027,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8696332
+        }
+      ]
     }
   ],
   "geometry": {
-    "passed": false,
-    "tolerancePt": 0.25,
-    "pages": [
+    "TolerancePt": 0.25,
+    "Passed": false,
+    "Pages": [
       {
-        "pageNumber": 1,
-        "expectedWordCount": 14,
-        "actualWordCount": 14,
-        "mismatches": [
+        "PageNumber": 1,
+        "MissingWords": [
           {
-            "index": 0,
-            "expectedText": "1.",
-            "actualText": "1.",
-            "expected": {
-              "x": 90.1,
-              "y": 711.75,
-              "width": 8.327000000000012,
-              "height": 7.0791015625,
-              "centerX": 94.2635,
-              "centerY": 715.28955078125
+            "Text": "Assets",
+            "Baseline": {
+              "X": 144,
+              "Y": 125.490012,
+              "Width": 34.883972,
+              "Height": 7.71,
+              "CenterX": 161.44198599999999,
+              "CenterY": 129.345012
             },
-            "actual": {
-              "x": 90.576172,
-              "y": 711.75,
-              "width": 9.173828125,
-              "height": 7.90625,
-              "centerX": 95.1630860625,
-              "centerY": 715.703125
+            "Candidate": null,
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
             },
-            "delta": {
-              "deltaX": 0.8995860625000063,
-              "deltaY": 0.41357421875,
-              "deltaWidth": 0.8468281249999876,
-              "deltaHeight": 0.8271484375,
-              "maxDeviation": 0.8995860625000063
-            }
-          },
-          {
-            "index": 3,
-            "expectedText": "1.a",
-            "actualText": "1.a",
-            "expected": {
-              "x": 108.1,
-              "y": 698.3,
-              "width": 13.618000000000023,
-              "height": 7.0791015625,
-              "centerX": 114.909,
-              "centerY": 701.83955078125
-            },
-            "actual": {
-              "x": 107.652344,
-              "y": 698.322266,
-              "width": 15.29150390625,
-              "height": 7.90625,
-              "centerX": 115.298095953125,
-              "centerY": 702.275391
-            },
-            "delta": {
-              "deltaX": 0.38909595312499334,
-              "deltaY": 0.43584021875005874,
-              "deltaWidth": 1.6735039062499766,
-              "deltaHeight": 0.8271484375,
-              "maxDeviation": 1.6735039062499766
-            }
-          },
-          {
-            "index": 4,
-            "expectedText": "Research",
-            "actualText": "Research",
-            "expected": {
-              "x": 124.2,
-              "y": 698.3,
-              "width": 40.34800000000003,
-              "height": 7.6376953125,
-              "centerX": 144.37400000000002,
-              "centerY": 702.11884765625
-            },
-            "actual": {
-              "x": 126,
-              "y": 698.322266,
-              "width": 40.755859375,
-              "height": 7.6376953125,
-              "centerX": 146.3779296875,
-              "centerY": 702.14111365625
-            },
-            "delta": {
-              "deltaX": 2.0039296874999764,
-              "deltaY": 0.02226600000005874,
-              "deltaWidth": 0.4078593749999726,
-              "deltaHeight": 0,
-              "maxDeviation": 2.0039296874999764
-            }
-          },
-          {
-            "index": 5,
-            "expectedText": "\u2022",
-            "actualText": "\u2022",
-            "expected": {
-              "x": 126.1,
-              "y": 683.2,
-              "width": 3.8499999999999943,
-              "height": 5.1240234375,
-              "centerX": 128.02499999999998,
-              "centerY": 685.76201171875
-            },
-            "actual": {
-              "x": 134.648926,
-              "y": 684.894531,
-              "width": 3.85107421875,
-              "height": 5.1240234375,
-              "centerX": 136.574463109375,
-              "centerY": 687.45654271875
-            },
-            "delta": {
-              "deltaX": 8.549463109375012,
-              "deltaY": 1.6945309999999836,
-              "deltaWidth": 0.0010742187500056843,
-              "deltaHeight": 0,
-              "maxDeviation": 8.549463109375012
-            }
-          },
-          {
-            "index": 6,
-            "expectedText": "Assets",
-            "actualText": "Assets",
-            "expected": {
-              "x": 144.1,
-              "y": 683.2,
-              "width": 28.335999999999984,
-              "height": 7.0576171875,
-              "centerX": 158.26799999999997,
-              "centerY": 686.72880859375
-            },
-            "actual": {
-              "x": 144,
-              "y": 684.894531,
-              "width": 28.42919921875,
-              "height": 7.0576171875,
-              "centerX": 158.214599609375,
-              "centerY": 688.42333959375
-            },
-            "delta": {
-              "deltaX": -0.05340039062497226,
-              "deltaY": 1.6945309999999836,
-              "deltaWidth": 0.09319921875001569,
-              "deltaHeight": 0,
-              "maxDeviation": 1.6945309999999836
-            }
-          },
-          {
-            "index": 7,
-            "expectedText": "2.",
-            "actualText": "2.",
-            "expected": {
-              "x": 90.1,
-              "y": 669.75,
-              "width": 8.327000000000012,
-              "height": 7.13818359375,
-              "centerX": 94.2635,
-              "centerY": 673.319091796875
-            },
-            "actual": {
-              "x": 90.576172,
-              "y": 671.466797,
-              "width": 9.173828125,
-              "height": 7.90625,
-              "centerX": 95.1630860625,
-              "centerY": 675.419922
-            },
-            "delta": {
-              "deltaX": 0.8995860625000063,
-              "deltaY": 2.1008302031250423,
-              "deltaWidth": 0.8468281249999876,
-              "deltaHeight": 0.76806640625,
-              "maxDeviation": 2.1008302031250423
-            }
-          },
-          {
-            "index": 8,
-            "expectedText": "Phase",
-            "actualText": "Phase",
-            "expected": {
-              "x": 108.1,
-              "y": 669.75,
-              "width": 26.455000000000013,
-              "height": 7.6376953125,
-              "centerX": 121.3275,
-              "centerY": 673.56884765625
-            },
-            "actual": {
-              "x": 108,
-              "y": 671.466797,
-              "width": 26.50634765625,
-              "height": 7.6376953125,
-              "centerX": 121.253173828125,
-              "centerY": 675.28564465625
-            },
-            "delta": {
-              "deltaX": -0.07432617187500057,
-              "deltaY": 1.7167970000000423,
-              "deltaWidth": 0.051347656249987494,
-              "deltaHeight": 0,
-              "maxDeviation": 1.7167970000000423
-            }
-          },
-          {
-            "index": 9,
-            "expectedText": "2",
-            "actualText": "2",
-            "expected": {
-              "x": 137.03,
-              "y": 669.75,
-              "width": 5.5660000000000025,
-              "height": 7.13818359375,
-              "centerX": 139.813,
-              "centerY": 673.319091796875
-            },
-            "actual": {
-              "x": 136.993164,
-              "y": 671.466797,
-              "width": 5.5751953125,
-              "height": 7.13818359375,
-              "centerX": 139.78076165625,
-              "centerY": 675.035888796875
-            },
-            "delta": {
-              "deltaX": -0.03223834374998091,
-              "deltaY": 1.7167970000000423,
-              "deltaWidth": 0.009195312499997499,
-              "deltaHeight": 0,
-              "maxDeviation": 1.7167970000000423
-            }
-          },
-          {
-            "index": 10,
-            "expectedText": "4.",
-            "actualText": "4.",
-            "expected": {
-              "x": 90.1,
-              "y": 642.85,
-              "width": 8.327000000000012,
-              "height": 7.06298828125,
-              "centerX": 94.2635,
-              "centerY": 646.381494140625
-            },
-            "actual": {
-              "x": 90.576172,
-              "y": 645.390137,
-              "width": 9.173828125,
-              "height": 7.8740234375,
-              "centerX": 95.1630860625,
-              "centerY": 649.32714871875
-            },
-            "delta": {
-              "deltaX": 0.8995860625000063,
-              "deltaY": 2.945654578124959,
-              "deltaWidth": 0.8468281249999876,
-              "deltaHeight": 0.81103515625,
-              "maxDeviation": 2.945654578124959
-            }
-          },
-          {
-            "index": 11,
-            "expectedText": "Restart",
-            "actualText": "Restart",
-            "expected": {
-              "x": 108.1,
-              "y": 642.85,
-              "width": 31.702000000000027,
-              "height": 7.0576171875,
-              "centerX": 123.95100000000001,
-              "centerY": 646.37880859375
-            },
-            "actual": {
-              "x": 108,
-              "y": 645.390137,
-              "width": 32.22119140625,
-              "height": 7.0576171875,
-              "centerX": 124.110595703125,
-              "centerY": 648.91894559375
-            },
-            "delta": {
-              "deltaX": 0.15959570312499238,
-              "deltaY": 2.540136999999959,
-              "deltaWidth": 0.5191914062499734,
-              "deltaHeight": 0,
-              "maxDeviation": 2.540136999999959
-            }
-          },
-          {
-            "index": 12,
-            "expectedText": "5.",
-            "actualText": "5.",
-            "expected": {
-              "x": 90.1,
-              "y": 615.95,
-              "width": 8.327000000000012,
-              "height": 7.0576171875,
-              "centerX": 94.2635,
-              "centerY": 619.47880859375
-            },
-            "actual": {
-              "x": 90.576172,
-              "y": 619.31348,
-              "width": 9.173828125,
-              "height": 7.7666015625,
-              "centerX": 95.1630860625,
-              "centerY": 623.19678078125
-            },
-            "delta": {
-              "deltaX": 0.8995860625000063,
-              "deltaY": 3.7179721874999814,
-              "deltaWidth": 0.8468281249999876,
-              "deltaHeight": 0.708984375,
-              "maxDeviation": 3.7179721874999814
-            }
-          },
-          {
-            "index": 13,
-            "expectedText": "Continue",
-            "actualText": "Continue",
-            "expected": {
-              "x": 108.1,
-              "y": 615.95,
-              "width": 40.44700000000003,
-              "height": 7.60546875,
-              "centerX": 128.32350000000002,
-              "centerY": 619.752734375
-            },
-            "actual": {
-              "x": 108,
-              "y": 619.31348,
-              "width": 40.68603515625,
-              "height": 7.56787109375,
-              "centerX": 128.343017578125,
-              "centerY": 623.097415546875
-            },
-            "delta": {
-              "deltaX": 0.0195175781249759,
-              "deltaY": 3.3446811718749814,
-              "deltaWidth": 0.23903515624996885,
-              "deltaHeight": -0.03759765625,
-              "maxDeviation": 3.3446811718749814
-            }
+            "FontSize": 50
           }
-        ]
+        ],
+        "ExtraWords": [],
+        "MovedWords": [],
+        "AddedGraphics": [],
+        "RemovedGraphics": [],
+        "ChangedGraphics": [],
+        "WordStatus": 0,
+        "WordStatusNote": null,
+        "IsClean": false
       }
     ]
   }

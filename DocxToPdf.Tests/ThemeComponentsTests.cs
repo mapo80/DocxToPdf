@@ -57,8 +57,8 @@ public sealed class ThemeComponentsTests
     public void ThemeFontSchemeFallsBackWhenThemeMissing()
     {
         var scheme = ThemeFontScheme.Load(themePart: null);
-        scheme.MajorLatin.Should().Be("Calibri");
-        scheme.MinorLatin.Should().Be("Calibri");
+        scheme.MajorLatin.Should().Be("Aptos");
+        scheme.MinorLatin.Should().Be("Aptos");
         scheme.MajorComplex.Should().Be("Times New Roman");
     }
 }

@@ -16,11 +16,19 @@ public sealed class FontManagerTests
     }
 
     [Fact]
-    public void CambriaFallsBackToEmbeddedFamilyWhenMissing()
+    public void CambriaTypefaceIsLoadedFromEmbeddedFonts()
     {
         var typeface = FontManager.Instance.GetTypeface("Cambria");
         typeface.Should().NotBeNull();
         typeface.FamilyName.Should().NotBeNull();
-        typeface.FamilyName.Should().BeOneOf("Cambria", "Caladea");
+        typeface.FamilyName.Should().BeEquivalentTo("Cambria");
+    }
+
+    [Fact]
+    public void CalibriTypefaceIsLoadedFromEmbeddedFonts()
+    {
+        var typeface = FontManager.Instance.GetTypeface("Calibri");
+        typeface.Should().NotBeNull();
+        typeface.FamilyName.Should().BeEquivalentTo("Calibri");
     }
 }

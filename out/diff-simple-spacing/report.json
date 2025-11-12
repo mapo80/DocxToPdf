@@ -1,29 +1,181 @@
 {
-  "passed": false,
-  "exitCode": 1,
-  "diffPdf": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/diff.pdf",
-  "stdout": "page 0 has 6291 pixels that differ\npage 0 differs\n1 of 1 pages differ.\n",
-  "stderr": "",
-  "baseline": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/simple-spacing-word.pdf",
-  "candidate": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/simple-spacing-sdk.pdf",
-  "pages": null,
-  "dpi": 300,
-  "difference": {
-    "totalPixels": 8415000,
-    "differingPixels": 6291,
-    "ratio": 0.0007475935828877005,
-    "percent": 0.07475935828877005
+  "generatedAt": "2025-11-11T16:47:08.126151+00:00",
+  "summary": {
+    "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/simple-spacing.pdf",
+    "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/simple-spacing.pdf",
+    "BaselinePageCount": 1,
+    "CandidatePageCount": 1,
+    "ComparedPages": [
+      1
+    ],
+    "MissingFromBaseline": [],
+    "MissingFromCandidate": [],
+    "TotalAePixels": 5421,
+    "WeightedAePercent": 0.06442067736185383,
+    "ConsistentPages": 1,
+    "EngineOnlyPages": 0,
+    "CleanPages": 0,
+    "OverallStatus": 1,
+    "PageRangeExpression": null,
+    "Fuzz": null,
+    "UseCropBox": false,
+    "Dpi": 300,
+    "GeometryRequested": true,
+    "Thresholds": {
+      "WarningAePercent": 0.005,
+      "WarningSsim": 0.995,
+      "PassSsimTolerance": 1E-06,
+      "PassDssimTolerance": 1E-06
+    },
+    "SsimOptions": {
+      "Radius": null,
+      "Sigma": null,
+      "K1": null,
+      "K2": null,
+      "HasValues": false
+    },
+    "Tools": {
+      "ImageMagickVersion": "Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org",
+      "PopplerVersion": "pdftoppm version 25.11.0",
+      "GhostscriptVersion": "gs 10.05.1",
+      "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
+    },
+    "GeneratedAtUtc": "2025-11-11T16:47:08.126151+00:00",
+    "GeometryAnalysis": {
+      "TolerancePt": 0.25,
+      "Passed": true,
+      "Pages": [
+        {
+          "PageNumber": 1,
+          "MissingWords": [],
+          "ExtraWords": [],
+          "MovedWords": [],
+          "AddedGraphics": [],
+          "RemovedGraphics": [],
+          "ChangedGraphics": [],
+          "WordStatus": 0,
+          "WordStatusNote": null,
+          "IsClean": true
+        }
+      ]
+    }
   },
-  "pageStats": [
+  "pages": [
     {
-      "pageNumber": 1,
-      "widthPx": 2550,
-      "heightPx": 3300,
-      "totalPixels": 8415000,
-      "diffPixels": 6291,
-      "ratio": 0.0007475935828877005,
-      "percent": 0.07475935828877005
+      "PageNumber": 1,
+      "Poppler": {
+        "Engine": 0,
+        "Width": 2550,
+        "Height": 3300,
+        "Dpi": 300,
+        "AePixels": 5421,
+        "AePercent": 0.06442067736185383,
+        "Mae": 0.000266261,
+        "Rmse": 0.0127783,
+        "Psnr": 37.8705,
+        "Ssim": 0.999598953,
+        "Dssim": 0.000401047,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8415000
+      },
+      "Ghostscript": {
+        "Engine": 1,
+        "Width": 2550,
+        "Height": 3300,
+        "Dpi": 300,
+        "AePixels": 3514,
+        "AePercent": 0.04175876411170529,
+        "Mae": 0.0002278,
+        "Rmse": 0.0129008,
+        "Psnr": 37.7876,
+        "Ssim": 0.999615982,
+        "Dssim": 0.000384018,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8415000
+      },
+      "Classification": 1,
+      "Renderers": [
+        {
+          "Engine": 0,
+          "Width": 2550,
+          "Height": 3300,
+          "Dpi": 300,
+          "AePixels": 5421,
+          "AePercent": 0.06442067736185383,
+          "Mae": 0.000266261,
+          "Rmse": 0.0127783,
+          "Psnr": 37.8705,
+          "Ssim": 0.999598953,
+          "Dssim": 0.000401047,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/poppler/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8415000
+        },
+        {
+          "Engine": 1,
+          "Width": 2550,
+          "Height": 3300,
+          "Dpi": 300,
+          "AePixels": 3514,
+          "AePercent": 0.04175876411170529,
+          "Mae": 0.0002278,
+          "Rmse": 0.0129008,
+          "Psnr": 37.7876,
+          "Ssim": 0.999615982,
+          "Dssim": 0.000384018,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing/ghostscript/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8415000
+        }
+      ]
     }
   ],
-  "geometry": null
+  "geometry": {
+    "TolerancePt": 0.25,
+    "Passed": true,
+    "Pages": [
+      {
+        "PageNumber": 1,
+        "MissingWords": [],
+        "ExtraWords": [],
+        "MovedWords": [],
+        "AddedGraphics": [],
+        "RemovedGraphics": [],
+        "ChangedGraphics": [],
+        "WordStatus": 0,
+        "WordStatusNote": null,
+        "IsClean": true
+      }
+    ]
+  }
 }

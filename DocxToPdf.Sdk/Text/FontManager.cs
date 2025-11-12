@@ -153,39 +153,58 @@ public sealed class FontManager
         if (!Directory.Exists(fontsDir))
             return dict;
 
-        void TryAdd(string familyName, string regular, string bold, string italic, string boldItalic)
+        bool TryAdd(string familyName, string regular, string? bold = null, string? italic = null, string? boldItalic = null)
         {
             try
             {
-                var family = LocalFontFamily.Create(fontsDir, regular, bold, italic, boldItalic);
-                if (family != null)
+                if (LocalFontFamily.Create(fontsDir, regular, bold, italic, boldItalic) is { } family)
+                {
                     dict[familyName] = family;
+                    LogFontInfo($"Loaded embedded font '{familyName}' from {fontsDir}");
+                    return true;
+                }
             }
             catch (Exception ex)
             {
                 LogFontWarning($"Failed to load embedded font '{familyName}' from {fontsDir}: {ex.Message}");
             }
+
+            return false;
         }
 
+        TryAdd("Aptos", "Aptos-Regular.ttf", "Aptos-Bold.ttf", "Aptos-Italic.ttf", "Aptos-BoldItalic.ttf");
+        TryAdd("Cambria", "Cambria.ttc", "Cambriab.ttf", "Cambriai.ttf", "Cambriaz.ttf");
+        TryAdd("Calibri", "Calibri.ttf", "Calibrib.ttf", "Calibrii.ttf", "Calibriz.ttf");
+        TryAdd("Arial", "Arial-Regular.ttf", "Arial-Bold.ttf", "Arial-Italic.ttf", "Arial-BoldItalic.ttf");
+        TryAdd("Times New Roman", "TimesNewRoman-Regular.ttf", "TimesNewRoman-Bold.ttf", "TimesNewRoman-Italic.ttf", "TimesNewRoman-BoldItalic.ttf");
+        TryAdd("Symbol", "Symbol.ttf");
         TryAdd("Caladea", "Caladea-Regular.ttf", "Caladea-Bold.ttf", "Caladea-Italic.ttf", "Caladea-BoldItalic.ttf");
         TryAdd("Carlito", "Carlito-Regular.ttf", "Carlito-Bold.ttf", "Carlito-Italic.ttf", "Carlito-BoldItalic.ttf");
 
         var wordFontsDir = "/Applications/Microsoft Word.app/Contents/Resources/DFonts";
         if (Directory.Exists(wordFontsDir))
         {
-            void TryAddWordFont(string familyName, string regular, string bold, string italic, string boldItalic)
+            string? ResolveWordPath(string? relative)
+            {
+                if (string.IsNullOrWhiteSpace(relative))
+                    return null;
+                var path = Path.Combine(wordFontsDir, relative);
+                return File.Exists(path) ? path : null;
+            }
+
+            bool TryAddWordFont(string familyName, string regular, string? bold, string? italic, string? boldItalic)
             {
                 try
                 {
-                    var family = LocalFontFamily.CreateFromPaths(
-                        Path.Combine(wordFontsDir, regular),
-                        Path.Combine(wordFontsDir, bold),
-                        Path.Combine(wordFontsDir, italic),
-                        Path.Combine(wordFontsDir, boldItalic));
-                    if (family != null)
+                    if (LocalFontFamily.CreateFromPaths(
+                            Path.Combine(wordFontsDir, regular),
+                            ResolveWordPath(bold),
+                            ResolveWordPath(italic),
+                            ResolveWordPath(boldItalic)) is { } family)
                     {
                         dict[familyName] = family;
                         LogFontInfo($"Loaded Word font '{familyName}'");
+                        return true;
                     }
                     else
                     {
@@ -196,11 +215,16 @@ public sealed class FontManager
                 {
                     LogFontWarning($"Failed to load Word font '{familyName}': {ex.Message}");
                 }
+
+                return false;
             }
 
-            TryAddWordFont("Aptos", "Aptos.ttf", "Aptos-Bold.ttf", "Aptos-Italic.ttf", "Aptos-Bold-Italic.ttf");
-            TryAddWordFont("Cambria", "Cambria.ttc", "Cambriab.ttf", "Cambriai.ttf", "Cambriaz.ttf");
-            TryAddWordFont("Calibri", "Calibri.ttf", "Calibrib.ttf", "Calibrii.ttf", "Calibriz.ttf");
+            if (!dict.ContainsKey("Aptos"))
+                TryAddWordFont("Aptos", "Aptos.ttf", "Aptos-Bold.ttf", "Aptos-Italic.ttf", "Aptos-Bold-Italic.ttf");
+            if (!dict.ContainsKey("Cambria"))
+                TryAddWordFont("Cambria", "Cambria.ttc", "Cambriab.ttf", "Cambriai.ttf", "Cambriaz.ttf");
+            if (!dict.ContainsKey("Calibri"))
+                TryAddWordFont("Calibri", "Calibri.ttf", "Calibrib.ttf", "Calibrii.ttf", "Calibriz.ttf");
         }
 
         return dict;
@@ -209,10 +233,15 @@ public sealed class FontManager
     private static Dictionary<string, string> BuildAliases() =>
         new(StringComparer.OrdinalIgnoreCase)
         {
-            ["Cambria"] = "Caladea",
-            ["Cambria Math"] = "Caladea",
-            ["Calibri"] = "Carlito",
-            ["Calibri Light"] = "Carlito"
+            ["Cambria Math"] = "Cambria",
+            ["Calibri Light"] = "Calibri",
+            ["Calibri Light Italic"] = "Calibri",
+            ["Calibri Bold Italic"] = "Calibri",
+            ["Times"] = "Times New Roman",
+            ["TimesNewRoman"] = "Times New Roman",
+            ["ArialMT"] = "Arial",
+            ["Aptos Display"] = "Aptos",
+            ["Aptos Narrow"] = "Aptos"
         };
 
     private sealed record LocalFontFamily(FontSource Regular, FontSource? Bold, FontSource? Italic, FontSource? BoldItalic)
@@ -231,7 +260,7 @@ public sealed class FontManager
             return Regular;
         }
 
-        public static LocalFontFamily? Create(string fontsDir, string regular, string bold, string italic, string boldItalic)
+        public static LocalFontFamily? Create(string fontsDir, string regular, string? bold, string? italic, string? boldItalic)
         {
             var regularPath = Path.Combine(fontsDir, regular);
             if (!File.Exists(regularPath))
@@ -241,8 +270,10 @@ public sealed class FontManager
             if (regularSource == null)
                 return null;
 
-            string? GetOptional(string relativePath)
+            string? GetOptional(string? relativePath)
             {
+                if (string.IsNullOrWhiteSpace(relativePath))
+                    return null;
                 var path = Path.Combine(fontsDir, relativePath);
                 return File.Exists(path) ? path : null;
             }

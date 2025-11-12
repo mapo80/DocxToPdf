@@ -1,29 +1,305 @@
 {
-  "passed": false,
-  "exitCode": 1,
-  "diffPdf": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/diff.pdf",
-  "stdout": "page 0 has 570486 pixels that differ\npage 0 differs\n1 of 1 pages differ.\n",
-  "stderr": "",
-  "baseline": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/lorem.pdf",
-  "candidate": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/lorem.pdf",
-  "pages": null,
-  "dpi": 300,
-  "difference": {
-    "totalPixels": 8696332,
-    "differingPixels": 570486,
-    "ratio": 0.06560076133247902,
-    "percent": 6.560076133247902
+  "generatedAt": "2025-11-11T16:46:35.510073+00:00",
+  "summary": {
+    "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/lorem.pdf",
+    "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/lorem.pdf",
+    "BaselinePageCount": 1,
+    "CandidatePageCount": 1,
+    "ComparedPages": [
+      1
+    ],
+    "MissingFromBaseline": [],
+    "MissingFromCandidate": [],
+    "TotalAePixels": 197002,
+    "WeightedAePercent": 2.2619629643492996,
+    "ConsistentPages": 1,
+    "EngineOnlyPages": 0,
+    "CleanPages": 0,
+    "OverallStatus": 2,
+    "PageRangeExpression": null,
+    "Fuzz": null,
+    "UseCropBox": false,
+    "Dpi": 300,
+    "GeometryRequested": true,
+    "Thresholds": {
+      "WarningAePercent": 0.005,
+      "WarningSsim": 0.995,
+      "PassSsimTolerance": 1E-06,
+      "PassDssimTolerance": 1E-06
+    },
+    "SsimOptions": {
+      "Radius": null,
+      "Sigma": null,
+      "K1": null,
+      "K2": null,
+      "HasValues": false
+    },
+    "Tools": {
+      "ImageMagickVersion": "Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org",
+      "PopplerVersion": "pdftoppm version 25.11.0",
+      "GhostscriptVersion": "gs 10.05.1",
+      "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
+    },
+    "GeneratedAtUtc": "2025-11-11T16:46:35.510073+00:00",
+    "GeometryAnalysis": {
+      "TolerancePt": 0.25,
+      "Passed": false,
+      "Pages": [
+        {
+          "PageNumber": 1,
+          "MissingWords": [
+            {
+              "Text": "\u00E0cc\u00E9nti",
+              "Baseline": {
+                "X": 339.829071,
+                "Y": 228.330017,
+                "Width": 33.495056,
+                "Height": 5.5,
+                "CenterX": 356.576599,
+                "CenterY": 231.080017
+              },
+              "Candidate": null,
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 11
+            }
+          ],
+          "ExtraWords": [
+            {
+              "Text": "a\u0300cce\u0301nti",
+              "Baseline": null,
+              "Candidate": {
+                "X": 339.614746,
+                "Y": 226.460205,
+                "Width": 33.354492,
+                "Height": 7.331543,
+                "CenterX": 356.29199200000005,
+                "CenterY": 230.1259765
+              },
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 11
+            },
+            {
+              "Text": "\uD83D\uDC4B",
+              "Baseline": null,
+              "Candidate": {
+                "X": 504.786621,
+                "Y": 232.12116,
+                "Width": 11,
+                "Height": 5.520625,
+                "CenterX": 510.286621,
+                "CenterY": 234.8814725
+              },
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 11
+            }
+          ],
+          "MovedWords": [],
+          "AddedGraphics": [],
+          "RemovedGraphics": [],
+          "ChangedGraphics": [],
+          "WordStatus": 0,
+          "WordStatusNote": null,
+          "IsClean": false
+        }
+      ]
+    }
   },
-  "pageStats": [
+  "pages": [
     {
-      "pageNumber": 1,
-      "widthPx": 2479,
-      "heightPx": 3508,
-      "totalPixels": 8696332,
-      "diffPixels": 570486,
-      "ratio": 0.06560076133247902,
-      "percent": 6.560076133247902
+      "PageNumber": 1,
+      "Poppler": {
+        "Engine": 0,
+        "Width": 2482,
+        "Height": 3509,
+        "Dpi": 300,
+        "AePixels": 197002,
+        "AePercent": 2.2619629643492996,
+        "Mae": 0.011585,
+        "Rmse": 0.0932979,
+        "Psnr": 20.6026,
+        "Ssim": 0.9822706,
+        "Dssim": 0.0177294,
+        "Status": 2,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8709338
+      },
+      "Ghostscript": {
+        "Engine": 1,
+        "Width": 2481,
+        "Height": 3508,
+        "Dpi": 300,
+        "AePixels": 167459,
+        "AePercent": 1.9240756545641977,
+        "Mae": 0.0120346,
+        "Rmse": 0.098598,
+        "Psnr": 20.1226,
+        "Ssim": 0.9810755,
+        "Dssim": 0.0189245,
+        "Status": 2,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8703348
+      },
+      "Classification": 1,
+      "Renderers": [
+        {
+          "Engine": 0,
+          "Width": 2482,
+          "Height": 3509,
+          "Dpi": 300,
+          "AePixels": 197002,
+          "AePercent": 2.2619629643492996,
+          "Mae": 0.011585,
+          "Rmse": 0.0932979,
+          "Psnr": 20.6026,
+          "Ssim": 0.9822706,
+          "Dssim": 0.0177294,
+          "Status": 2,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/poppler/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8709338
+        },
+        {
+          "Engine": 1,
+          "Width": 2481,
+          "Height": 3508,
+          "Dpi": 300,
+          "AePixels": 167459,
+          "AePercent": 1.9240756545641977,
+          "Mae": 0.0120346,
+          "Rmse": 0.098598,
+          "Psnr": 20.1226,
+          "Ssim": 0.9810755,
+          "Dssim": 0.0189245,
+          "Status": 2,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-lorem/ghostscript/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8703348
+        }
+      ]
     }
   ],
-  "geometry": null
+  "geometry": {
+    "TolerancePt": 0.25,
+    "Passed": false,
+    "Pages": [
+      {
+        "PageNumber": 1,
+        "MissingWords": [
+          {
+            "Text": "\u00E0cc\u00E9nti",
+            "Baseline": {
+              "X": 339.829071,
+              "Y": 228.330017,
+              "Width": 33.495056,
+              "Height": 5.5,
+              "CenterX": 356.576599,
+              "CenterY": 231.080017
+            },
+            "Candidate": null,
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 11
+          }
+        ],
+        "ExtraWords": [
+          {
+            "Text": "a\u0300cce\u0301nti",
+            "Baseline": null,
+            "Candidate": {
+              "X": 339.614746,
+              "Y": 226.460205,
+              "Width": 33.354492,
+              "Height": 7.331543,
+              "CenterX": 356.29199200000005,
+              "CenterY": 230.1259765
+            },
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 11
+          },
+          {
+            "Text": "\uD83D\uDC4B",
+            "Baseline": null,
+            "Candidate": {
+              "X": 504.786621,
+              "Y": 232.12116,
+              "Width": 11,
+              "Height": 5.520625,
+              "CenterX": 510.286621,
+              "CenterY": 234.8814725
+            },
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 11
+          }
+        ],
+        "MovedWords": [],
+        "AddedGraphics": [],
+        "RemovedGraphics": [],
+        "ChangedGraphics": [],
+        "WordStatus": 0,
+        "WordStatusNote": null,
+        "IsClean": false
+      }
+    ]
+  }
 }

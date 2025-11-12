@@ -1,0 +1,181 @@
+{
+  "generatedAt": "2025-11-11T20:55:54.243993+00:00",
+  "summary": {
+    "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/layout-stress.pdf",
+    "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/layout-stress.pdf",
+    "BaselinePageCount": 1,
+    "CandidatePageCount": 1,
+    "ComparedPages": [
+      1
+    ],
+    "MissingFromBaseline": [],
+    "MissingFromCandidate": [],
+    "TotalAePixels": 425522,
+    "WeightedAePercent": 5.0567082590612005,
+    "ConsistentPages": 1,
+    "EngineOnlyPages": 0,
+    "CleanPages": 0,
+    "OverallStatus": 2,
+    "PageRangeExpression": null,
+    "Fuzz": null,
+    "UseCropBox": false,
+    "Dpi": 300,
+    "GeometryRequested": true,
+    "Thresholds": {
+      "WarningAePercent": 0.005,
+      "WarningSsim": 0.995,
+      "PassSsimTolerance": 1E-06,
+      "PassDssimTolerance": 1E-06
+    },
+    "SsimOptions": {
+      "Radius": null,
+      "Sigma": null,
+      "K1": null,
+      "K2": null,
+      "HasValues": false
+    },
+    "Tools": {
+      "ImageMagickVersion": "Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org",
+      "PopplerVersion": "pdftoppm version 25.11.0",
+      "GhostscriptVersion": "gs 10.05.1",
+      "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
+    },
+    "GeneratedAtUtc": "2025-11-11T20:55:54.243993+00:00",
+    "GeometryAnalysis": {
+      "TolerancePt": 0.25,
+      "Passed": false,
+      "Pages": [
+        {
+          "PageNumber": 1,
+          "MissingWords": [],
+          "ExtraWords": [],
+          "MovedWords": [],
+          "AddedGraphics": [],
+          "RemovedGraphics": [],
+          "ChangedGraphics": [],
+          "WordStatus": 4,
+          "WordStatusNote": "Oltre la met\u00E0 del testo del PDF di riferimento non \u00E8 stato trovato nel candidato. Il confronto parole \u00E8 disattivato per evitare falsi positivi (probabile testo rasterizzato/vettoriale).",
+          "IsClean": false
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "PageNumber": 1,
+      "Poppler": {
+        "Engine": 0,
+        "Width": 2550,
+        "Height": 3300,
+        "Dpi": 300,
+        "AePixels": 425522,
+        "AePercent": 5.0567082590612005,
+        "Mae": 0.0372726,
+        "Rmse": 0.183018,
+        "Psnr": 14.7501,
+        "Ssim": 0.9437768,
+        "Dssim": 0.0562232,
+        "Status": 2,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8415000
+      },
+      "Ghostscript": {
+        "Engine": 1,
+        "Width": 2550,
+        "Height": 3300,
+        "Dpi": 300,
+        "AePixels": 395789,
+        "AePercent": 4.703374925727867,
+        "Mae": 0.038036,
+        "Rmse": 0.186623,
+        "Psnr": 14.5807,
+        "Ssim": 0.9433138,
+        "Dssim": 0.0566862,
+        "Status": 2,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8415000
+      },
+      "Classification": 1,
+      "Renderers": [
+        {
+          "Engine": 0,
+          "Width": 2550,
+          "Height": 3300,
+          "Dpi": 300,
+          "AePixels": 425522,
+          "AePercent": 5.0567082590612005,
+          "Mae": 0.0372726,
+          "Rmse": 0.183018,
+          "Psnr": 14.7501,
+          "Ssim": 0.9437768,
+          "Dssim": 0.0562232,
+          "Status": 2,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/poppler/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8415000
+        },
+        {
+          "Engine": 1,
+          "Width": 2550,
+          "Height": 3300,
+          "Dpi": 300,
+          "AePixels": 395789,
+          "AePercent": 4.703374925727867,
+          "Mae": 0.038036,
+          "Rmse": 0.186623,
+          "Psnr": 14.5807,
+          "Ssim": 0.9433138,
+          "Dssim": 0.0566862,
+          "Status": 2,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/ghostscript/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8415000
+        }
+      ]
+    }
+  ],
+  "geometry": {
+    "TolerancePt": 0.25,
+    "Passed": false,
+    "Pages": [
+      {
+        "PageNumber": 1,
+        "MissingWords": [],
+        "ExtraWords": [],
+        "MovedWords": [],
+        "AddedGraphics": [],
+        "RemovedGraphics": [],
+        "ChangedGraphics": [],
+        "WordStatus": 4,
+        "WordStatusNote": "Oltre la met\u00E0 del testo del PDF di riferimento non \u00E8 stato trovato nel candidato. Il confronto parole \u00E8 disattivato per evitare falsi positivi (probabile testo rasterizzato/vettoriale).",
+        "IsClean": false
+      }
+    ]
+  }
+}

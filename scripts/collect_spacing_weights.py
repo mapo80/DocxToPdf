@@ -9,14 +9,30 @@ parser.add_argument("--spacing", required=True, help="spacing.json from extract-
 parser.add_argument("--alignment-map", required=True, help="JSON produced by alignment-map script")
 parser.add_argument("--sample", required=True, help="sample name key inside alignment-map JSON")
 parser.add_argument("--alignments", default="both,distribute", help="comma-separated list of paragraph alignments to include")
+parser.add_argument("--json-output", help="optional path to dump collected entries as JSON")
 args = parser.parse_args()
 
 spacing = json.loads(Path(args.spacing).read_text())
 align_map = json.loads(Path(args.alignment_map).read_text())[args.sample]
 target_alignments = {token.strip() for token in args.alignments.split(",") if token.strip()}
 
+LIGATURES = {
+    "ﬁ": "fi",
+    "ﬂ": "fl",
+    "ﬀ": "ff",
+    "ﬃ": "ffi",
+    "ﬄ": "ffl",
+}
+
+def normalize(text: str) -> str:
+    for lig, replacement in LIGATURES.items():
+        if lig in text:
+            text = text.replace(lig, replacement)
+    return text
+
 def tokenize(text):
-    return [tok for tok in html.unescape(text).split() if tok]
+    normalized = normalize(html.unescape(text))
+    return [tok for tok in normalized.split() if tok]
 
 paragraphs = []
 for entry in align_map:
@@ -28,7 +44,8 @@ def group_lines(words):
     lines = {}
     for word in words:
         y = round(word["y"], 3)
-        lines.setdefault(y, []).append(word)
+        normalized = normalize(word["text"])
+        lines.setdefault(y, []).append({**word, "text": normalized})
     sorted_lines = []
     for y in sorted(lines.keys()):
         sorted_lines.append({"y": y, "words": sorted(lines[y], key=lambda w: w["x"])})
@@ -36,15 +53,56 @@ def group_lines(words):
 
 base_lines = group_lines(spacing["base"]["pages"][0]["words"])
 cand_lines = group_lines(spacing["candidate"]["pages"][0]["words"])
-if len(base_lines) != len(cand_lines):
-    raise SystemExit("Line count differs between baseline and candidate.")
+
+def lines_match(base_line, cand_line):
+    base_tokens = [w["text"] for w in base_line["words"]]
+    cand_tokens = [w["text"] for w in cand_line["words"]]
+    return base_tokens == cand_tokens
+
+def pair_lines(base_lines, cand_lines):
+    pairs = []
+    bi = ci = 0
+    while bi < len(base_lines) and ci < len(cand_lines):
+        if lines_match(base_lines[bi], cand_lines[ci]):
+            pairs.append((base_lines[bi], cand_lines[ci]))
+            bi += 1
+            ci += 1
+            continue
+
+        matched = False
+        for lookahead in range(1, 4):
+            if ci + lookahead < len(cand_lines) and lines_match(base_lines[bi], cand_lines[ci + lookahead]):
+                ci += lookahead
+                pairs.append((base_lines[bi], cand_lines[ci]))
+                bi += 1
+                ci += 1
+                matched = True
+                break
+            if bi + lookahead < len(base_lines) and lines_match(base_lines[bi + lookahead], cand_lines[ci]):
+                bi += lookahead
+                pairs.append((base_lines[bi], cand_lines[ci]))
+                bi += 1
+                ci += 1
+                matched = True
+                break
+
+        if matched:
+            continue
+
+        pairs.append((base_lines[bi], cand_lines[ci]))
+        bi += 1
+        ci += 1
+
+    return pairs
+
+paired_lines = pair_lines(base_lines, cand_lines)
 
 line_alignments = []
 para_idx = 0
 token_idx = 0
 
-for line in base_lines:
-    tokens = [w["text"] for w in line["words"]]
+for base_line, _ in paired_lines:
+    tokens = [w["text"] for w in base_line["words"]]
     while para_idx < len(paragraphs) and token_idx >= len(paragraphs[para_idx]["tokens"]):
         para_idx += 1
         token_idx = 0
@@ -56,17 +114,27 @@ for line in base_lines:
     if slice_tokens == tokens:
         token_idx += len(tokens)
         line_alignments.append(paragraphs[para_idx]["alignment"])
-    else:
-        # if mismatch, try restarting at paragraph boundary
-        if tokens == para_tokens[: len(tokens)]:
-            para_idx += 1
+        continue
+
+    if tokens == para_tokens[: len(tokens)]:
+        para_idx += 1
+        token_idx = len(tokens)
+        line_alignments.append(paragraphs[para_idx - 1]["alignment"])
+        continue
+
+    # try resync by scanning ahead for a paragraph whose leading tokens match
+    found_alignment = "unknown"
+    for probe in range(para_idx + 1, len(paragraphs)):
+        probe_tokens = paragraphs[probe]["tokens"]
+        if tokens == probe_tokens[: len(tokens)]:
+            para_idx = probe
             token_idx = len(tokens)
-            line_alignments.append(paragraphs[para_idx - 1]["alignment"])
-        else:
-            line_alignments.append("unknown")
+            found_alignment = paragraphs[probe]["alignment"]
+            break
+    line_alignments.append(found_alignment)
 
 entries = []
-for line_index, (base_line, cand_line, align) in enumerate(zip(base_lines, cand_lines, line_alignments), 1):
+for line_index, ((base_line, cand_line), align) in enumerate(zip(paired_lines, line_alignments), 1):
     if align not in target_alignments:
         continue
     base_words = base_line["words"]
@@ -86,7 +154,8 @@ for line_index, (base_line, cand_line, align) in enumerate(zip(base_lines, cand_
                 "line_index": line_index,
                 "alignment": align,
                 "word": left_base["text"],
-                "width": left_base["width"],
+                "left_width": left_base["width"],
+                "right_width": right_base["width"],
                 "base_gap": base_gap,
                 "cand_gap": cand_gap,
                 "delta": delta,
@@ -107,7 +176,7 @@ entries.sort(key=lambda e: abs(e["delta"]), reverse=True)
 for entry in entries[: min(10, len(entries))]:
     print(
         f"line {entry['line_index']:02d} align={entry['alignment']:<10} word={entry['word']:<12} "
-        f"width={entry['width']:.2f} delta={entry['delta']:+.3f}"
+        f"width={entry['left_width']:.2f} delta={entry['delta']:+.3f}"
     )
 
 from collections import defaultdict
@@ -119,9 +188,12 @@ print("\nPer-alignment summary:")
 for alignment, group in groups.items():
     total = sum(entry["delta"] for entry in group)
     abs_total = sum(abs(entry["delta"]) for entry in group)
-    width_sum = sum(entry["width"] for entry in group)
+    width_sum = sum(entry["left_width"] for entry in group)
     avg_ratio = total / width_sum if width_sum else 0.0
     print(
         f"{alignment:<10} count={len(group):3d} sum_delta={total:+.3f} "
         f"sum|delta|={abs_total:.3f} delta/width={avg_ratio:+.4f}"
     )
+
+if args.json_output:
+    Path(args.json_output).write_text(json.dumps(entries, indent=2))

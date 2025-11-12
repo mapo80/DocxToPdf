@@ -18,11 +18,11 @@ internal sealed class ThemeFontScheme
     {
         var scheme = new ThemeFontScheme
         {
-            MajorLatin = "Calibri",
-            MajorEastAsia = "Calibri",
+            MajorLatin = "Aptos",
+            MajorEastAsia = "Aptos",
             MajorComplex = "Times New Roman",
-            MinorLatin = "Calibri",
-            MinorEastAsia = "Calibri",
+            MinorLatin = "Aptos",
+            MinorEastAsia = "Aptos",
             MinorComplex = "Times New Roman"
         };
 

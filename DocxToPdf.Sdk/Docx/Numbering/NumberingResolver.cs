@@ -22,18 +22,22 @@ internal sealed class NumberingResolver
     public NumberingResult? Resolve(Paragraph paragraph, ParagraphPropertySet baseParagraphProps, DocxStyleResolver styleResolver)
     {
         var numPr = paragraph.ParagraphProperties?.NumberingProperties;
-        if (numPr == null)
-            return null;
+        int? numId = numPr?.NumberingId?.Val?.Value;
+        int? level = numPr?.NumberingLevelReference?.Val?.Value;
 
-        var numId = numPr.NumberingId?.Val?.Value;
+        if (!numId.HasValue)
+            numId = baseParagraphProps.NumberingId;
+        if (!level.HasValue)
+            level = baseParagraphProps.NumberingLevel;
+
         if (!numId.HasValue)
             return null;
 
-        var level = (int)(numPr.NumberingLevelReference?.Val?.Value ?? 0);
+        var effectiveLevel = (int)(level ?? 0);
         if (!_definitions.TryGetInstance((int)numId.Value, out var instance))
             return null;
 
-        var levelDef = instance.ResolveLevel(_definitions, level);
+        var levelDef = instance.ResolveLevel(_definitions, effectiveLevel);
         if (levelDef == null)
             return null;
 
@@ -42,12 +46,12 @@ internal sealed class NumberingResolver
             state = new NumberingCounterState();
             _states[instance.AbstractId] = state;
         }
-        state.ResetLevelsAbove(level);
+        state.ResetLevelsAbove(effectiveLevel);
 
-        var counter = state.GetCounter(level);
+        var counter = state.GetCounter(effectiveLevel);
 
-        var startOverride = instance.GetStartOverride(level);
-        if (startOverride.HasValue && _appliedStartOverrides.Add((instance.Id, level)))
+        var startOverride = instance.GetStartOverride(effectiveLevel);
+        if (startOverride.HasValue && _appliedStartOverrides.Add((instance.Id, effectiveLevel)))
         {
             counter.ForceStart(startOverride.Value);
         }
@@ -56,7 +60,7 @@ internal sealed class NumberingResolver
 
         ApplyIndentOverrides(levelDef, baseParagraphProps);
 
-        var text = BuildLevelText(instance, level, levelDef, value, state);
+        var text = BuildLevelText(instance, effectiveLevel, levelDef, value, state);
         var runFormatting = levelDef.RunProperties?.ToFormatting(styleResolver) ?? RunFormatting.Default;
 
         NumberingDiagnostics.Write($"numId={instance.Id}, ilvl={level}, value={value}, text='{text}'");
@@ -76,7 +80,7 @@ internal sealed class NumberingResolver
     {
         if (levelDef.NumberFormat == NumberFormatValues.Bullet)
         {
-            return levelDef.LevelText;
+            return NormalizeBulletText(levelDef.LevelText);
         }
 
         var pattern = levelDef.LevelText ?? "%1.";
@@ -97,6 +101,32 @@ internal sealed class NumberingResolver
         }
 
         return regex.Replace(pattern, Replace);
+    }
+
+    private static string NormalizeBulletText(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return "\u2022";
+
+        var buffer = text.ToCharArray();
+        bool modified = false;
+        for (int i = 0; i < buffer.Length; i++)
+        {
+            var mapped = buffer[i] switch
+            {
+                '\uf0b7' => '\u2022', // Wingdings bullet
+                '\uf0d8' => '\u25C6', // diamond
+                '\uf0a7' => '\u25AA', // square bullet
+                _ => buffer[i]
+            };
+            if (mapped != buffer[i])
+            {
+                buffer[i] = mapped;
+                modified = true;
+            }
+        }
+
+        return modified ? new string(buffer) : text;
     }
 }
 

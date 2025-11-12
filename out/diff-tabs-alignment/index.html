@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/>
+<title>PDF Visual Diff</title>
+<style>
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:2rem;background:#f7f7f9;color:#111}
+h1{margin-top:0}
+table{border-collapse:collapse;width:100%;margin-top:1.25rem;font-size:0.95rem}
+th,td{border:1px solid #ddd;padding:0.35rem 0.5rem;text-align:left;vertical-align:top}
+th{background:#fafafa}
+.status-Pass{color:#0a6a0a;font-weight:600}
+.status-Warning{color:#b58900;font-weight:600}
+.status-Fail{color:#b00020;font-weight:600}
+.thumbs{display:flex;gap:0.5rem}
+.thumbs img{border:1px solid #ccc;background:#fff;max-width:160px;height:auto}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.5rem}
+.summary-card{background:#fff;border:1px solid #e0e0e0;border-radius:6px;padding:0.75rem;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.meta{margin:0;list-style:none;padding:0}
+.meta li{margin:0.2rem 0}
+.badge{display:inline-block;padding:0.1rem 0.4rem;border-radius:12px;font-size:0.8rem;background:#ececec}
+.badge.status-Pass{background:#e6f4ea;color:#1e4620}
+.badge.status-Warning{background:#fff4db;color:#8a6d00}
+.badge.status-Fail{background:#fde7e9;color:#8a051f}
+details summary{cursor:pointer;font-weight:600}
+.legend{margin-top:2rem;font-size:0.9rem;color:#333}
+.classification-badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.8rem;font-weight:600}
+.classification-Clean{background:#e6f4ea;color:#1e4620}
+.classification-Consistent{background:#fde7e9;color:#8a051f}
+.classification-EngineOnly{background:#fff4db;color:#8a6d00}
+.filters{margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;font-size:0.9rem}
+.geometry-section{margin-top:2rem}
+.geometry-panel{border:1px solid #e0e0e0;border-radius:6px;padding:1rem;margin-top:1rem;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.geom-controls{display:flex;gap:0.75rem;flex-wrap:wrap;font-size:0.85rem;margin-bottom:0.5rem}
+.geom-controls label{display:flex;align-items:center;gap:0.3rem}
+.geom-preview{position:relative;display:inline-block}
+.geom-preview img{display:block;max-width:320px;height:auto;border:1px solid #ddd;border-radius:4px}
+.geom-preview canvas{position:absolute;left:0;top:0;pointer-events:none}
+.geom-tables{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem}
+.geom-table{flex:1 1 300px;background:#fafafa;border:1px solid #e0e0e0;border-radius:4px;padding:0.5rem}
+.geom-table h4{margin:0 0 0.5rem 0;font-size:0.95rem}
+.geom-table table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.geom-table th,.geom-table td{border:1px solid #ddd;padding:0.25rem 0.35rem;text-align:left}
+.geom-table tbody tr:nth-child(odd){background:#fff}
+.geom-tag{padding:0.1rem 0.35rem;border-radius:999px;font-weight:600;font-size:0.8rem;display:inline-block}
+.geom-desc{font-size:0.8rem;color:#444}
+.geom-row-Missing{background:#fde0e0}
+.geom-row-Extra{background:#e1f5e1}
+.geom-row-Moved{background:#fff2da}
+.geom-row-Added{background:#ede7f6}
+.geom-row-Removed{background:#e3f2fd}
+.geom-row-Changed{background:#fbe9e7}
+.geom-tag-Missing{background:#d32f2f;color:#fff}
+.geom-tag-Extra{background:#2e7d32;color:#fff}
+.geom-tag-Moved{background:#f57c00;color:#fff}
+.geom-tag-Added{background:#7b1fa2;color:#fff}
+.geom-tag-Removed{background:#1565c0;color:#fff}
+.geom-tag-Changed{background:#6d4c41;color:#fff}
+.geom-explain{list-style:none;padding:0;margin:0.75rem 0;display:flex;gap:1rem;flex-wrap:wrap;font-size:0.85rem;color:#333}
+.geom-explain li{display:flex;align-items:center;gap:0.35rem}
+.geom-warning{margin-top:0.5rem;padding:0.5rem 0.75rem;border-radius:4px;border:1px solid #ffc107;background:#fff8e1;color:#7a5a00;font-size:0.85rem}
+</style>
+</head><body>
+<h1>PDF Visual Diff</h1>
+<section class="summary-grid">
+<article class="summary-card"><div>Baseline</div><div style="font-size:1.1rem;font-weight:600">/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/tabs-alignment.pdf</div></article>
+<article class="summary-card"><div>Candidate</div><div style="font-size:1.1rem;font-weight:600">/Users/politom/Documents/Workspace/personal/DocxToPdf/out/tabs-alignment.pdf</div></article>
+<article class="summary-card"><div>DPI</div><div style="font-size:1.1rem;font-weight:600">300</div></article>
+<article class="summary-card"><div>Pages Compared</div><div style="font-size:1.1rem;font-weight:600">1</div></article>
+<article class="summary-card"><div>Total AE Pixels</div><div style="font-size:1.1rem;font-weight:600">82847</div></article>
+<article class="summary-card"><div>Weighted AE %</div><div style="font-size:1.1rem;font-weight:600">0,984516</div></article>
+<article class="summary-card"><div>Consistent pages</div><div style="font-size:1.1rem;font-weight:600">1</div></article>
+<article class="summary-card"><div>Engine-only pages</div><div style="font-size:1.1rem;font-weight:600">0</div></article>
+<article class="summary-card"><div>Clean pages</div><div style="font-size:1.1rem;font-weight:600">0</div></article>
+<article class="summary-card"><div>Overall Status</div><div style="font-size:1.1rem;font-weight:600"><span class="badge status-Fail">Fail</span></div></article>
+</section>
+<ul class="meta">
+<li>Baseline pages: 1, Candidate pages: 1</li>
+<li>Page selection: all</li>
+<li>Fuzz: none | CropBox: disabled</li>
+<li>Thresholds → warning AE% ≤ 0.005, warning SSIM ≥ 0.995</li>
+<li>ImageMagick: Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org</li>
+<li>Generated at: 2025-11-11 13:27:40Z</li>
+<li>Geometry check (<span class="status-Fail">FAIL</span>) tolerance ±0,250 pt</li>
+</ul>
+<div class="filters">
+<label><input type="checkbox" data-filter value="Consistent" checked> Consistent</label>
+<label><input type="checkbox" data-filter value="EngineOnly" checked> Engine-only</label>
+<label><input type="checkbox" data-filter value="Clean" checked> Clean</label>
+</div>
+<table>
+<thead><tr><th>Page</th><th>Diff type</th><th>Renderer</th><th>Status</th><th>Pixels (WxH)</th><th>AE</th><th>AE %</th><th>MAE</th><th>RMSE</th><th>PSNR</th><th>SSIM</th><th>DSSIM</th><th>Images</th></tr></thead>
+<tbody class="page-block" data-page="1" data-classification="Consistent">
+<tr><td rowspan="2">1</td><td rowspan="2"><span class="classification-badge classification-Consistent">Consistent</span></td><td>Poppler (pdftoppm)</td><td class="status-Fail">Fail</td><td>2550×3300</td><td>82847</td><td>0,984516</td><td>6,294580E-003</td><td>7,331300E-002</td><td>22.6964</td><td>0.990622</td><td>0.00937806</td><td><div class="thumbs"><figure><a href="poppler/A/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-A.png" alt="Baseline"/></a><figcaption>Baseline</figcaption></figure><figure><a href="poppler/B/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-B.png" alt="Candidate"/></a><figcaption>Candidate</figcaption></figure><figure><a href="poppler/diff/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-diff.png" alt="Diff"/></a><figcaption>Diff</figcaption></figure><figure><a href="poppler/overlay/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-overlay.png" alt="Overlay"/></a><figcaption>Overlay</figcaption></figure></div></td></tr>
+<tr><td>Ghostscript (magick)</td><td class="status-Fail">Fail</td><td>2550×3300</td><td>69434</td><td>0,825122</td><td>5,993060E-003</td><td>7,219970E-002</td><td>22.8293</td><td>0.991116</td><td>0.00888448</td><td><div class="thumbs"><figure><a href="ghostscript/A/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-A.png" alt="Baseline"/></a><figcaption>Baseline</figcaption></figure><figure><a href="ghostscript/B/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-B.png" alt="Candidate"/></a><figcaption>Candidate</figcaption></figure><figure><a href="ghostscript/diff/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-diff.png" alt="Diff"/></a><figcaption>Diff</figcaption></figure><figure><a href="ghostscript/overlay/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-overlay.png" alt="Overlay"/></a><figcaption>Overlay</figcaption></figure></div></td></tr>
+</tbody>
+</table>
+<section class="geometry-section">
+<h2>Geometry (PDFBox)</h2>
+<p>Advanced analysis via Apache PDFBox. Tolerance: ±0,250 pt. Toggle layers to highlight problematic regions.</p>
+<article class="geometry-panel" data-page="1">
+<header><strong>Page 1</strong> · missing: 1, moved: 0, extra: 2, graphics Δ: 0</header>
+<div class="geom-controls">
+<label><input type="checkbox" data-geom-layer="missingWords" value="missingWords" checked> Missing words</label>
+<label><input type="checkbox" data-geom-layer="extraWords" value="extraWords" checked> Extra words</label>
+<label><input type="checkbox" data-geom-layer="movedWords" value="movedWords" checked> Moved words</label>
+<label><input type="checkbox" data-geom-layer="addedGraphics" value="addedGraphics" checked> Added graphics</label>
+<label><input type="checkbox" data-geom-layer="removedGraphics" value="removedGraphics" checked> Removed graphics</label>
+<label><input type="checkbox" data-geom-layer="changedGraphics" value="changedGraphics" checked> Changed graphics</label>
+</div>
+<ul class="geom-explain">
+<li><span class="geom-tag geom-tag-Missing">Missing</span> Baseline contiene il testo/la forma, il candidato no.</li>
+<li><span class="geom-tag geom-tag-Extra">Extra</span> Nuovo elemento nel candidato.</li>
+<li><span class="geom-tag geom-tag-Moved">Moved</span> Presente in entrambi ma spostato oltre la soglia.</li>
+</ul>
+<div class="geom-preview">
+<img src="poppler/thumbs/page-0001-A.png" alt="Geometry preview page 1"/>
+<canvas></canvas>
+</div>
+<div class="geom-tables">
+<div class="geom-table">
+<h4>Words</h4>
+<table>
+<thead><tr><th>Tipo</th><th>Significato</th><th>Testo</th><th>BBox</th><th>Δx</th><th>Δy</th><th>Δ</th></tr></thead><tbody>
+<tr class="geom-row-Missing"><td><span class="geom-tag geom-tag-Missing">Missing</span></td><td class="geom-desc">Presente solo nel baseline (sparito nel candidato).</td><td>tab✓</td><td>[125,5, 267,8, 26,0, 7,3]</td><td>0,00</td><td>0,00</td><td>0.00</td></tr>
+<tr class="geom-row-Extra"><td><span class="geom-tag geom-tag-Extra">Extra</span></td><td class="geom-desc">Presente solo nel candidato (baseline invariato).</td><td>tab</td><td>[125,6, 266,3, 17,0, 7,7]</td><td>0,00</td><td>0,00</td><td>0.00</td></tr>
+<tr class="geom-row-Extra"><td><span class="geom-tag geom-tag-Extra">Extra</span></td><td class="geom-desc">Presente solo nel candidato (baseline invariato).</td><td>✓</td><td>[144,0, 266,3, 9,0, 7,7]</td><td>0,00</td><td>0,00</td><td>0.00</td></tr>
+</tbody></table>
+</div>
+<div class="geom-table">
+<h4>Graphics</h4>
+<table>
+<thead><tr><th>Tipo</th><th>Significato</th><th>Baseline bbox</th><th>Candidate bbox</th><th>Stroke</th><th>Δ</th></tr></thead><tbody>
+</tbody></table>
+</div>
+</div>
+<script type="application/json" class="geometry-data">{&quot;width&quot;:2550,&quot;height&quot;:3300,&quot;missingWords&quot;:[{&quot;bbox&quot;:{&quot;x&quot;:125.484993,&quot;y&quot;:267.773976,&quot;width&quot;:25.955986,&quot;height&quot;:7.326},&quot;label&quot;:&quot;tab\u2713&quot;}],&quot;extraWords&quot;:[{&quot;bbox&quot;:{&quot;x&quot;:125.648438,&quot;y&quot;:266.325195,&quot;width&quot;:16.951172,&quot;height&quot;:7.708008},&quot;label&quot;:&quot;tab&quot;},{&quot;bbox&quot;:{&quot;x&quot;:144,&quot;y&quot;:266.325195,&quot;width&quot;:8.988281,&quot;height&quot;:7.708008},&quot;label&quot;:&quot;\u2713&quot;}],&quot;movedWords&quot;:[],&quot;addedGraphics&quot;:[],&quot;removedGraphics&quot;:[],&quot;changedGraphics&quot;:[]}</script>
+</article>
+</section>
+<section class="legend">
+<h2>Metric legend</h2>
+<p>AE counts raw differing pixels (AE% normalises by area). MAE/RMSE track average intensity error, PSNR grows with similarity. <strong>SSIM ↑ meglio</strong>, <strong>DSSIM ↓ meglio</strong>; analizzale insieme ad AE%/PSNR per stimare l'impatto visivo.</p>
+</section>
+<script>
+(() => {
+  const toggles = document.querySelectorAll('[data-filter]');
+  function updateTable() {
+    const active = Array.from(toggles).filter(t => t.checked).map(t => t.value);
+    document.querySelectorAll('tbody.page-block').forEach(block => {
+      block.style.display = active.includes(block.dataset.classification) ? '' : 'none';
+    });
+  }
+  toggles.forEach(t => t.addEventListener('change', updateTable));
+  updateTable();
+})();
+(() => {
+  const colors = {
+    missingWords: '#d32f2f',
+    extraWords: '#2e7d32',
+    movedWords: '#f57c00',
+    addedGraphics: '#7b1fa2',
+    removedGraphics: '#1565c0',
+    changedGraphics: '#6d4c41'
+  };
+  document.querySelectorAll('.geometry-panel').forEach(panel => {
+    const dataEl = panel.querySelector('.geometry-data');
+    const canvas = panel.querySelector('canvas');
+    const img = panel.querySelector('img');
+    if (!dataEl || !canvas || !img) return;
+    let data = null;
+    try {
+      data = JSON.parse(dataEl.textContent || '{}');
+    } catch (_e) {
+      return;
+    }
+    const ctx = canvas.getContext('2d');
+    function resize() {
+      canvas.width = img.clientWidth;
+      canvas.height = img.clientHeight;
+      draw();
+    }
+    function draw() {
+      if (!data) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const scaleX = canvas.width / (data.width || 1);
+      const scaleY = canvas.height / (data.height || 1);
+      panel.querySelectorAll('[data-geom-layer]').forEach(layer => {
+        if (!layer.checked) return;
+        const key = layer.dataset.geomLayer || layer.value;
+        const entries = data[key];
+        if (!entries) return;
+        ctx.strokeStyle = colors[layer.value] || '#d32f2f';
+        ctx.lineWidth = 2;
+        entries.forEach(entry => {
+          const box = entry.bbox;
+          if (!box) return;
+          const x = box.x * scaleX;
+          const y = canvas.height - (box.y + box.height) * scaleY;
+          const w = box.width * scaleX;
+          const h = box.height * scaleY;
+          ctx.strokeRect(x, y, w, h);
+        });
+      });
+    }
+    panel.querySelectorAll('[data-geom-layer]').forEach(layer => {
+      layer.addEventListener('change', draw);
+    });
+    if (img.complete) {
+      resize();
+    } else {
+      img.addEventListener('load', resize);
+    }
+    window.addEventListener('resize', resize);
+  });
+})();
+</script>
+</body></html>

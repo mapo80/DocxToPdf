@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/>
+<title>PDF Visual Diff</title>
+<style>
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:2rem;background:#f7f7f9;color:#111}
+h1{margin-top:0}
+table{border-collapse:collapse;width:100%;margin-top:1.25rem;font-size:0.95rem}
+th,td{border:1px solid #ddd;padding:0.35rem 0.5rem;text-align:left;vertical-align:top}
+th{background:#fafafa}
+.status-Pass{color:#0a6a0a;font-weight:600}
+.status-Warning{color:#b58900;font-weight:600}
+.status-Fail{color:#b00020;font-weight:600}
+.thumbs{display:flex;gap:0.5rem}
+.thumbs img{border:1px solid #ccc;background:#fff;max-width:160px;height:auto}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.5rem}
+.summary-card{background:#fff;border:1px solid #e0e0e0;border-radius:6px;padding:0.75rem;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.meta{margin:0;list-style:none;padding:0}
+.meta li{margin:0.2rem 0}
+.badge{display:inline-block;padding:0.1rem 0.4rem;border-radius:12px;font-size:0.8rem;background:#ececec}
+.badge.status-Pass{background:#e6f4ea;color:#1e4620}
+.badge.status-Warning{background:#fff4db;color:#8a6d00}
+.badge.status-Fail{background:#fde7e9;color:#8a051f}
+details summary{cursor:pointer;font-weight:600}
+.legend{margin-top:2rem;font-size:0.9rem;color:#333}
+.classification-badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.8rem;font-weight:600}
+.classification-Clean{background:#e6f4ea;color:#1e4620}
+.classification-Consistent{background:#fde7e9;color:#8a051f}
+.classification-EngineOnly{background:#fff4db;color:#8a6d00}
+.filters{margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;font-size:0.9rem}
+.geometry-section{margin-top:2rem}
+.geometry-panel{border:1px solid #e0e0e0;border-radius:6px;padding:1rem;margin-top:1rem;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.geom-controls{display:flex;gap:0.75rem;flex-wrap:wrap;font-size:0.85rem;margin-bottom:0.5rem}
+.geom-controls label{display:flex;align-items:center;gap:0.3rem}
+.geom-preview{position:relative;display:inline-block}
+.geom-preview img{display:block;max-width:320px;height:auto;border:1px solid #ddd;border-radius:4px}
+.geom-preview canvas{position:absolute;left:0;top:0;pointer-events:none}
+.geom-tables{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem}
+.geom-table{flex:1 1 300px;background:#fafafa;border:1px solid #e0e0e0;border-radius:4px;padding:0.5rem}
+.geom-table h4{margin:0 0 0.5rem 0;font-size:0.95rem}
+.geom-table table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.geom-table th,.geom-table td{border:1px solid #ddd;padding:0.25rem 0.35rem;text-align:left}
+.geom-table tbody tr:nth-child(odd){background:#fff}
+.geom-tag{padding:0.1rem 0.35rem;border-radius:999px;font-weight:600;font-size:0.8rem;display:inline-block}
+.geom-desc{font-size:0.8rem;color:#444}
+.geom-row-Missing{background:#fde0e0}
+.geom-row-Extra{background:#e1f5e1}
+.geom-row-Moved{background:#fff2da}
+.geom-row-Added{background:#ede7f6}
+.geom-row-Removed{background:#e3f2fd}
+.geom-row-Changed{background:#fbe9e7}
+.geom-tag-Missing{background:#d32f2f;color:#fff}
+.geom-tag-Extra{background:#2e7d32;color:#fff}
+.geom-tag-Moved{background:#f57c00;color:#fff}
+.geom-tag-Added{background:#7b1fa2;color:#fff}
+.geom-tag-Removed{background:#1565c0;color:#fff}
+.geom-tag-Changed{background:#6d4c41;color:#fff}
+.geom-explain{list-style:none;padding:0;margin:0.75rem 0;display:flex;gap:1rem;flex-wrap:wrap;font-size:0.85rem;color:#333}
+.geom-explain li{display:flex;align-items:center;gap:0.35rem}
+.geom-warning{margin-top:0.5rem;padding:0.5rem 0.75rem;border-radius:4px;border:1px solid #ffc107;background:#fff8e1;color:#7a5a00;font-size:0.85rem}
+</style>
+</head><body>
+<h1>PDF Visual Diff</h1>
+<section class="summary-grid">
+<article class="summary-card"><div>Baseline</div><div style="font-size:1.1rem;font-weight:600">/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/styles-theme.pdf</div></article>
+<article class="summary-card"><div>Candidate</div><div style="font-size:1.1rem;font-weight:600">/Users/politom/Documents/Workspace/personal/DocxToPdf/out/styles-theme.pdf</div></article>
+<article class="summary-card"><div>DPI</div><div style="font-size:1.1rem;font-weight:600">300</div></article>
+<article class="summary-card"><div>Pages Compared</div><div style="font-size:1.1rem;font-weight:600">1</div></article>
+<article class="summary-card"><div>Total AE Pixels</div><div style="font-size:1.1rem;font-weight:600">133857</div></article>
+<article class="summary-card"><div>Weighted AE %</div><div style="font-size:1.1rem;font-weight:600">1,537556</div></article>
+<article class="summary-card"><div>Consistent pages</div><div style="font-size:1.1rem;font-weight:600">1</div></article>
+<article class="summary-card"><div>Engine-only pages</div><div style="font-size:1.1rem;font-weight:600">0</div></article>
+<article class="summary-card"><div>Clean pages</div><div style="font-size:1.1rem;font-weight:600">0</div></article>
+<article class="summary-card"><div>Overall Status</div><div style="font-size:1.1rem;font-weight:600"><span class="badge status-Fail">Fail</span></div></article>
+</section>
+<ul class="meta">
+<li>Baseline pages: 1, Candidate pages: 1</li>
+<li>Page selection: all</li>
+<li>Fuzz: none | CropBox: disabled</li>
+<li>Thresholds → warning AE% ≤ 0.005, warning SSIM ≥ 0.995</li>
+<li>ImageMagick: Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org</li>
+<li>Generated at: 2025-11-11 16:47:50Z</li>
+<li>Geometry check (<span class="status-Fail">FAIL</span>) tolerance ±0,250 pt</li>
+</ul>
+<div class="filters">
+<label><input type="checkbox" data-filter value="Consistent" checked> Consistent</label>
+<label><input type="checkbox" data-filter value="EngineOnly" checked> Engine-only</label>
+<label><input type="checkbox" data-filter value="Clean" checked> Clean</label>
+</div>
+<table>
+<thead><tr><th>Page</th><th>Diff type</th><th>Renderer</th><th>Status</th><th>Pixels (WxH)</th><th>AE</th><th>AE %</th><th>MAE</th><th>RMSE</th><th>PSNR</th><th>SSIM</th><th>DSSIM</th><th>Images</th></tr></thead>
+<tbody class="page-block" data-page="1" data-classification="Consistent">
+<tr><td rowspan="2">1</td><td rowspan="2"><span class="classification-badge classification-Consistent">Consistent</span></td><td>Poppler (pdftoppm)</td><td class="status-Fail">Fail</td><td>2481×3509</td><td>133857</td><td>1,537556</td><td>8,892510E-003</td><td>8,482750E-002</td><td>21.4293</td><td>0.98354</td><td>0.0164605</td><td><div class="thumbs"><figure><a href="poppler/A/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-A.png" alt="Baseline"/></a><figcaption>Baseline</figcaption></figure><figure><a href="poppler/B/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-B.png" alt="Candidate"/></a><figcaption>Candidate</figcaption></figure><figure><a href="poppler/diff/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-diff.png" alt="Diff"/></a><figcaption>Diff</figcaption></figure><figure><a href="poppler/overlay/page-0001.png" target="_blank" rel="noreferrer"><img src="poppler/thumbs/page-0001-overlay.png" alt="Overlay"/></a><figcaption>Overlay</figcaption></figure></div></td></tr>
+<tr><td>Ghostscript (magick)</td><td class="status-Fail">Fail</td><td>2480×3508</td><td>132742</td><td>1,525798</td><td>9,667850E-003</td><td>8,968820E-002</td><td>20.9453</td><td>0.982481</td><td>0.0175188</td><td><div class="thumbs"><figure><a href="ghostscript/A/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-A.png" alt="Baseline"/></a><figcaption>Baseline</figcaption></figure><figure><a href="ghostscript/B/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-B.png" alt="Candidate"/></a><figcaption>Candidate</figcaption></figure><figure><a href="ghostscript/diff/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-diff.png" alt="Diff"/></a><figcaption>Diff</figcaption></figure><figure><a href="ghostscript/overlay/page-0001.png" target="_blank" rel="noreferrer"><img src="ghostscript/thumbs/page-0001-overlay.png" alt="Overlay"/></a><figcaption>Overlay</figcaption></figure></div></td></tr>
+</tbody>
+</table>
+<section class="geometry-section">
+<h2>Geometry (PDFBox)</h2>
+<p>Advanced analysis via Apache PDFBox. Tolerance: ±0,250 pt. Toggle layers to highlight problematic regions.</p>
+<article class="geometry-panel" data-page="1">
+<header><strong>Page 1</strong> · missing: 2, moved: 34, extra: 2, graphics Δ: 2</header>
+<div class="geom-controls">
+<label><input type="checkbox" data-geom-layer="missingWords" value="missingWords" checked> Missing words</label>
+<label><input type="checkbox" data-geom-layer="extraWords" value="extraWords" checked> Extra words</label>
+<label><input type="checkbox" data-geom-layer="movedWords" value="movedWords" checked> Moved words</label>
+<label><input type="checkbox" data-geom-layer="addedGraphics" value="addedGraphics" checked> Added graphics</label>
+<label><input type="checkbox" data-geom-layer="removedGraphics" value="removedGraphics" checked> Removed graphics</label>
+<label><input type="checkbox" data-geom-layer="changedGraphics" value="changedGraphics" checked> Changed graphics</label>
+</div>
+<ul class="geom-explain">
+<li><span class="geom-tag geom-tag-Missing">Missing</span> Baseline contiene il testo/la forma, il candidato no.</li>
+<li><span class="geom-tag geom-tag-Extra">Extra</span> Nuovo elemento nel candidato.</li>
+<li><span class="geom-tag geom-tag-Moved">Moved</span> Presente in entrambi ma spostato oltre la soglia.</li>
+</ul>
+<div class="geom-preview">
+<img src="poppler/thumbs/page-0001-A.png" alt="Geometry preview page 1"/>
+<canvas></canvas>
+</div>
+<div class="geom-tables">
+<div class="geom-table">
+<h4>Words</h4>
+<table>
+<thead><tr><th>Tipo</th><th>Significato</th><th>Testo</th><th>BBox</th><th>Δx</th><th>Δy</th><th>Δ</th></tr></thead><tbody>
+<tr class="geom-row-Missing"><td><span class="geom-tag geom-tag-Missing">Missing</span></td><td class="geom-desc">Presente solo nel baseline (sparito nel candidato).</td><td>Kickoff</td><td>[110,0, 102,5, 40,1, 7,0]</td><td>0,00</td><td>0,00</td><td>0.00</td></tr>
+<tr class="geom-row-Missing"><td><span class="geom-tag geom-tag-Missing">Missing</span></td><td class="geom-desc">Presente solo nel baseline (sparito nel candidato).</td><td>Palette</td><td>[156,7, 131,8, 38,8, 6,5]</td><td>0,00</td><td>0,00</td><td>0.00</td></tr>
+<tr class="geom-row-Extra"><td><span class="geom-tag geom-tag-Extra">Extra</span></td><td class="geom-desc">Presente solo nel candidato (baseline invariato).</td><td>Kickoﬀ</td><td>[109,7, 100,5, 39,2, 8,8]</td><td>0,00</td><td>0,00</td><td>0.00</td></tr>
+<tr class="geom-row-Extra"><td><span class="geom-tag geom-tag-Extra">Extra</span></td><td class="geom-desc">Presente solo nel candidato (baseline invariato).</td><td>Pale e</td><td>[156,5, 129,8, 37,7, 8,2]</td><td>0,00</td><td>0,00</td><td>0.00</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>Centered</td><td>[239,5, 209,7, 49,2, 8,2]</td><td>0,13</td><td>9,03</td><td>9.03</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>status</td><td>[291,6, 209,7, 32,4, 8,2]</td><td>-0,30</td><td>9,03</td><td>9.03</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>block</td><td>[327,0, 209,7, 28,8, 8,2]</td><td>-0,46</td><td>9,03</td><td>9.03</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>First-line</td><td>[144,0, 236,9, 43,2, 7,3]</td><td>-0,16</td><td>9,02</td><td>9.02</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>indent</td><td>[189,6, 236,9, 30,5, 7,3]</td><td>-0,17</td><td>9,02</td><td>9.02</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>paragraph</td><td>[222,5, 236,9, 49,0, 7,3]</td><td>-0,26</td><td>9,02</td><td>9.02</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>to</td><td>[273,9, 236,9, 9,6, 7,3]</td><td>-0,04</td><td>9,02</td><td>9.02</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>validate</td><td>[285,9, 236,9, 37,5, 7,3]</td><td>-0,07</td><td>9,02</td><td>9.02</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>spacing</td><td>[325,8, 236,9, 35,7, 7,3]</td><td>-0,05</td><td>9,02</td><td>9.02</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>logic.</td><td>[363,9, 236,9, 24,4, 7,3]</td><td>-0,06</td><td>9,02</td><td>9.02</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>Hanging</td><td>[90,0, 261,8, 39,1, 7,3]</td><td>-0,18</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>indent</td><td>[131,6, 261,8, 30,5, 7,3]</td><td>-0,15</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>sample</td><td>[164,5, 261,8, 33,7, 7,3]</td><td>-0,13</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>that</td><td>[200,6, 261,8, 18,9, 7,3]</td><td>-0,06</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>should</td><td>[221,9, 261,8, 31,8, 7,3]</td><td>-0,08</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>wrap</td><td>[256,2, 261,8, 24,6, 7,3]</td><td>0,02</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>and</td><td>[283,1, 261,8, 17,6, 7,3]</td><td>-0,07</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>push</td><td>[303,2, 261,8, 23,0, 7,3]</td><td>0,08</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>subsequent</td><td>[328,6, 261,8, 54,2, 7,3]</td><td>-0,05</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>lines</td><td>[385,2, 261,8, 22,3, 7,3]</td><td>0,04</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>to</td><td>[409,9, 261,8, 9,6, 7,3]</td><td>-0,01</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>the</td><td>[421,9, 261,8, 15,2, 7,3]</td><td>0,00</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>right</td><td>[439,5, 261,8, 22,8, 7,3]</td><td>0,15</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>for</td><td>[464,8, 261,8, 13,7, 7,3]</td><td>0,20</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>a</td><td>[480,9, 261,8, 5,4, 7,3]</td><td>0,27</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>clean</td><td>[488,7, 261,8, 24,7, 7,3]</td><td>0,13</td><td>8,85</td><td>8.85</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>list-like</td><td>[108,0, 276,6, 35,3, 7,3]</td><td>-0,08</td><td>8,93</td><td>8.93</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>appearance.</td><td>[145,7, 276,6, 56,9, 7,3]</td><td>-0,07</td><td>8,93</td><td>8.93</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>Hyperlink</td><td>[72,0, 309,4, 47,1, 7,3]</td><td>-0,10</td><td>8,99</td><td>8.99</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>color</td><td>[121,5, 309,4, 24,1, 7,3]</td><td>-0,09</td><td>8,99</td><td>8.99</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>mapping</td><td>[148,0, 309,4, 41,4, 7,3]</td><td>0,03</td><td>8,99</td><td>8.99</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>vs.</td><td>[191,8, 309,4, 12,5, 7,3]</td><td>-0,26</td><td>8,99</td><td>8.99</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>followed</td><td>[206,7, 309,4, 41,0, 7,3]</td><td>-0,26</td><td>8,99</td><td>8.99</td></tr>
+<tr class="geom-row-Moved"><td><span class="geom-tag geom-tag-Moved">Moved</span></td><td class="geom-desc">Stessa parola ma spostata oltre la soglia di tolleranza.</td><td>state.</td><td>[250,1, 309,4, 25,2, 7,3]</td><td>-0,18</td><td>8,99</td><td>8.99</td></tr>
+</tbody></table>
+</div>
+<div class="geom-table">
+<h4>Graphics</h4>
+<table>
+<thead><tr><th>Tipo</th><th>Significato</th><th>Baseline bbox</th><th>Candidate bbox</th><th>Stroke</th><th>Δ</th></tr></thead><tbody>
+<tr class="geom-row-Removed"><td><span class="geom-tag geom-tag-Removed">Removed</span></td><td class="geom-desc">Elemento presente solo nel baseline.</td><td>[72,0, 533,9, 117,6, 0,5]</td><td>—</td><td>1,00</td><td>0.00</td></tr>
+<tr class="geom-row-Removed"><td><span class="geom-tag geom-tag-Removed">Removed</span></td><td class="geom-desc">Elemento presente solo nel baseline.</td><td>[189,6, 533,9, 85,8, 0,5]</td><td>—</td><td>1,00</td><td>0.00</td></tr>
+</tbody></table>
+</div>
+</div>
+<script type="application/json" class="geometry-data">{&quot;width&quot;:2481,&quot;height&quot;:3509,&quot;missingWords&quot;:[{&quot;bbox&quot;:{&quot;x&quot;:110.006996,&quot;y&quot;:102.530029,&quot;width&quot;:40.137978,&quot;height&quot;:7},&quot;label&quot;:&quot;Kickoff&quot;},{&quot;bbox&quot;:{&quot;x&quot;:156.707016,&quot;y&quot;:131.799988,&quot;width&quot;:38.766006,&quot;height&quot;:6.5},&quot;label&quot;:&quot;Palette&quot;}],&quot;extraWords&quot;:[{&quot;bbox&quot;:{&quot;x&quot;:109.652344,&quot;y&quot;:100.484375,&quot;width&quot;:39.224609,&quot;height&quot;:8.845703},&quot;label&quot;:&quot;Kicko\uFB00&quot;},{&quot;bbox&quot;:{&quot;x&quot;:156.474609,&quot;y&quot;:129.817383,&quot;width&quot;:37.69873,&quot;height&quot;:8.213867},&quot;label&quot;:&quot;Pale\u0000e&quot;}],&quot;movedWords&quot;:[{&quot;bbox&quot;:{&quot;x&quot;:239.480072,&quot;y&quot;:209.727661,&quot;width&quot;:49.200684,&quot;height&quot;:8.213867},&quot;label&quot;:&quot;Centered&quot;},{&quot;bbox&quot;:{&quot;x&quot;:291.632416,&quot;y&quot;:209.727661,&quot;width&quot;:32.404785,&quot;height&quot;:8.213867},&quot;label&quot;:&quot;status&quot;},{&quot;bbox&quot;:{&quot;x&quot;:326.976166,&quot;y&quot;:209.727661,&quot;width&quot;:28.837402,&quot;height&quot;:8.213867},&quot;label&quot;:&quot;block&quot;},{&quot;bbox&quot;:{&quot;x&quot;:144,&quot;y&quot;:236.933716,&quot;width&quot;:43.156738,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;First-line&quot;},{&quot;bbox&quot;:{&quot;x&quot;:189.579102,&quot;y&quot;:236.933716,&quot;width&quot;:30.523926,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;indent&quot;},{&quot;bbox&quot;:{&quot;x&quot;:222.525391,&quot;y&quot;:236.933716,&quot;width&quot;:48.952148,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;paragraph&quot;},{&quot;bbox&quot;:{&quot;x&quot;:273.899902,&quot;y&quot;:236.933716,&quot;width&quot;:9.560547,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;to&quot;},{&quot;bbox&quot;:{&quot;x&quot;:285.882813,&quot;y&quot;:236.933716,&quot;width&quot;:37.51709,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;validate&quot;},{&quot;bbox&quot;:{&quot;x&quot;:325.822266,&quot;y&quot;:236.933716,&quot;width&quot;:35.696289,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;spacing&quot;},{&quot;bbox&quot;:{&quot;x&quot;:363.940918,&quot;y&quot;:236.933716,&quot;width&quot;:24.422363,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;logic.&quot;},{&quot;bbox&quot;:{&quot;x&quot;:90,&quot;y&quot;:261.76416,&quot;width&quot;:39.128418,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;Hanging&quot;},{&quot;bbox&quot;:{&quot;x&quot;:131.550781,&quot;y&quot;:261.76416,&quot;width&quot;:30.523926,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;indent&quot;},{&quot;bbox&quot;:{&quot;x&quot;:164.49707,&quot;y&quot;:261.76416,&quot;width&quot;:33.719727,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;sample&quot;},{&quot;bbox&quot;:{&quot;x&quot;:200.63916,&quot;y&quot;:261.76416,&quot;width&quot;:18.884766,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;that&quot;},{&quot;bbox&quot;:{&quot;x&quot;:221.946289,&quot;y&quot;:261.76416,&quot;width&quot;:31.796875,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;should&quot;},{&quot;bbox&quot;:{&quot;x&quot;:256.165527,&quot;y&quot;:261.76416,&quot;width&quot;:24.556641,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;wrap&quot;},{&quot;bbox&quot;:{&quot;x&quot;:283.144531,&quot;y&quot;:261.76416,&quot;width&quot;:17.611816,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;and&quot;},{&quot;bbox&quot;:{&quot;x&quot;:303.178711,&quot;y&quot;:261.76416,&quot;width&quot;:22.988281,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;push&quot;},{&quot;bbox&quot;:{&quot;x&quot;:328.589355,&quot;y&quot;:261.76416,&quot;width&quot;:54.231934,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;subsequent&quot;},{&quot;bbox&quot;:{&quot;x&quot;:385.243652,&quot;y&quot;:261.76416,&quot;width&quot;:22.273926,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;lines&quot;},{&quot;bbox&quot;:{&quot;x&quot;:409.939941,&quot;y&quot;:261.76416,&quot;width&quot;:9.560547,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;to&quot;},{&quot;bbox&quot;:{&quot;x&quot;:421.922852,&quot;y&quot;:261.76416,&quot;width&quot;:15.157227,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;the&quot;},{&quot;bbox&quot;:{&quot;x&quot;:439.502441,&quot;y&quot;:261.76416,&quot;width&quot;:22.83252,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;right&quot;},{&quot;bbox&quot;:{&quot;x&quot;:464.757324,&quot;y&quot;:261.76416,&quot;width&quot;:13.717773,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;for&quot;},{&quot;bbox&quot;:{&quot;x&quot;:480.897461,&quot;y&quot;:261.76416,&quot;width&quot;:5.371094,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;a&quot;},{&quot;bbox&quot;:{&quot;x&quot;:488.690918,&quot;y&quot;:261.76416,&quot;width&quot;:24.712402,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;clean&quot;},{&quot;bbox&quot;:{&quot;x&quot;:108,&quot;y&quot;:276.594543,&quot;width&quot;:35.320313,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;list-like&quot;},{&quot;bbox&quot;:{&quot;x&quot;:145.742676,&quot;y&quot;:276.594543,&quot;width&quot;:56.874512,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;appearance.&quot;},{&quot;bbox&quot;:{&quot;x&quot;:72,&quot;y&quot;:309.424927,&quot;width&quot;:47.077637,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;Hyperlink&quot;},{&quot;bbox&quot;:{&quot;x&quot;:121.5,&quot;y&quot;:309.424927,&quot;width&quot;:24.0625,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;color&quot;},{&quot;bbox&quot;:{&quot;x&quot;:147.984863,&quot;y&quot;:309.424927,&quot;width&quot;:41.389648,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;mapping&quot;},{&quot;bbox&quot;:{&quot;x&quot;:191.796875,&quot;y&quot;:309.424927,&quot;width&quot;:12.525391,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;vs.&quot;},{&quot;bbox&quot;:{&quot;x&quot;:206.744629,&quot;y&quot;:309.424927,&quot;width&quot;:40.965332,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;followed&quot;},{&quot;bbox&quot;:{&quot;x&quot;:250.132324,&quot;y&quot;:309.424927,&quot;width&quot;:25.163574,&quot;height&quot;:7.331543},&quot;label&quot;:&quot;state.&quot;}],&quot;addedGraphics&quot;:[],&quot;removedGraphics&quot;:[{&quot;bbox&quot;:{&quot;x&quot;:72.025002,&quot;y&quot;:533.900024,&quot;width&quot;:117.550011,&quot;height&quot;:0.5},&quot;label&quot;:&quot;fill&quot;},{&quot;bbox&quot;:{&quot;x&quot;:189.580002,&quot;y&quot;:533.900024,&quot;width&quot;:85.800003,&quot;height&quot;:0.5},&quot;label&quot;:&quot;fill&quot;}],&quot;changedGraphics&quot;:[]}</script>
+</article>
+</section>
+<section class="legend">
+<h2>Metric legend</h2>
+<p>AE counts raw differing pixels (AE% normalises by area). MAE/RMSE track average intensity error, PSNR grows with similarity. <strong>SSIM ↑ meglio</strong>, <strong>DSSIM ↓ meglio</strong>; analizzale insieme ad AE%/PSNR per stimare l'impatto visivo.</p>
+</section>
+<script>
+(() => {
+  const toggles = document.querySelectorAll('[data-filter]');
+  function updateTable() {
+    const active = Array.from(toggles).filter(t => t.checked).map(t => t.value);
+    document.querySelectorAll('tbody.page-block').forEach(block => {
+      block.style.display = active.includes(block.dataset.classification) ? '' : 'none';
+    });
+  }
+  toggles.forEach(t => t.addEventListener('change', updateTable));
+  updateTable();
+})();
+(() => {
+  const colors = {
+    missingWords: '#d32f2f',
+    extraWords: '#2e7d32',
+    movedWords: '#f57c00',
+    addedGraphics: '#7b1fa2',
+    removedGraphics: '#1565c0',
+    changedGraphics: '#6d4c41'
+  };
+  document.querySelectorAll('.geometry-panel').forEach(panel => {
+    const dataEl = panel.querySelector('.geometry-data');
+    const canvas = panel.querySelector('canvas');
+    const img = panel.querySelector('img');
+    if (!dataEl || !canvas || !img) return;
+    let data = null;
+    try {
+      data = JSON.parse(dataEl.textContent || '{}');
+    } catch (_e) {
+      return;
+    }
+    const ctx = canvas.getContext('2d');
+    function resize() {
+      canvas.width = img.clientWidth;
+      canvas.height = img.clientHeight;
+      draw();
+    }
+    function draw() {
+      if (!data) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const scaleX = canvas.width / (data.width || 1);
+      const scaleY = canvas.height / (data.height || 1);
+      panel.querySelectorAll('[data-geom-layer]').forEach(layer => {
+        if (!layer.checked) return;
+        const key = layer.dataset.geomLayer || layer.value;
+        const entries = data[key];
+        if (!entries) return;
+        ctx.strokeStyle = colors[layer.value] || '#d32f2f';
+        ctx.lineWidth = 2;
+        entries.forEach(entry => {
+          const box = entry.bbox;
+          if (!box) return;
+          const x = box.x * scaleX;
+          const y = canvas.height - (box.y + box.height) * scaleY;
+          const w = box.width * scaleX;
+          const h = box.height * scaleY;
+          ctx.strokeRect(x, y, w, h);
+        });
+      });
+    }
+    panel.querySelectorAll('[data-geom-layer]').forEach(layer => {
+      layer.addEventListener('change', draw);
+    });
+    if (img.complete) {
+      resize();
+    } else {
+      img.addEventListener('load', resize);
+    }
+    window.addEventListener('resize', resize);
+  });
+})();
+</script>
+</body></html>

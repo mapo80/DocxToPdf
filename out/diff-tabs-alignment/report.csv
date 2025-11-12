@@ -1,0 +1,3 @@
+page,renderer,classification,width,height,dpi,ae_pixels,ae_percent,mae,rmse,psnr,ssim,dssim,status,path_img_A,path_img_B,path_img_diff,path_img_overlay
+1,Poppler,Consistent,2550,3300,300,82847,0.9845157457,0.00629458,0.073313,22.6964,0.990622,0.00937806,Fail,poppler/A/page-0001.png,poppler/B/page-0001.png,poppler/diff/page-0001.png,poppler/overlay/page-0001.png
+1,Ghostscript,Consistent,2550,3300,300,69434,0.8251218063,0.00599306,0.0721997,22.8293,0.991116,0.00888448,Fail,ghostscript/A/page-0001.png,ghostscript/B/page-0001.png,ghostscript/diff/page-0001.png,ghostscript/overlay/page-0001.png

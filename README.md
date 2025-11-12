@@ -57,6 +57,12 @@ Il progetto implementa un convertitore DOCX → PDF completamente funzionante, c
 - **Antialiasing**: ottimizzato per output PDF (grayscale, non subpixel LCD)
 - **Testo vettoriale**: tutto il testo è renderizzato come vettori (selezionabile, non raster)
 
+### Output PDF & testo selezionabile
+- **Skia PDF backend** riceve i run shapati direttamente via `SKCanvas.DrawShapedText`, quindi nel PDF vengono emessi operatori testuali (`BT/Tf/Tj`) con le stesse coordinate calcolate dal layout engine.
+- **Font embedded + ToUnicode**: il backend incorpora il font (o subset) e genera automaticamente il `ToUnicode CMap`, rendendo il testo ricercabile/coppiabile.
+- **PDF/A a richiesta**: impostando `PdfMetadata.PdfACompatible = true` (o passando `--pdfa` nella demo) Skia forza l'emissione in modalità PDF/A-1b/2b garantendo l'embedding dei font.
+- **Fallback diagnosticato**: se una formattazione obbliga il convertitore a disegnare i glifi come path (es. letter-spacing custom), viene loggato un warning esplicito così da sapere quali run non saranno selezionabili.
+
 ## Demo e utilizzo
 
 ### 1. Demo "Hello, World"
@@ -85,6 +91,10 @@ Esempio con file di sistema:
 dotnet run /path/to/documento.docx /path/to/output.pdf
 ```
 
+Opzioni utili (`dotnet run render ...`):
+- `--pdfa` / `--pdfa2b`: chiede al writer di produrre un PDF/A con font embedded (testo sempre selezionabile).
+- `--log-numbering`, `--log-tabs`, `--log-spacing`: abilitano i log diagnostici del layout.
+
 **Formattazione supportata:**
 - ✅ Dimensione pagina e orientamento (`w:pgSz`)
 - ✅ Margini del documento (`w:pgMar`)
@@ -106,10 +116,12 @@ Il comando `render` consente di testare rapidamente i documenti di esempio focal
 cd DocxToPdf.Demo
 dotnet run render samples/styles-theme.docx -o out/styles-theme.pdf
 dotnet run render samples/styles-theme-alt.docx -o out/styles-theme-alt.pdf
+dotnet run render samples/layout-stress.docx -o out/layout-stress.pdf
 ```
 
 - `styles-theme.docx`: tema Office di default (Calibri/Cambria, accenti blu/arancio)
 - `styles-theme-alt.docx`: tema personalizzato (Times/Arial, palette verde/corallo) per verificare il mapping major/minor + colori accent.
+- `layout-stress.docx`: caso complesso con font misti (Aptos, Times, Calibri), line spacing 1.0‑1.5, bullets/numbering, tab stop multipli, tabella e una riga con positional tab + simbolo ✓ per verificare il caso critico.
 
 ### 4. Sample numbering
 
@@ -257,6 +269,24 @@ DocxToPdf/
 └── README.md
 ```
 
+### 6. Estrazione metrica (PdfBox)
+
+Per investigare i gap tra un PDF generato e il riferimento Word usiamo `scripts/extract-spacing.py`, uno helper che invoca PdfBox/GeometryExtractor e salva in JSON i bounding box, i font e le larghezze di ogni parola (baseline + candidato). Esempio:
+
+```bash
+./scripts/extract-spacing.py \
+  --base samples/golden-word/bullets-basic.pdf \
+  --candidate out/bullets-basic.pdf \
+  --pages 1 \
+  --output out/diff-bullets-spacing.json
+```
+
+Il report risultante (`out/diff-bullets-spacing.json`) contiene:
+- `base.pages[].words[]` – coordinate e width estratte dal PDF Word.
+- `candidate...` – stessi dati sul nostro output.
+
+Queste metriche ci permettono di derivare e verificare gli aggiustamenti di spacing necessari per raggiungere il “pixel perfect” (es. numeri di lista, tab stop, coppie di glifi).
+
 ## Roadmap
 
 ### ✅ Fase 1 - Kernel PDF & Text Shaping (Completata)
@@ -276,6 +306,7 @@ DocxToPdf/
 - [x] Layout engine con wrapping greedy (word breaking)
 - [x] Paginazione automatica
 - [x] Demo: conversione DOCX → PDF completa
+- [x] Output PDF con testo selezionabile/ricercabile grazie a SkiaSharp + ToUnicode
 
 ### 🔄 Fase 3 - Miglioramenti tipografici (Prossima)
 - [ ] Tipografia avanzata: **UAX #14** (line breaking), **UAX #9** (bidi)
@@ -299,7 +330,7 @@ DocxToPdf/
 - [ ] Header e footer (`w:hdr`, `w:ftr`)
 - [ ] Immagini embedded (`w:drawing`, `w:pict`)
 - [ ] Stili DOCX completi (`w:style`)
-- [ ] Font embedding nel PDF
+- [ ] Controllo avanzato dell'embedding font (subset tuning, diagnostica)
 - [ ] Test di regressione visivi automatizzati
 
 ## Requisiti
@@ -313,6 +344,7 @@ Il progetto attualmente include:
 - **Smoke test manuale**: eseguire la demo e aprire `hello.pdf` in un viewer
 - **Verifica testo selezionabile**: il testo nel PDF deve essere selezionabile (non immagine)
 - **Verifica rendering**: caratteri speciali, legature e emoji devono renderizzare correttamente
+- **Test automatici PdfPig**: `PdfSelectableTextTests` apre il PDF generato da `samples/lorem.docx` con UglyToad.PdfPig e verifica che lettere/parole siano estratte correttamente (`dotnet test DocxToPdf.Tests/DocxToPdf.Tests.csproj --filter PdfSelectableTextTests -p:CollectCoverage=false`).
 
 Test automatizzati pianificati per le fasi successive.
 

@@ -1,292 +1,226 @@
 {
-  "passed": false,
-  "exitCode": 1,
-  "diffPdf": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/diff.pdf",
-  "stdout": "page 0 has 7299 pixels that differ\npage 0 differs\n1 of 1 pages differ.\n",
-  "stderr": "",
-  "baseline": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden/bullets-basic.pdf",
-  "candidate": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/bullets-basic-sdk.pdf",
-  "pages": null,
-  "dpi": 300,
-  "difference": {
-    "totalPixels": 8415000,
-    "differingPixels": 7299,
-    "ratio": 0.000867379679144385,
-    "percent": 0.0867379679144385
+  "generatedAt": "2025-11-11T16:45:57.892442+00:00",
+  "summary": {
+    "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/bullets-basic.pdf",
+    "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/bullets-basic.pdf",
+    "BaselinePageCount": 1,
+    "CandidatePageCount": 1,
+    "ComparedPages": [
+      1
+    ],
+    "MissingFromBaseline": [],
+    "MissingFromCandidate": [],
+    "TotalAePixels": 18684,
+    "WeightedAePercent": 0.21470136699179068,
+    "ConsistentPages": 1,
+    "EngineOnlyPages": 0,
+    "CleanPages": 0,
+    "OverallStatus": 2,
+    "PageRangeExpression": null,
+    "Fuzz": null,
+    "UseCropBox": false,
+    "Dpi": 300,
+    "GeometryRequested": true,
+    "Thresholds": {
+      "WarningAePercent": 0.005,
+      "WarningSsim": 0.995,
+      "PassSsimTolerance": 1E-06,
+      "PassDssimTolerance": 1E-06
+    },
+    "SsimOptions": {
+      "Radius": null,
+      "Sigma": null,
+      "K1": null,
+      "K2": null,
+      "HasValues": false
+    },
+    "Tools": {
+      "ImageMagickVersion": "Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org",
+      "PopplerVersion": "pdftoppm version 25.11.0",
+      "GhostscriptVersion": "gs 10.05.1",
+      "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
+    },
+    "GeneratedAtUtc": "2025-11-11T16:45:57.892442+00:00",
+    "GeometryAnalysis": {
+      "TolerancePt": 0.25,
+      "Passed": false,
+      "Pages": [
+        {
+          "PageNumber": 1,
+          "MissingWords": [],
+          "ExtraWords": [],
+          "MovedWords": [],
+          "AddedGraphics": [
+            {
+              "Type": "fill",
+              "Baseline": null,
+              "Candidate": {
+                "X": 108.796875,
+                "Y": 734.734863,
+                "Width": 5.203125,
+                "Height": 5.203125,
+                "CenterX": 111.3984375,
+                "CenterY": 737.3364255
+              },
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "StrokeWidth": 1,
+              "StrokeColor": "#000000",
+              "FillColor": "#000000"
+            }
+          ],
+          "RemovedGraphics": [],
+          "ChangedGraphics": [],
+          "WordStatus": 4,
+          "WordStatusNote": "Oltre la met\u00E0 del testo del PDF di riferimento non \u00E8 stato trovato nel candidato. Il confronto parole \u00E8 disattivato per evitare falsi positivi (probabile testo rasterizzato/vettoriale).",
+          "IsClean": false
+        }
+      ]
+    }
   },
-  "pageStats": [
+  "pages": [
     {
-      "pageNumber": 1,
-      "widthPx": 2550,
-      "heightPx": 3300,
-      "totalPixels": 8415000,
-      "diffPixels": 7299,
-      "ratio": 0.000867379679144385,
-      "percent": 0.0867379679144385
+      "PageNumber": 1,
+      "Poppler": {
+        "Engine": 0,
+        "Width": 2480,
+        "Height": 3509,
+        "Dpi": 300,
+        "AePixels": 18684,
+        "AePercent": 0.21470136699179068,
+        "Mae": 0.00157467,
+        "Rmse": 0.0375674,
+        "Psnr": 28.5038,
+        "Ssim": 0.9978624,
+        "Dssim": 0.0021376,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8702320
+      },
+      "Ghostscript": {
+        "Engine": 1,
+        "Width": 2479,
+        "Height": 3508,
+        "Dpi": 300,
+        "AePixels": 16712,
+        "AePercent": 0.19217297591674282,
+        "Mae": 0.00157793,
+        "Rmse": 0.0381956,
+        "Psnr": 28.3597,
+        "Ssim": 0.99787543,
+        "Dssim": 0.00212457,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8696332
+      },
+      "Classification": 1,
+      "Renderers": [
+        {
+          "Engine": 0,
+          "Width": 2480,
+          "Height": 3509,
+          "Dpi": 300,
+          "AePixels": 18684,
+          "AePercent": 0.21470136699179068,
+          "Mae": 0.00157467,
+          "Rmse": 0.0375674,
+          "Psnr": 28.5038,
+          "Ssim": 0.9978624,
+          "Dssim": 0.0021376,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8702320
+        },
+        {
+          "Engine": 1,
+          "Width": 2479,
+          "Height": 3508,
+          "Dpi": 300,
+          "AePixels": 16712,
+          "AePercent": 0.19217297591674282,
+          "Mae": 0.00157793,
+          "Rmse": 0.0381956,
+          "Psnr": 28.3597,
+          "Ssim": 0.99787543,
+          "Dssim": 0.00212457,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8696332
+        }
+      ]
     }
   ],
   "geometry": {
-    "passed": false,
-    "tolerancePt": 0.25,
-    "pages": [
+    "TolerancePt": 0.25,
+    "Passed": false,
+    "Pages": [
       {
-        "pageNumber": 1,
-        "expectedWordCount": 9,
-        "actualWordCount": 9,
-        "mismatches": [
+        "PageNumber": 1,
+        "MissingWords": [],
+        "ExtraWords": [],
+        "MovedWords": [],
+        "AddedGraphics": [
           {
-            "index": 0,
-            "expectedText": "\u2022",
-            "actualText": "\u2022",
-            "expected": {
-              "x": 90.1,
-              "y": 711.75,
-              "width": 5.049000000000007,
-              "height": 5.67724609375,
-              "centerX": 92.6245,
-              "centerY": 714.588623046875
+            "Type": "fill",
+            "Baseline": null,
+            "Candidate": {
+              "X": 108.796875,
+              "Y": 734.734863,
+              "Width": 5.203125,
+              "Height": 5.203125,
+              "CenterX": 111.3984375,
+              "CenterY": 737.3364255
             },
-            "actual": {
-              "x": 101.597656,
-              "y": 761.75,
-              "width": 5.0595703125,
-              "height": 5.67724609375,
-              "centerX": 104.12744115625,
-              "centerY": 764.588623046875
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
             },
-            "delta": {
-              "deltaX": 11.502941156250003,
-              "deltaY": 50,
-              "deltaWidth": 0.010570312499993406,
-              "deltaHeight": 0,
-              "maxDeviation": 50
-            }
-          },
-          {
-            "index": 1,
-            "expectedText": "Default",
-            "actualText": "DDeeffaauulltt",
-            "expected": {
-              "x": 108.1,
-              "y": 711.75,
-              "width": 32.505000000000024,
-              "height": 7.6376953125,
-              "centerX": 124.3525,
-              "centerY": 715.56884765625
-            },
-            "actual": {
-              "x": 108,
-              "y": 761.75,
-              "width": 32.85498046875,
-              "height": 7.6376953125,
-              "centerX": 124.427490234375,
-              "centerY": 765.56884765625
-            },
-            "delta": {
-              "deltaX": 0.07499023437499375,
-              "deltaY": 50,
-              "deltaWidth": 0.3499804687499761,
-              "deltaHeight": 0,
-              "maxDeviation": 50
-            }
-          },
-          {
-            "index": 2,
-            "expectedText": "bullet",
-            "actualText": "bbuulllleett",
-            "expected": {
-              "x": 143.06900000000002,
-              "y": 711.75,
-              "width": 25.696000000000055,
-              "height": 7.6376953125,
-              "centerX": 155.91700000000003,
-              "centerY": 715.56884765625
-            },
-            "actual": {
-              "x": 143.341797,
-              "y": 761.75,
-              "width": 25.76513671875,
-              "height": 7.6376953125,
-              "centerX": 156.224365359375,
-              "centerY": 765.56884765625
-            },
-            "delta": {
-              "deltaX": 0.3073653593749839,
-              "deltaY": 50,
-              "deltaWidth": 0.0691367187499452,
-              "deltaHeight": 0,
-              "maxDeviation": 50
-            }
-          },
-          {
-            "index": 3,
-            "expectedText": "\u25E6",
-            "actualText": "\u25E6",
-            "expected": {
-              "x": 108.1,
-              "y": 698.3,
-              "width": 6.358000000000004,
-              "height": 5.76318359375,
-              "centerX": 111.279,
-              "centerY": 701.181591796875
-            },
-            "actual": {
-              "x": 118.297852,
-              "y": 741.4365238125,
-              "width": 6.359375,
-              "height": 6.8857421875,
-              "centerX": 121.4775395,
-              "centerY": 744.87939490625
-            },
-            "delta": {
-              "deltaX": 10.19853950000001,
-              "deltaY": 43.69780310937506,
-              "deltaWidth": 0.0013749999999959073,
-              "deltaHeight": 1.12255859375,
-              "maxDeviation": 43.69780310937506
-            }
-          },
-          {
-            "index": 4,
-            "expectedText": "Indented",
-            "actualText": "IInnddeenntteedd",
-            "expected": {
-              "x": 126.1,
-              "y": 698.3,
-              "width": 40.249000000000024,
-              "height": 7.6376953125,
-              "centerX": 146.2245,
-              "centerY": 702.11884765625
-            },
-            "actual": {
-              "x": 126,
-              "y": 748.322266,
-              "width": 40.51953125,
-              "height": 7.6376953125,
-              "centerX": 146.259765625,
-              "centerY": 752.14111365625
-            },
-            "delta": {
-              "deltaX": 0.03526562499999386,
-              "deltaY": 50.02226600000006,
-              "deltaWidth": 0.27053124999997635,
-              "deltaHeight": 0,
-              "maxDeviation": 50.02226600000006
-            }
-          },
-          {
-            "index": 5,
-            "expectedText": "bullet",
-            "actualText": "bbuulllleett",
-            "expected": {
-              "x": 168.81300000000002,
-              "y": 698.3,
-              "width": 25.696000000000055,
-              "height": 7.6376953125,
-              "centerX": 181.66100000000006,
-              "centerY": 702.11884765625
-            },
-            "actual": {
-              "x": 169.00635,
-              "y": 748.322266,
-              "width": 25.76513671875,
-              "height": 7.6376953125,
-              "centerX": 181.888918359375,
-              "centerY": 752.14111365625
-            },
-            "delta": {
-              "deltaX": 0.22791835937493943,
-              "deltaY": 50.02226600000006,
-              "deltaWidth": 0.0691367187499452,
-              "deltaHeight": 0,
-              "maxDeviation": 50.02226600000006
-            }
-          },
-          {
-            "index": 6,
-            "expectedText": "\u2022",
-            "actualText": "\u2022",
-            "expected": {
-              "x": 90.1,
-              "y": 684.85,
-              "width": 5.049000000000007,
-              "height": 5.67724609375,
-              "centerX": 92.6245,
-              "centerY": 687.688623046875
-            },
-            "actual": {
-              "x": 101.597656,
-              "y": 734.894531,
-              "width": 5.0595703125,
-              "height": 5.67724609375,
-              "centerX": 104.12744115625,
-              "centerY": 737.733154046875
-            },
-            "delta": {
-              "deltaX": 11.502941156250003,
-              "deltaY": 50.044531000000006,
-              "deltaWidth": 0.010570312499993406,
-              "deltaHeight": 0,
-              "maxDeviation": 50.044531000000006
-            }
-          },
-          {
-            "index": 7,
-            "expectedText": "Second",
-            "actualText": "SSeeccoonndd",
-            "expected": {
-              "x": 108.1,
-              "y": 684.85,
-              "width": 32.406000000000006,
-              "height": 7.6376953125,
-              "centerX": 124.303,
-              "centerY": 688.66884765625
-            },
-            "actual": {
-              "x": 108,
-              "y": 734.894531,
-              "width": 32.5380859375,
-              "height": 7.6376953125,
-              "centerX": 124.26904296875,
-              "centerY": 738.71337865625
-            },
-            "delta": {
-              "deltaX": -0.03395703124999727,
-              "deltaY": 50.044531000000006,
-              "deltaWidth": 0.1320859374999941,
-              "deltaHeight": 0,
-              "maxDeviation": 50.044531000000006
-            }
-          },
-          {
-            "index": 8,
-            "expectedText": "bullet",
-            "actualText": "bbuulllleett",
-            "expected": {
-              "x": 142.97,
-              "y": 684.85,
-              "width": 25.696000000000055,
-              "height": 7.6376953125,
-              "centerX": 155.81800000000004,
-              "centerY": 688.66884765625
-            },
-            "actual": {
-              "x": 143.024902,
-              "y": 734.894531,
-              "width": 25.76513671875,
-              "height": 7.6376953125,
-              "centerX": 155.907470359375,
-              "centerY": 738.71337865625
-            },
-            "delta": {
-              "deltaX": 0.08947035937495684,
-              "deltaY": 50.044531000000006,
-              "deltaWidth": 0.0691367187499452,
-              "deltaHeight": 0,
-              "maxDeviation": 50.044531000000006
-            }
+            "StrokeWidth": 1,
+            "StrokeColor": "#000000",
+            "FillColor": "#000000"
           }
-        ]
+        ],
+        "RemovedGraphics": [],
+        "ChangedGraphics": [],
+        "WordStatus": 4,
+        "WordStatusNote": "Oltre la met\u00E0 del testo del PDF di riferimento non \u00E8 stato trovato nel candidato. Il confronto parole \u00E8 disattivato per evitare falsi positivi (probabile testo rasterizzato/vettoriale).",
+        "IsClean": false
       }
     ]
   }

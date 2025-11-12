@@ -131,6 +131,10 @@ internal sealed class RunPropertySet
 
         var color = resolver.ResolveColor(this);
 
+        var kerningEnabled = KerningMinFontPt.HasValue
+            ? fontSize >= KerningMinFontPt.Value
+            : fontSize >= 12f;
+
         return new RunFormatting
         {
             FontFamily = fontFamily,
@@ -141,9 +145,7 @@ internal sealed class RunPropertySet
             Strike = Strike ?? false,
             SmallCaps = SmallCaps ?? false,
             CharacterSpacingPt = (float)(CharacterSpacingPt ?? 0d),
-            KerningEnabled = KerningMinFontPt.HasValue
-                ? fontSize >= KerningMinFontPt.Value
-                : false,
+            KerningEnabled = kerningEnabled,
             Color = color
         };
     }

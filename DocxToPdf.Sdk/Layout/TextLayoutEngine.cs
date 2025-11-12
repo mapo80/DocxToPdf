@@ -99,7 +99,7 @@ public sealed class TextLayoutEngine
                 PositionalTabReference.Indent => currentLineIndent + positionalTab.PositionPt,
                 _ => positionalTab.PositionPt
             };
-            return new TabResolution(absolute, positionalTab.Leader, positionalTab.Alignment, false);
+            return new TabResolution(absolute, positionalTab.Leader, positionalTab.Alignment, false, true);
         }
 
         bool NeedsLookAhead(TabAlignment alignment) =>
@@ -230,7 +230,13 @@ public sealed class TextLayoutEngine
             if (shapedCache.TryGetValue(textInline, out var cached))
                 return cached;
 
-            var shaped = _textRenderer.Shape(textInline.Text, typeface, textInline.Formatting.FontSizePt, textInline.Formatting.KerningEnabled);
+            var advancedTypography = textInline.Formatting.KerningEnabled;
+            var shaped = _textRenderer.Shape(
+                textInline.Text,
+                typeface,
+                textInline.Formatting.FontSizePt,
+                advancedTypography,
+                advancedTypography);
             shapedCache[textInline] = shaped;
             return shaped;
         }
@@ -243,8 +249,8 @@ public sealed class TextLayoutEngine
             var typeface = GetTypefaceForFormatting(textInline.Formatting);
             var fontSize = textInline.Formatting.FontSizePt;
             var shaped = GetOrCreateShapedText(textInline, typeface);
-                var metrics = _textRenderer.GetFontMetrics(typeface, fontSize);
-                var desiredLineSpacing = _textRenderer.GetLineSpacing(typeface, fontSize);
+            var metrics = _textRenderer.GetFontMetrics(typeface, fontSize);
+            var desiredLineSpacing = _textRenderer.GetLineSpacing(typeface, fontSize);
             var slices = SplitIntoSlices(textInline.Text);
 
             foreach (var slice in slices)
@@ -255,6 +261,7 @@ public sealed class TextLayoutEngine
                 {
                     CommitLine();
                     metrics = _textRenderer.GetFontMetrics(typeface, fontSize);
+                    desiredLineSpacing = _textRenderer.GetLineSpacing(typeface, fontSize);
                 }
 
                 var textSegment = textInline.Text.Substring(slice.Start, slice.Length);
@@ -277,6 +284,11 @@ public sealed class TextLayoutEngine
 
             void HandleTabAdvance(TabResolution currentResolution)
             {
+                if (currentResolution.ForceLineStart && currentLine.Count > 0)
+                {
+                    CommitLine();
+                }
+
                 var relativeTarget = currentResolution.TargetAbsolutePositionPt - currentLineIndent;
 
                 if (currentResolution.Alignment == TabAlignment.Bar)
@@ -289,15 +301,17 @@ public sealed class TextLayoutEngine
                 {
                     if (!currentResolution.FromDefault)
                     {
+                        if (currentLine.Count > 0)
+                        {
+                            CommitLine();
+                            HandleTabAdvance(currentResolution);
+                            return;
+                        }
+                    }
+                    else
+                    {
                         var fallback = ResolveDefaultTab(paragraph, currentLineIndent + currentLineWidth);
                         HandleTabAdvance(fallback);
-                        return;
-                    }
-
-                    if (currentLine.Count > 0)
-                    {
-                        CommitLine();
-                        HandleTabAdvance(currentResolution);
                         return;
                     }
                 }
@@ -347,7 +361,7 @@ public sealed class TextLayoutEngine
     private SKTypeface GetTypefaceForFormatting(RunFormatting formatting) =>
         _fontManager.GetTypeface(formatting.FontFamily, formatting.Bold, formatting.Italic);
 
-    private sealed record TabResolution(float TargetAbsolutePositionPt, TabLeader Leader, TabAlignment Alignment, bool FromDefault);
+        private sealed record TabResolution(float TargetAbsolutePositionPt, TabLeader Leader, TabAlignment Alignment, bool FromDefault, bool ForceLineStart);
 
     private readonly record struct SegmentMeasurement(float TotalWidth, float WidthBeforeDecimal, bool HasDecimal)
     {
@@ -373,7 +387,7 @@ public sealed class TextLayoutEngine
                 continue;
             }
 
-            return new TabResolution(stop.PositionPt, stop.Leader, stop.Alignment, false);
+            return new TabResolution(stop.PositionPt, stop.Leader, stop.Alignment, false, false);
         }
 
         return ResolveDefaultTab(paragraph, currentAbsolute);
@@ -386,7 +400,7 @@ public sealed class TextLayoutEngine
             : paragraph.DefaultTabStopPt;
         var multiplier = (float)Math.Floor(currentAbsolute / interval) + 1f;
         var target = multiplier * interval;
-        return new TabResolution(target, TabLeader.None, TabAlignment.Left, true);
+        return new TabResolution(target, TabLeader.None, TabAlignment.Left, true, false);
     }
 
     private string BuildLeaderString(float spanWidth, SKTypeface typeface, float fontSize, TabLeader leader)

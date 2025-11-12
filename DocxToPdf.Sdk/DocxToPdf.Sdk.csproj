@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Content Include="Fonts\**\*.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Fonts\**\*.ttc" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Fonts\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
