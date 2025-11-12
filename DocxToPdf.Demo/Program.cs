@@ -138,6 +138,10 @@ class Program
         using var doc = DocxToPdf.Sdk.Docx.DocxDocument.Open(docxPath);
         var section = doc.GetSection();
 
+        // Registra resolver per usare i TTF Microsoft inclusi in DocxToPdf.Sdk/Fonts
+        var fontsDir = System.IO.Path.Combine(AppContext.BaseDirectory, "Fonts");
+        PdfSharpCore.Fonts.GlobalFontSettings.FontResolver = new PdfSharpCoreEmbeddedFontResolver(fontsDir);
+
         var pdf = new PdfSharpCore.Pdf.PdfDocument();
         var page = pdf.AddPage();
         page.Width = section.PageSize.WidthPt;
@@ -202,7 +206,7 @@ class Program
                     else if (run.Formatting.Bold) style = PdfSharpCore.Drawing.XFontStyle.Bold;
                     else if (run.Formatting.Italic) style = PdfSharpCore.Drawing.XFontStyle.Italic;
 
-                    string family = "Arial"; // PoC: forza Arial
+                    string family = run.Formatting.FontFamily;
                     var font = new PdfSharpCore.Drawing.XFont(family, run.FontSizePt, style);
                     var brush = new PdfSharpCore.Drawing.XSolidBrush(PdfSharpCore.Drawing.XColor.FromArgb(run.Formatting.Color.R, run.Formatting.Color.G, run.Formatting.Color.B));
 
