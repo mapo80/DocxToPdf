@@ -88,3 +88,10 @@ Il backend PdfSharp si occupa di:
 
 Se il PoC dimostra `geometry.Passed = true` e riduzione AE% sui campioni critici (layout‑stress, tabs‑alignment) senza regressioni su bullet/numbering, si procede con l’adozione di PdfSharp come backend predefinito, mantenendo Skia come fallback.
 
+## Nota su fork PdfSharpCore + SkiaSharp
+
+- Abbiamo integrato il fork PdfSharpCore (Skia backend) come submodule in `third_party/PdfSharpCore` e aggiunto un comando di prova `render-pdfsharp` nel progetto demo che riusa il parsing/layout esistenti.
+- Primo risultato sul sample `samples/simple-spacing.docx`:
+  - AE% ≈ 0.134 (leggermente superiore al backend Skia puro), `geometry.Passed = true` con `WordStatus=0`.
+  - Conferma che il testo è pienamente selezionabile e riconoscibile da PdfBox.
+- Prossimi passi: emissione per‑glyph (operatori `TJ`) per allineare gli advance al nostro shaping e ridurre l’AE%.

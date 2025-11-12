@@ -138,12 +138,12 @@ class Program
         using var doc = DocxToPdf.Sdk.Docx.DocxDocument.Open(docxPath);
         var section = doc.GetSection();
 
-        var pdf = new PdfSharp.Pdf.PdfDocument();
+        var pdf = new PdfSharpCore.Pdf.PdfDocument();
         var page = pdf.AddPage();
         page.Width = section.PageSize.WidthPt;
         page.Height = section.PageSize.HeightPt;
 
-        using var gfx = PdfSharp.Drawing.XGraphics.FromPdfPage(page);
+        using var gfx = PdfSharpCore.Drawing.XGraphics.FromPdfPage(page);
         var margins = section.Margins;
         float pageWidth = (float)page.Width.Point;
         float pageHeight = (float)page.Height.Point;
@@ -197,17 +197,17 @@ class Program
                         continue;
                     }
 
-                    var style = PdfSharp.Drawing.XFontStyle.Regular;
-                    if (run.Formatting.Bold && run.Formatting.Italic) style = PdfSharp.Drawing.XFontStyle.BoldItalic;
-                    else if (run.Formatting.Bold) style = PdfSharp.Drawing.XFontStyle.Bold;
-                    else if (run.Formatting.Italic) style = PdfSharp.Drawing.XFontStyle.Italic;
+                    var style = PdfSharpCore.Drawing.XFontStyle.Regular;
+                    if (run.Formatting.Bold && run.Formatting.Italic) style = PdfSharpCore.Drawing.XFontStyle.BoldItalic;
+                    else if (run.Formatting.Bold) style = PdfSharpCore.Drawing.XFontStyle.Bold;
+                    else if (run.Formatting.Italic) style = PdfSharpCore.Drawing.XFontStyle.Italic;
 
                     string family = "Arial"; // PoC: forza Arial
-                    var font = new PdfSharp.Drawing.XFont(family, run.FontSizePt, style);
-                    var brush = new PdfSharp.Drawing.XSolidBrush(PdfSharp.Drawing.XColor.FromArgb(run.Formatting.Color.R, run.Formatting.Color.G, run.Formatting.Color.B));
+                    var font = new PdfSharpCore.Drawing.XFont(family, run.FontSizePt, style);
+                    var brush = new PdfSharpCore.Drawing.XSolidBrush(PdfSharpCore.Drawing.XColor.FromArgb(run.Formatting.Color.R, run.Formatting.Color.G, run.Formatting.Color.B));
 
                     // DrawString usa baseline y
-                    gfx.DrawString(run.Text, font, brush, new PdfSharp.Drawing.XPoint(currentX, baseline));
+                    gfx.DrawString(run.Text, font, brush, new PdfSharpCore.Drawing.XPoint(currentX, baseline));
 
                     // Avanza X usando una misura approssimata
                     var size = gfx.MeasureString(run.Text, font);

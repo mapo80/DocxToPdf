@@ -1,0 +1,181 @@
+{
+  "generatedAt": "2025-11-12T10:50:49.869253+00:00",
+  "summary": {
+    "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/simple-spacing.pdf",
+    "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/simple-spacing-pdfsharpcore.pdf",
+    "BaselinePageCount": 1,
+    "CandidatePageCount": 1,
+    "ComparedPages": [
+      1
+    ],
+    "MissingFromBaseline": [],
+    "MissingFromCandidate": [],
+    "TotalAePixels": 11292,
+    "WeightedAePercent": 0.13418894830659536,
+    "ConsistentPages": 1,
+    "EngineOnlyPages": 0,
+    "CleanPages": 0,
+    "OverallStatus": 1,
+    "PageRangeExpression": null,
+    "Fuzz": null,
+    "UseCropBox": false,
+    "Dpi": 300,
+    "GeometryRequested": true,
+    "Thresholds": {
+      "WarningAePercent": 0.005,
+      "WarningSsim": 0.995,
+      "PassSsimTolerance": 1E-06,
+      "PassDssimTolerance": 1E-06
+    },
+    "SsimOptions": {
+      "Radius": null,
+      "Sigma": null,
+      "K1": null,
+      "K2": null,
+      "HasValues": false
+    },
+    "Tools": {
+      "ImageMagickVersion": "Version: ImageMagick 7.1.2-8 Q16-HDRI aarch64 23412 https://imagemagick.org",
+      "PopplerVersion": "pdftoppm version 25.11.0",
+      "GhostscriptVersion": "gs 10.05.1",
+      "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
+    },
+    "GeneratedAtUtc": "2025-11-12T10:50:49.869253+00:00",
+    "GeometryAnalysis": {
+      "TolerancePt": 0.25,
+      "Passed": true,
+      "Pages": [
+        {
+          "PageNumber": 1,
+          "MissingWords": [],
+          "ExtraWords": [],
+          "MovedWords": [],
+          "AddedGraphics": [],
+          "RemovedGraphics": [],
+          "ChangedGraphics": [],
+          "WordStatus": 0,
+          "WordStatusNote": null,
+          "IsClean": true
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "PageNumber": 1,
+      "Poppler": {
+        "Engine": 0,
+        "Width": 2550,
+        "Height": 3300,
+        "Dpi": 300,
+        "AePixels": 11292,
+        "AePercent": 0.13418894830659536,
+        "Mae": 0.000898605,
+        "Rmse": 0.0277781,
+        "Psnr": 31.126,
+        "Ssim": 0.99867347,
+        "Dssim": 0.00132653,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8415000
+      },
+      "Ghostscript": {
+        "Engine": 1,
+        "Width": 2550,
+        "Height": 3300,
+        "Dpi": 300,
+        "AePixels": 9771,
+        "AePercent": 0.11611408199643494,
+        "Mae": 0.000900194,
+        "Rmse": 0.0284908,
+        "Psnr": 30.9059,
+        "Ssim": 0.99868249,
+        "Dssim": 0.00131751,
+        "Status": 1,
+        "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/A/page-0001.png",
+        "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/B/page-0001.png",
+        "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/diff/page-0001.png",
+        "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-A.png",
+        "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-B.png",
+        "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-diff.png",
+        "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/overlay/page-0001.png",
+        "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-overlay.png",
+        "TotalPixels": 8415000
+      },
+      "Classification": 1,
+      "Renderers": [
+        {
+          "Engine": 0,
+          "Width": 2550,
+          "Height": 3300,
+          "Dpi": 300,
+          "AePixels": 11292,
+          "AePercent": 0.13418894830659536,
+          "Mae": 0.000898605,
+          "Rmse": 0.0277781,
+          "Psnr": 31.126,
+          "Ssim": 0.99867347,
+          "Dssim": 0.00132653,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/poppler/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8415000
+        },
+        {
+          "Engine": 1,
+          "Width": 2550,
+          "Height": 3300,
+          "Dpi": 300,
+          "AePixels": 9771,
+          "AePercent": 0.11611408199643494,
+          "Mae": 0.000900194,
+          "Rmse": 0.0284908,
+          "Psnr": 30.9059,
+          "Ssim": 0.99868249,
+          "Dssim": 0.00131751,
+          "Status": 1,
+          "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/A/page-0001.png",
+          "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/B/page-0001.png",
+          "DiffImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/diff/page-0001.png",
+          "BaselineThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-A.png",
+          "CandidateThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-B.png",
+          "DiffThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-diff.png",
+          "OverlayImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/overlay/page-0001.png",
+          "OverlayThumbPath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-simple-spacing-pdfsharpcore/ghostscript/thumbs/page-0001-overlay.png",
+          "TotalPixels": 8415000
+        }
+      ]
+    }
+  ],
+  "geometry": {
+    "TolerancePt": 0.25,
+    "Passed": true,
+    "Pages": [
+      {
+        "PageNumber": 1,
+        "MissingWords": [],
+        "ExtraWords": [],
+        "MovedWords": [],
+        "AddedGraphics": [],
+        "RemovedGraphics": [],
+        "ChangedGraphics": [],
+        "WordStatus": 0,
+        "WordStatusNote": null,
+        "IsClean": true
+      }
+    ]
+  }
+}

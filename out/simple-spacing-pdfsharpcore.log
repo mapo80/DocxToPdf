@@ -1,0 +1,9 @@
+DocxToPdf.Sdk - Demo
+
+Conversione DOCX → PDF (PdfSharp)
+  Input:  samples/simple-spacing.docx
+  Output: out/simple-spacing-pdfsharpcore.pdf
+
+
+✓ PdfSharp render completato!
+
