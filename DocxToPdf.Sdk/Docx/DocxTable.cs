@@ -314,7 +314,8 @@ internal sealed record TablePreferredWidth(TableWidthUnit Unit, int Value)
 
 internal sealed record TablePadding(float Top, float Right, float Bottom, float Left)
 {
-    public static readonly TablePadding Default = new(0f, 0f, 0f, 0f);
+    // Word default cell margins (tblCellMar default): Left/Right = 108 twips (≈5.4pt), Top/Bottom = 0
+    public static readonly TablePadding Default = new(0f, 5.4f, 0f, 5.4f);
 
     public TablePadding ApplyOverride(TablePaddingOverride? overridePadding)
     {

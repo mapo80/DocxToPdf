@@ -2,27 +2,6 @@ CSV report: /Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layou
 HTML report: /Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/index.html
 JSON report: /Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-layout-stress/report.json
 Pages compared: 1
-Total AE pixels: 425522
-Weighted AE %: 5,056708
+Total AE pixels: 425655
+Weighted AE %: 5,058289
 Overall status: Fail
-t org.apache.pdfbox.filter.FlateFilter.decode(FlateFilter.java:50)
-	at org.apache.pdfbox.filter.Filter.decode(Filter.java:97)
-	at org.apache.pdfbox.filter.Filter.decode(Filter.java:254)
-	at org.apache.pdfbox.cos.COSStream.createView(COSStream.java:196)
-	at org.apache.pdfbox.pdmodel.font.PDFontFactory.getFontHeader(PDFontFactory.java:342)
-	at org.apache.pdfbox.pdmodel.font.PDFontFactory.getFontTypeFromFont(PDFontFactory.java:217)
-	at org.apache.pdfbox.pdmodel.font.PDFontFactory.createFont(PDFontFactory.java:162)
-	at org.apache.pdfbox.pdmodel.PDResources.getFont(PDResources.java:170)
-	at org.apache.pdfbox.contentstream.operator.text.SetFontAndSize.process(SetFontAndSize.java:72)
-	at org.apache.pdfbox.contentstream.PDFStreamEngine.processOperator(PDFStreamEngine.java:893)
-	at org.apache.pdfbox.contentstream.PDFStreamEngine.processStreamOperators(PDFStreamEngine.java:531)
-	at org.apache.pdfbox.contentstream.PDFStreamEngine.processStream(PDFStreamEngine.java:506)
-	at org.apache.pdfbox.contentstream.PDFStreamEngine.processPage(PDFStreamEngine.java:153)
-	at org.apache.pdfbox.text.LegacyPDFStreamEngine.processPage(LegacyPDFStreamEngine.java:153)
-	at org.apache.pdfbox.text.PDFTextStripper.processPage(PDFTextStripper.java:362)
-	at org.apache.pdfbox.text.PDFTextStripper.processPages(PDFTextStripper.java:288)
-	at org.apache.pdfbox.text.PDFTextStripper.writeText(PDFTextStripper.java:235)
-	at org.apache.pdfbox.text.PDFTextStripper.getText(PDFTextStripper.java:202)
-	at GeometryExtractor$WordCollector.collect(GeometryExtractor.java:178)
-	at GeometryExtractor.main(GeometryExtractor.java:51)
-
