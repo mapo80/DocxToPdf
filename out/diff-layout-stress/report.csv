@@ -1,3 +1,3 @@
 page,renderer,classification,width,height,dpi,ae_pixels,ae_percent,mae,rmse,psnr,ssim,dssim,status,path_img_A,path_img_B,path_img_diff,path_img_overlay
-1,Poppler,Consistent,2550,3300,300,425655,5.0582887701,0.0372579,0.182974,14.7522,0.943736,0.0562637,Fail,poppler/A/page-0001.png,poppler/B/page-0001.png,poppler/diff/page-0001.png,poppler/overlay/page-0001.png
-1,Ghostscript,Consistent,2550,3300,300,395482,4.6997266786,0.038001,0.186529,14.5851,0.943343,0.0566573,Fail,ghostscript/A/page-0001.png,ghostscript/B/page-0001.png,ghostscript/diff/page-0001.png,ghostscript/overlay/page-0001.png
+1,Poppler,Consistent,2550,3300,300,419238,4.9820320856,0.0365832,0.181188,14.8374,0.945686,0.0543144,Fail,poppler/A/page-0001.png,poppler/B/page-0001.png,poppler/diff/page-0001.png,poppler/overlay/page-0001.png
+1,Ghostscript,Consistent,2550,3300,300,390095,4.6357100416,0.0373771,0.184881,14.6621,0.945155,0.0548452,Fail,ghostscript/A/page-0001.png,ghostscript/B/page-0001.png,ghostscript/diff/page-0001.png,ghostscript/overlay/page-0001.png

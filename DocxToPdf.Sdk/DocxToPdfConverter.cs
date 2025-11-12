@@ -85,14 +85,8 @@ public sealed class DocxToPdfConverter
         {
             if (block is DocxTableBlock tableBlock)
             {
-                if (previousSpacingAfter > 0f)
-                {
-                    currentY -= previousSpacingAfter;
-                    previousSpacingAfter = 0f;
-                    if (currentY < margins.Top)
-                        currentY = margins.Top;
-                }
-
+                // Mantieni lo spacing dopo il paragrafo precedente anche prima di una tabella:
+                // Word non lo azzera implicitamente. Evitiamo quindi di sottrarre previousSpacingAfter.
                 previousParagraph = null;
                 previousSpacingAfter = 0f;
                 RenderTable(tableBlock.Table, pdfBuilder, ref page, pageSize, margins, contentWidth, ref currentY, layoutStressAudit);
@@ -315,7 +309,8 @@ public sealed class DocxToPdfConverter
     private static float GetSpaceCalibration(SpacingMode mode, LayoutLine line) =>
         mode switch
         {
-            SpacingMode.Justified => 0.31f,
+            // leggero abbassamento per ridurre l'overshoot osservato (~+0.15pt complessivo)
+            SpacingMode.Justified => 0.295f,
             SpacingMode.Distributed => 0.05f,
             _ => 0f
         };
@@ -466,6 +461,7 @@ public sealed class DocxToPdfConverter
             return;
 
         DiagnosticsLogger?.Invoke($"[table] rows={rowPlans.Count} columns={columnWidths.Length}");
+        DiagnosticsLogger?.Invoke($"[table] margins.L={margins.Left:F2} startX(left)={margins.Left:F2}");
 
         for (int rowIndex = 0; rowIndex < rowPlans.Count; rowIndex++)
         {
@@ -505,6 +501,7 @@ public sealed class DocxToPdfConverter
 
                 var padding = table.DefaultCellPadding.ApplyOverride(cell.PaddingOverride);
                 var innerWidth = Math.Max(1f, width - padding.Left - padding.Right);
+                DiagnosticsLogger?.Invoke($"[table-cell] row={rowIndex} col={cell.ColumnIndex} span={cell.ColumnSpan} width={width:F2} padL={padding.Left:F2} padR={padding.Right:F2} inner={innerWidth:F2}");
                 var paragraphLayouts = new List<ParagraphLayoutPlan>();
                 float contentHeight = 0f;
 
@@ -662,6 +659,11 @@ public sealed class DocxToPdfConverter
             }
 
             var baseline = cursorY - line.MaxAscent;
+            if (context != null && DiagnosticsLogger != null)
+            {
+                var centerX = startX + innerWidth / 2f;
+                DiagnosticsLogger.Invoke($"[table-line-x] {context} i={i} startX={startX:F2} indent={indent:F2} avail={availableWidth:F2} lineW={line.WidthPt:F2} inner={innerWidth:F2} currentX={currentX:F2} centerX={centerX:F2} dx={currentX + line.WidthPt/2f - centerX:F2}");
+            }
             foreach (var run in line.Runs)
             {
                 fontAudit.Observe(run);
@@ -773,21 +775,20 @@ public sealed class DocxToPdfConverter
 
     private float[] ResolveColumnWidths(DocxTable table, float availableWidth)
     {
-        var columnCount = table.ColumnGridPt.Count;
-        if (columnCount == 0)
-        {
-            columnCount = table.Rows
-                .Select(r => r.Cells.Sum(c => c.ColumnSpan))
-                .DefaultIfEmpty(1)
-                .Max();
-        }
+        // Se è presente una grid (tblGrid), Word usa tali larghezze come base senza
+        // ridistribuzioni uniformi. Evitiamo scaling globale che introduce shift.
+        var hasGrid = table.ColumnGridPt.Count > 0;
+        var columnCount = hasGrid
+            ? table.ColumnGridPt.Count
+            : table.Rows.Select(r => r.Cells.Sum(c => c.ColumnSpan)).DefaultIfEmpty(1).Max();
 
         columnCount = Math.Max(1, columnCount);
 
-        var widths = table.ColumnGridPt.Count > 0
+        var widths = hasGrid
             ? table.ColumnGridPt.Select(w => Math.Max(1f, w)).ToArray()
             : Enumerable.Repeat(Math.Max(1f, availableWidth / columnCount), columnCount).ToArray();
 
+        // In auto-layout, applica preferenze per-colonna come massimo, senza scaling globale.
         if (table.LayoutType == TableLayoutType.Auto)
         {
             var preferredPerColumn = new float[columnCount];
@@ -818,39 +819,13 @@ public sealed class DocxToPdfConverter
             }
         }
 
-        var gridSum = widths.Sum();
-        var preferredWidth = ResolvePreferredWidth(table.PreferredWidth, availableWidth);
-        var hasPreferredWidth = preferredWidth > 0f;
-        var targetWidth = gridSum;
-        if (hasPreferredWidth)
-            targetWidth = preferredWidth;
-
-        if (gridSum <= 0f)
+        // Niente scaling globale: se non c'è grid e la somma è zero, riparti equamente
+        var sum = widths.Sum();
+        if (!hasGrid && sum <= 0f)
         {
-            var fallbackWidth = hasPreferredWidth && targetWidth > 0f ? targetWidth : availableWidth;
-            var even = Math.Max(1f, fallbackWidth / columnCount);
+            var even = Math.Max(1f, availableWidth / columnCount);
             for (int i = 0; i < widths.Length; i++)
                 widths[i] = even;
-            return widths;
-        }
-
-        if (table.LayoutType == TableLayoutType.Fixed && targetWidth > 0f)
-        {
-            var scale = targetWidth / gridSum;
-            for (int i = 0; i < widths.Length; i++)
-                widths[i] = Math.Max(1f, widths[i] * scale);
-        }
-        else if (hasPreferredWidth && targetWidth > 0f)
-        {
-            var scale = targetWidth / gridSum;
-            for (int i = 0; i < widths.Length; i++)
-                widths[i] = Math.Max(1f, widths[i] * scale);
-        }
-        else if (gridSum > availableWidth)
-        {
-            var scale = availableWidth / gridSum;
-            for (int i = 0; i < widths.Length; i++)
-                widths[i] = Math.Max(1f, widths[i] * scale);
         }
 
         return widths;

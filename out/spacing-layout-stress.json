@@ -1,86 +1,86 @@
 [
   {
-    "line_index": 22,
-    "alignment": "both",
-    "word": "spanning",
-    "left_width": 47.457596,
-    "right_width": 16.817993,
-    "base_gap": 5.394012000000004,
-    "cand_gap": 5.460403999999983,
-    "delta": 0.06639199999997913
-  },
-  {
-    "line_index": 22,
-    "alignment": "both",
-    "word": "paragraph",
-    "left_width": 53.043625,
-    "right_width": 47.457596,
-    "base_gap": 5.392807000000033,
-    "cand_gap": 5.454880000000003,
-    "delta": 0.062072999999969625
-  },
-  {
-    "line_index": 22,
+    "line_index": 23,
     "alignment": "both",
     "word": "to",
     "left_width": 10.502411,
     "right_width": 31.706421,
     "base_gap": 5.386810000000025,
-    "cand_gap": 5.341705000000047,
-    "delta": -0.04510499999997819
+    "cand_gap": 5.326689999999985,
+    "delta": -0.06012000000004036
   },
   {
-    "line_index": 22,
+    "line_index": 23,
     "alignment": "both",
-    "word": "Justified",
-    "left_width": 42.785995,
-    "right_width": 53.043625,
-    "base_gap": 5.383195000000001,
-    "cand_gap": 5.426528999999988,
-    "delta": 0.04333399999998733
+    "word": "spanning",
+    "left_width": 47.457596,
+    "right_width": 16.817993,
+    "base_gap": 5.394012000000004,
+    "cand_gap": 5.445403999999996,
+    "delta": 0.05139199999999278
   },
   {
-    "line_index": 22,
+    "line_index": 23,
+    "alignment": "both",
+    "word": "paragraph",
+    "left_width": 53.043625,
+    "right_width": 47.457596,
+    "base_gap": 5.392807000000033,
+    "cand_gap": 5.439879999999988,
+    "delta": 0.047072999999954845
+  },
+  {
+    "line_index": 23,
     "alignment": "both",
     "word": "the",
     "left_width": 16.817993,
     "right_width": 30.020386,
     "base_gap": 5.388031000000012,
-    "cand_gap": 5.357727000000011,
-    "delta": -0.030304000000000997
+    "cand_gap": 5.342712000000006,
+    "delta": -0.045319000000006326
   },
   {
-    "line_index": 22,
+    "line_index": 23,
     "alignment": "both",
-    "word": "stress",
-    "left_width": 31.706421,
-    "right_width": 25.895996,
-    "base_gap": 5.386841000000004,
-    "cand_gap": 5.408112000000017,
-    "delta": 0.02127100000001292
+    "word": "Justified",
+    "left_width": 42.785995,
+    "right_width": 53.043625,
+    "base_gap": 5.383195000000001,
+    "cand_gap": 5.411529999999999,
+    "delta": 0.028334999999998445
   },
   {
-    "line_index": 22,
-    "alignment": "both",
-    "word": "entire",
-    "left_width": 30.020386,
-    "right_width": 28.730408,
-    "base_gap": 5.388031000000012,
-    "cand_gap": 5.401702,
-    "delta": 0.013670999999987998
-  },
-  {
-    "line_index": 22,
+    "line_index": 23,
     "alignment": "both",
     "word": "extra",
     "left_width": 25.895996,
     "right_width": 31.560028,
     "base_gap": 5.392821999999967,
-    "cand_gap": 5.379547000000002,
-    "delta": -0.01327499999996462
+    "cand_gap": 5.3645629999999755,
+    "delta": -0.028258999999991374
   },
   {
     "line_index": 23,
+    "alignment": "both",
+    "word": "width",
+    "left_width": 28.730408,
+    "right_width": 10.502411,
+    "base_gap": 5.392821999999967,
+    "cand_gap": 5.380738000000008,
+    "delta": -0.012083999999958905
+  },
+  {
+    "line_index": 23,
+    "alignment": "both",
+    "word": "space",
+    "left_width": 31.560028,
+    "right_width": 59.59201,
+    "base_gap": 5.388001000000031,
+    "cand_gap": 5.376282000000003,
+    "delta": -0.01171900000002779
+  },
+  {
+    "line_index": 24,
     "alignment": "both",
     "word": "many",
     "left_width": 28.651199,
@@ -90,7 +90,7 @@
     "delta": 0.010802999999981466
   },
   {
-    "line_index": 23,
+    "line_index": 24,
     "alignment": "both",
     "word": "punctuation",
     "left_width": 63.284409,
@@ -100,7 +100,7 @@
     "delta": -0.009154999999964275
   },
   {
-    "line_index": 23,
+    "line_index": 24,
     "alignment": "both",
     "word": "across",
     "left_width": 34.971596,
@@ -110,7 +110,7 @@
     "delta": 0.008568000000011011
   },
   {
-    "line_index": 23,
+    "line_index": 24,
     "alignment": "both",
     "word": "words",
     "left_width": 31.84198,
@@ -120,7 +120,7 @@
     "delta": 0.008559999999988577
   },
   {
-    "line_index": 23,
+    "line_index": 24,
     "alignment": "both",
     "word": "and",
     "left_width": 19.723206,
@@ -130,23 +130,23 @@
     "delta": 0.006302000000005137
   },
   {
-    "line_index": 22,
+    "line_index": 23,
     "alignment": "both",
-    "word": "space",
-    "left_width": 31.560028,
-    "right_width": 59.59201,
-    "base_gap": 5.388001000000031,
-    "cand_gap": 5.391265999999973,
-    "delta": 0.0032649999999421198
+    "word": "stress",
+    "left_width": 31.706421,
+    "right_width": 25.895996,
+    "base_gap": 5.386841000000004,
+    "cand_gap": 5.393097000000012,
+    "delta": 0.006256000000007589
   },
   {
-    "line_index": 22,
+    "line_index": 23,
     "alignment": "both",
-    "word": "width",
-    "left_width": 28.730408,
-    "right_width": 10.502411,
-    "base_gap": 5.392821999999967,
-    "cand_gap": 5.395721999999978,
-    "delta": 0.002900000000011005
+    "word": "entire",
+    "left_width": 30.020386,
+    "right_width": 28.730408,
+    "base_gap": 5.388031000000012,
+    "cand_gap": 5.386687999999992,
+    "delta": -0.001343000000019856
   }
 ]
