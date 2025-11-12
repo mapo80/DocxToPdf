@@ -1,106 +1,86 @@
 [
   {
-    "line_index": 23,
-    "alignment": "both",
-    "word": "to",
-    "left_width": 10.502411,
-    "right_width": 31.706421,
-    "base_gap": 5.386810000000025,
-    "cand_gap": 5.247771999999998,
-    "delta": -0.13903800000002775
-  },
-  {
-    "line_index": 23,
-    "alignment": "both",
-    "word": "stress",
-    "left_width": 31.706421,
-    "right_width": 25.895996,
-    "base_gap": 5.386841000000004,
-    "cand_gap": 5.5057370000000105,
-    "delta": 0.11889600000000655
-  },
-  {
-    "line_index": 23,
-    "alignment": "both",
-    "word": "space",
-    "left_width": 31.560028,
-    "right_width": 59.59201,
-    "base_gap": 5.388001000000031,
-    "cand_gap": 5.505738000000008,
-    "delta": 0.11773699999997689
-  },
-  {
-    "line_index": 23,
-    "alignment": "both",
-    "word": "Justified",
-    "left_width": 42.785995,
-    "right_width": 53.043625,
-    "base_gap": 5.383195000000001,
-    "cand_gap": 5.499863000000005,
-    "delta": 0.11666800000000421
-  },
-  {
-    "line_index": 23,
-    "alignment": "both",
-    "word": "entire",
-    "left_width": 30.020386,
-    "right_width": 28.730408,
-    "base_gap": 5.388031000000012,
-    "cand_gap": 5.4938960000000066,
-    "delta": 0.10586499999999432
-  },
-  {
-    "line_index": 23,
+    "line_index": 22,
     "alignment": "both",
     "word": "spanning",
     "left_width": 47.457596,
     "right_width": 16.817993,
     "base_gap": 5.394012000000004,
-    "cand_gap": 5.499862999999976,
-    "delta": 0.10585099999997283
+    "cand_gap": 5.460403999999983,
+    "delta": 0.06639199999997913
   },
   {
-    "line_index": 23,
+    "line_index": 22,
     "alignment": "both",
     "word": "paragraph",
     "left_width": 53.043625,
     "right_width": 47.457596,
     "base_gap": 5.392807000000033,
-    "cand_gap": 5.494003000000021,
-    "delta": 0.10119599999998741
+    "cand_gap": 5.454880000000003,
+    "delta": 0.062072999999969625
   },
   {
-    "line_index": 23,
+    "line_index": 22,
     "alignment": "both",
-    "word": "width",
-    "left_width": 28.730408,
-    "right_width": 10.502411,
-    "base_gap": 5.392821999999967,
-    "cand_gap": 5.467560000000049,
-    "delta": 0.07473800000008168
+    "word": "to",
+    "left_width": 10.502411,
+    "right_width": 31.706421,
+    "base_gap": 5.386810000000025,
+    "cand_gap": 5.341705000000047,
+    "delta": -0.04510499999997819
   },
   {
-    "line_index": 23,
+    "line_index": 22,
+    "alignment": "both",
+    "word": "Justified",
+    "left_width": 42.785995,
+    "right_width": 53.043625,
+    "base_gap": 5.383195000000001,
+    "cand_gap": 5.426528999999988,
+    "delta": 0.04333399999998733
+  },
+  {
+    "line_index": 22,
     "alignment": "both",
     "word": "the",
     "left_width": 16.817993,
     "right_width": 30.020386,
     "base_gap": 5.388031000000012,
-    "cand_gap": 5.324493999999959,
-    "delta": -0.06353700000005347
+    "cand_gap": 5.357727000000011,
+    "delta": -0.030304000000000997
   },
   {
-    "line_index": 23,
+    "line_index": 22,
+    "alignment": "both",
+    "word": "stress",
+    "left_width": 31.706421,
+    "right_width": 25.895996,
+    "base_gap": 5.386841000000004,
+    "cand_gap": 5.408112000000017,
+    "delta": 0.02127100000001292
+  },
+  {
+    "line_index": 22,
+    "alignment": "both",
+    "word": "entire",
+    "left_width": 30.020386,
+    "right_width": 28.730408,
+    "base_gap": 5.388031000000012,
+    "cand_gap": 5.401702,
+    "delta": 0.013670999999987998
+  },
+  {
+    "line_index": 22,
     "alignment": "both",
     "word": "extra",
     "left_width": 25.895996,
     "right_width": 31.560028,
     "base_gap": 5.392821999999967,
-    "cand_gap": 5.430144999999982,
-    "delta": 0.03732300000001487
+    "cand_gap": 5.379547000000002,
+    "delta": -0.01327499999996462
   },
   {
-    "line_index": 24,
+    "line_index": 23,
     "alignment": "both",
     "word": "many",
     "left_width": 28.651199,
@@ -110,7 +90,7 @@
     "delta": 0.010802999999981466
   },
   {
-    "line_index": 24,
+    "line_index": 23,
     "alignment": "both",
     "word": "punctuation",
     "left_width": 63.284409,
@@ -120,7 +100,7 @@
     "delta": -0.009154999999964275
   },
   {
-    "line_index": 24,
+    "line_index": 23,
     "alignment": "both",
     "word": "across",
     "left_width": 34.971596,
@@ -130,7 +110,7 @@
     "delta": 0.008568000000011011
   },
   {
-    "line_index": 24,
+    "line_index": 23,
     "alignment": "both",
     "word": "words",
     "left_width": 31.84198,
@@ -140,7 +120,7 @@
     "delta": 0.008559999999988577
   },
   {
-    "line_index": 24,
+    "line_index": 23,
     "alignment": "both",
     "word": "and",
     "left_width": 19.723206,
@@ -148,5 +128,25 @@
     "base_gap": 2.4311969999999974,
     "cand_gap": 2.4374990000000025,
     "delta": 0.006302000000005137
+  },
+  {
+    "line_index": 22,
+    "alignment": "both",
+    "word": "space",
+    "left_width": 31.560028,
+    "right_width": 59.59201,
+    "base_gap": 5.388001000000031,
+    "cand_gap": 5.391265999999973,
+    "delta": 0.0032649999999421198
+  },
+  {
+    "line_index": 22,
+    "alignment": "both",
+    "word": "width",
+    "left_width": 28.730408,
+    "right_width": 10.502411,
+    "base_gap": 5.392821999999967,
+    "cand_gap": 5.395721999999978,
+    "delta": 0.002900000000011005
   }
 ]

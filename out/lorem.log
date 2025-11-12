@@ -1,0 +1,11 @@
+DocxToPdf.Sdk - Demo
+
+Conversione DOCX → PDF
+  Input:  samples/lorem.docx
+  Output: out/lorem.pdf
+
+SplitIntoFontRuns selects Cambria for TM (current Cambria)
+
+✓ Conversione completata!
+  Percorso: out/lorem.pdf
+  Dimensione: 1.327.215 bytes

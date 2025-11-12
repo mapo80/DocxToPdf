@@ -1,0 +1,10 @@
+DocxToPdf.Sdk - Demo
+
+Conversione DOCX → PDF
+  Input:  samples/simple-spacing.docx
+  Output: out/simple-spacing.pdf
+
+
+✓ Conversione completata!
+  Percorso: out/simple-spacing.pdf
+  Dimensione: 614.332 bytes

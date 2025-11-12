@@ -1,0 +1,10 @@
+DocxToPdf.Sdk - Demo
+
+Conversione DOCX → PDF
+  Input:  samples/bullets-basic.docx
+  Output: out/bullets-basic.pdf
+
+
+✓ Conversione completata!
+  Percorso: out/bullets-basic.pdf
+  Dimensione: 591.207 bytes

@@ -5,396 +5,182 @@ Conversione DOCX → PDF
   Output: out/layout-stress.pdf
 
 [layout-stress-fonts] Tracking Microsoft font usage for 'layout-stress.docx'
-Section: page=612,00x792,00 margins L=90,00 T=72,00 R=90,00 B=72,00
-Paragraph 1: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-Paragraph 1 line 1: baseline=98,29 currentY=72,00 lineSpacing=39,31 width=361,54/432,00
 [layout-stress-fonts] text='Advanced' requested=Aptos resolved=Aptos
-Run 'Advanced' font=Aptos size=28,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=28,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text='Layout' requested=Aptos resolved=Aptos
-Run 'Layout' font=Aptos size=28,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=28,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text='Stress' requested=Aptos resolved=Aptos
-Run 'Stress' font=Aptos size=28,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=28,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text='Test' requested=Aptos resolved=Aptos
-Run 'Test' font=Aptos size=28,00 bold=True italic=False kerning=True
-Paragraph 2: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-Paragraph 2 line 1: baseline=133,78 currentY=121,31 lineSpacing=18,51 width=240,16/432,00
 [layout-stress-fonts] text='Mixed' requested=Times New Roman resolved=Times New Roman
-Run 'Mixed' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='fonts,' requested=Times New Roman resolved=Times New Roman
-Run 'fonts,' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='spacing,' requested=Times New Roman resolved=Times New Roman
-Run 'spacing,' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='lists,' requested=Times New Roman resolved=Times New Roman
-Run 'lists,' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='tabs,' requested=Times New Roman resolved=Times New Roman
-Run 'tabs,' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='and' requested=Times New Roman resolved=Times New Roman
-Run 'and' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=14,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='tables' requested=Times New Roman resolved=Times New Roman
-Run 'tables' font=Times New Roman size=14,00 bold=False italic=False kerning=True
-Paragraph 3: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-Paragraph 3 line 1: baseline=161,09 currentY=149,82 lineSpacing=16,85 width=413,81/432,00
 [layout-stress-fonts] text='Aptos' requested=Aptos resolved=Aptos
-Run 'Aptos' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='body' requested=Aptos resolved=Aptos
-Run 'body' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='text' requested=Aptos resolved=Aptos
-Run 'text' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='with' requested=Aptos resolved=Aptos
-Run 'with' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='default' requested=Aptos resolved=Aptos
-Run 'default' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='spacing' requested=Aptos resolved=Aptos
-Run 'spacing' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='1.15x.' requested=Aptos resolved=Aptos
-Run '1.15x.' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='Includes' requested=Aptos resolved=Aptos
-Run 'Includes' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='italic,' requested=Aptos resolved=Aptos
-Run 'italic,' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='bold,' requested=Aptos resolved=Aptos
-Run 'bold,' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='and' requested=Aptos resolved=Aptos
-Run 'and' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='inline' requested=Aptos resolved=Aptos
-Run 'inline' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='color.' requested=Aptos resolved=Aptos
-Run 'color.' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=True italic=False kerning=True
-Paragraph 3 line 2: baseline=177,93 currentY=166,67 lineSpacing=16,85 width=141,87/432,00
 [layout-stress-fonts] text='Bold' requested=Aptos resolved=Aptos
-Run 'Bold' font=Aptos size=12,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text='segment' requested=Aptos resolved=Aptos
-Run 'segment' font=Aptos size=12,00 bold=True italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=True kerning=True
 [layout-stress-fonts] text='italic' requested=Aptos resolved=Aptos
-Run 'italic' font=Aptos size=12,00 bold=False italic=True kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=True kerning=True
 [layout-stress-fonts] text='portion' requested=Aptos resolved=Aptos
-Run 'portion' font=Aptos size=12,00 bold=False italic=True kerning=True
-Paragraph 4: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,50x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
 SplitIntoFontRuns selects Times New Roman for TM (current Times New Roman)
-Paragraph 4 line 1: baseline=203,31 currentY=193,51 lineSpacing=18,97 width=431,88/432,00
 [layout-stress-fonts] text='Times' requested=Times New Roman resolved=Times New Roman
-Run 'Times' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='New' requested=Times New Roman resolved=Times New Roman
-Run 'New' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='Roman' requested=Times New Roman resolved=Times New Roman
-Run 'Roman' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='paragraph' requested=Times New Roman resolved=Times New Roman
-Run 'paragraph' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='using' requested=Times New Roman resolved=Times New Roman
-Run 'using' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='1.5' requested=Times New Roman resolved=Times New Roman
-Run '1.5' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='line' requested=Times New Roman resolved=Times New Roman
-Run 'line' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='spacing.' requested=Times New Roman resolved=Times New Roman
-Run 'spacing.' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='Contains' requested=Times New Roman resolved=Times New Roman
-Run 'Contains' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='numbers' requested=Times New Roman resolved=Times New Roman
-Run 'numbers' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='12345' requested=Times New Roman resolved=Times New Roman
-Run '12345' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='and' requested=Times New Roman resolved=Times New Roman
-Run 'and' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='symbols' requested=Times New Roman resolved=Times New Roman
-Run 'symbols' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='™' requested=Times New Roman resolved=Times New Roman
-Literal candidate text='™' chars=1
-Run '™' font=Times New Roman size=11,00 bold=False italic=False kerning=False
-Trademark run text='™' width=10,78
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='©' requested=Times New Roman resolved=Times New Roman
-Literal candidate text='©' chars=1
-Run '©' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=False kerning=False
-Paragraph 4 line 2: baseline=222,29 currentY=212,48 lineSpacing=18,97 width=137,61/432,00
 [layout-stress-fonts] text='®.' requested=Times New Roman resolved=Times New Roman
-Run '®.' font=Times New Roman size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text='Bold' requested=Times New Roman resolved=Times New Roman
-Run 'Bold' font=Times New Roman size=11,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text='segment' requested=Times New Roman resolved=Times New Roman
-Run 'segment' font=Times New Roman size=11,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=True kerning=False
 [layout-stress-fonts] text='italic' requested=Times New Roman resolved=Times New Roman
-Run 'italic' font=Times New Roman size=11,00 bold=False italic=True kerning=False
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=11,00 bold=False italic=True kerning=False
 [layout-stress-fonts] text='portion' requested=Times New Roman resolved=Times New Roman
-Run 'portion' font=Times New Roman size=11,00 bold=False italic=True kerning=False
-Paragraph 5: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,00x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-Paragraph 5 line 1: baseline=250,98 currentY=241,46 lineSpacing=12,21 width=399,83/432,00
 [layout-stress-fonts] text='Calibri' requested=Calibri resolved=Calibri
-Run 'Calibri' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='block' requested=Calibri resolved=Calibri
-Run 'block' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='at' requested=Calibri resolved=Calibri
-Run 'at' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='single' requested=Calibri resolved=Calibri
-Run 'single' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='spacing' requested=Calibri resolved=Calibri
-Run 'spacing' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='to' requested=Calibri resolved=Calibri
-Run 'to' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='verify' requested=Calibri resolved=Calibri
-Run 'verify' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='baseline' requested=Calibri resolved=Calibri
-Run 'baseline' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='alignment' requested=Calibri resolved=Calibri
-Run 'alignment' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='across' requested=Calibri resolved=Calibri
-Run 'across' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='fonts.' requested=Calibri resolved=Calibri
-Run 'fonts.' font=Calibri size=10,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text='Bold' requested=Calibri resolved=Calibri
-Run 'Bold' font=Calibri size=10,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text='segment' requested=Calibri resolved=Calibri
-Run 'segment' font=Calibri size=10,00 bold=True italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=True kerning=False
 [layout-stress-fonts] text='italic' requested=Calibri resolved=Calibri
-Run 'italic' font=Calibri size=10,00 bold=False italic=True kerning=False
 [layout-stress-fonts] text=' ' requested=Calibri resolved=Calibri
-Run ' ' font=Calibri size=10,00 bold=False italic=True kerning=False
 [layout-stress-fonts] text='portion' requested=Calibri resolved=Calibri
-Run 'portion' font=Calibri size=10,00 bold=False italic=True kerning=False
-Paragraph 6: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=18,00 firstLine=0,00 subsequent=18,00 hanging=18,00
-Paragraph 6 line 1: baseline=274,93 currentY=263,67 lineSpacing=16,85 width=100,45/414,00
 [layout-stress-fonts] text='Bullet' requested=Aptos resolved=Aptos
-Run 'Bullet' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='item' requested=Aptos resolved=Aptos
-Run 'item' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='in' requested=Aptos resolved=Aptos
-Run 'in' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='Aptos' requested=Aptos resolved=Aptos
-Run 'Aptos' font=Aptos size=12,00 bold=False italic=False kerning=True
-Paragraph 7: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=18,00 firstLine=0,00 subsequent=18,00 hanging=18,00
-Paragraph 7 line 1: baseline=291,20 currentY=280,51 lineSpacing=15,87 width=110,30/414,00
 [layout-stress-fonts] text='Second' requested=Times New Roman resolved=Times New Roman
-Run 'Second' font=Times New Roman size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='bullet' requested=Times New Roman resolved=Times New Roman
-Run 'bullet' font=Times New Roman size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='in' requested=Times New Roman resolved=Times New Roman
-Run 'in' font=Times New Roman size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Times New Roman resolved=Times New Roman
-Run ' ' font=Times New Roman size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='Times' requested=Times New Roman resolved=Times New Roman
-Run 'Times' font=Times New Roman size=12,00 bold=False italic=False kerning=True
-Paragraph 8: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,25x leftIndent=18,00 firstLine=0,00 subsequent=18,00 hanging=18,00
-Paragraph 8 line 1: baseline=317,78 currentY=306,38 lineSpacing=17,59 width=197,02/414,00
 [layout-stress-fonts] text='Numbered' requested=Cambria resolved=Cambria
-Run 'Numbered' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='item' requested=Cambria resolved=Cambria
-Run 'item' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='one' requested=Cambria resolved=Cambria
-Run 'one' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='with' requested=Cambria resolved=Cambria
-Run 'with' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='1.25' requested=Cambria resolved=Cambria
-Run '1.25' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='spacing.' requested=Cambria resolved=Cambria
-Run 'spacing.' font=Cambria size=12,00 bold=False italic=False kerning=True
-Paragraph 9: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,25x leftIndent=18,00 firstLine=0,00 subsequent=18,00 hanging=18,00
-[tabs] Tab align=Left target=252,0pt span=29,6 leader=None
-Paragraph 9 line 1: baseline=335,37 currentY=323,97 lineSpacing=17,59 width=315,84/414,00
 [layout-stress-fonts] text='Numbered' requested=Cambria resolved=Cambria
-Run 'Numbered' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='item' requested=Cambria resolved=Cambria
-Run 'item' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='two' requested=Cambria resolved=Cambria
-Run 'two' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='with' requested=Cambria resolved=Cambria
-Run 'with' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='embedded' requested=Cambria resolved=Cambria
-Run 'embedded' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='tab' requested=Cambria resolved=Cambria
-Run 'tab' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='aligned' requested=Cambria resolved=Cambria
-Run 'aligned' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='content.' requested=Cambria resolved=Cambria
-Run 'content.' font=Cambria size=12,00 bold=False italic=False kerning=True
-Paragraph 10: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-[tabs] Tab align=Left target=144,0pt span=100,5 leader=None
-[tabs] Tab align=Left target=288,0pt span=70,3 leader=None
-Paragraph 10 line 1: baseline=362,00 currentY=351,55 lineSpacing=14,83 width=330,67/432,00
 [layout-stress-fonts] text='Left' requested=Cambria resolved=Cambria
-Run 'Left' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='label' requested=Cambria resolved=Cambria
-Run 'label' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='Center' requested=Cambria resolved=Cambria
-Run 'Center' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='segment' requested=Cambria resolved=Cambria
-Run 'segment' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='Right' requested=Cambria resolved=Cambria
-Run 'Right' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='tail' requested=Cambria resolved=Cambria
-Run 'tail' font=Cambria size=11,00 bold=False italic=False kerning=False
-[table] row=0 col=0 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=0 col=1 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=0 col=2 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=1 col=0 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=1 col=1 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=1 col=2 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=2 col=0 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=2 col=1 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] row=2 col=2 span=1 rowSpan=1 width=144,00 height=12,90 content=12,90
-[table] rows=3 columns=3
-[table] draw row=0 height=12,90 top=366,38
 [layout-stress-fonts] text='Metric' requested=Cambria resolved=Cambria
-[table-line] table r0 c0 baseline=376,83 cursorY=366,38 spacing=12,90 ascent=-10,45
 [layout-stress-fonts] text='Value' requested=Cambria resolved=Cambria
-[table-line] table r0 c1 baseline=376,83 cursorY=366,38 spacing=12,90 ascent=-10,45
 [layout-stress-fonts] text='Notes' requested=Cambria resolved=Cambria
-[table-line] table r0 c2 baseline=376,83 cursorY=366,38 spacing=12,90 ascent=-10,45
-[table] draw row=1 height=12,90 top=379,28
 [layout-stress-fonts] text='Line' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='spacing' requested=Cambria resolved=Cambria
-[table-line] table r1 c0 baseline=389,73 cursorY=379,28 spacing=12,90 ascent=-10,45
 [layout-stress-fonts] text='1.15' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='/' requested=Cambria resolved=Cambria
@@ -404,22 +190,17 @@ Run 'tail' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='/' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='1.0' requested=Cambria resolved=Cambria
-[table-line] table r1 c1 baseline=389,73 cursorY=379,28 spacing=12,90 ascent=-10,45
 [layout-stress-fonts] text='Verify' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='baseline' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='alignment' requested=Cambria resolved=Cambria
-[table-line] table r1 c2 baseline=389,73 cursorY=379,28 spacing=12,90 ascent=-10,45
-[table] draw row=2 height=12,90 top=392,17
 [layout-stress-fonts] text='Fonts' requested=Cambria resolved=Cambria
-[table-line] table r2 c0 baseline=402,63 cursorY=392,17 spacing=12,90 ascent=-10,45
 [layout-stress-fonts] text='Aptos,' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='Times,' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='Calibri' requested=Cambria resolved=Cambria
-[table-line] table r2 c1 baseline=402,63 cursorY=392,17 spacing=12,90 ascent=-10,45
 [layout-stress-fonts] text='Ensure' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='glyph' requested=Cambria resolved=Cambria
@@ -427,198 +208,96 @@ Run 'tail' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='metrics' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
 [layout-stress-fonts] text='correct' requested=Cambria resolved=Cambria
-[table-line] table r2 c2 baseline=402,63 cursorY=392,17 spacing=12,90 ascent=-10,45
-Paragraph 11: spacingBefore=18,00 spacingAfter=18,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-Paragraph 11 line 1: baseline=434,47 currentY=423,07 lineSpacing=16,18 width=356,44/432,00
 [layout-stress-fonts] text='Paragraph' requested=Cambria resolved=Cambria
-Run 'Paragraph' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='with' requested=Cambria resolved=Cambria
-Run 'with' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='18pt' requested=Cambria resolved=Cambria
-Run '18pt' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='spacing' requested=Cambria resolved=Cambria
-Run 'spacing' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='before' requested=Cambria resolved=Cambria
-Run 'before' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='and' requested=Cambria resolved=Cambria
-Run 'and' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='after' requested=Cambria resolved=Cambria
-Run 'after' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='to' requested=Cambria resolved=Cambria
-Run 'to' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='test' requested=Cambria resolved=Cambria
-Run 'test' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='block' requested=Cambria resolved=Cambria
-Run 'block' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='separation.' requested=Cambria resolved=Cambria
-Run 'separation.' font=Cambria size=12,00 bold=False italic=False kerning=True
-Paragraph 12: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-[spacing] Paragraph 12 line 1 mode=Justified spaces=11 extra=29,25 basePerSpace=2,969
-Paragraph 12 line 1: baseline=468,52 currentY=457,25 lineSpacing=16,85 width=402,75/432,00
 [layout-stress-fonts] text='Justified' requested=Aptos resolved=Aptos
-Run 'Justified' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='paragraph' requested=Aptos resolved=Aptos
-Run 'paragraph' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='spanning' requested=Aptos resolved=Aptos
-Run 'spanning' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='the' requested=Aptos resolved=Aptos
-Run 'the' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='entire' requested=Aptos resolved=Aptos
-Run 'entire' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='width' requested=Aptos resolved=Aptos
-Run 'width' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='to' requested=Aptos resolved=Aptos
-Run 'to' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='stress' requested=Aptos resolved=Aptos
-Run 'stress' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='extra' requested=Aptos resolved=Aptos
-Run 'extra' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='space' requested=Aptos resolved=Aptos
-Run 'space' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='distribution' requested=Aptos resolved=Aptos
-Run 'distribution' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
-[spacing] line end=435,41 target=432,00
-Paragraph 12 line 2: baseline=485,36 currentY=474,09 lineSpacing=16,85 width=225,14/432,00
 [layout-stress-fonts] text='across' requested=Aptos resolved=Aptos
-Run 'across' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='many' requested=Aptos resolved=Aptos
-Run 'many' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='words' requested=Aptos resolved=Aptos
-Run 'words' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='and' requested=Aptos resolved=Aptos
-Run 'and' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='punctuation' requested=Aptos resolved=Aptos
-Run 'punctuation' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='marks.' requested=Aptos resolved=Aptos
-Run 'marks.' font=Aptos size=12,00 bold=False italic=False kerning=True
-Paragraph 13: spacingBefore=0,00 spacingAfter=10,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-[tabs] Tab align=Left target=180,0pt span=180,0 leader=None
-Paragraph 13 line 1: baseline=512,21 currentY=500,94 lineSpacing=16,85 width=105,40/432,00
 [layout-stress-fonts] text='Positional' requested=Aptos resolved=Aptos
-Run 'Positional' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='tab' requested=Aptos resolved=Aptos
-Run 'tab' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='demo' requested=Aptos resolved=Aptos
-Run 'demo' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
-Paragraph 13 line 2: baseline=529,05 currentY=517,78 lineSpacing=16,85 width=381,96/432,00
 [layout-stress-fonts] text='✓' requested=Aptos resolved=Aptos
-Run '✓' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='(tick' requested=Aptos resolved=Aptos
-Run '(tick' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='should' requested=Aptos resolved=Aptos
-Run 'should' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='align' requested=Aptos resolved=Aptos
-Run 'align' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='to' requested=Aptos resolved=Aptos
-Run 'to' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='the' requested=Aptos resolved=Aptos
-Run 'the' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='absolute' requested=Aptos resolved=Aptos
-Run 'absolute' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text=' ' requested=Aptos resolved=Aptos
-Run ' ' font=Aptos size=12,00 bold=False italic=False kerning=True
 [layout-stress-fonts] text='tab)' requested=Aptos resolved=Aptos
-Run 'tab)' font=Aptos size=12,00 bold=False italic=False kerning=True
-Paragraph 14: spacingBefore=12,00 spacingAfter=12,00 lineSpacingRule=Auto lineSpacingValue=1,15x leftIndent=0,00 firstLine=0,00 subsequent=0,00 hanging=0,00
-Paragraph 14 line 1: baseline=567,08 currentY=556,63 lineSpacing=14,83 width=169,83/432,00
 [layout-stress-fonts] text='---' requested=Cambria resolved=Cambria
-Run '---' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='End' requested=Cambria resolved=Cambria
-Run 'End' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='of' requested=Cambria resolved=Cambria
-Run 'of' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='stress' requested=Cambria resolved=Cambria
-Run 'stress' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='sample' requested=Cambria resolved=Cambria
-Run 'sample' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='additions' requested=Cambria resolved=Cambria
-Run 'additions' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text=' ' requested=Cambria resolved=Cambria
-Run ' ' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] text='---' requested=Cambria resolved=Cambria
-Run '---' font=Cambria size=11,00 bold=False italic=False kerning=False
 [layout-stress-fonts] ✓ All runs used Aptos/Cambria/Calibri without Caladea/Carlito fallback.
 
 ✓ Conversione completata!
   Percorso: out/layout-stress.pdf
-  Dimensione: 5.008.339 bytes
+  Dimensione: 5.008.338 bytes

@@ -646,18 +646,15 @@ public sealed class DocxToPdfConverter
                 ? paragraph.ParagraphFormatting.GetFirstLineOffsetPt()
                 : paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt();
 
+            // Allineamento all'interno della cella: usa la stessa logica del renderer principale
+            // basata su AvailableWidthPt (limite effettivo usato per il wrapping), senza bias.
             float currentX = startX + indent;
-            var extraSpace = Math.Max(0f, innerWidth - line.WidthPt - indent);
+            var availableWidth = line.AvailableWidthPt; // già calcolato con indent/subsequent e rightIndent
+            var extraSpace = Math.Max(0f, availableWidth - line.WidthPt);
             switch (paragraph.ParagraphFormatting.Alignment)
             {
                 case ParagraphAlignment.Center:
                     currentX += extraSpace / 2f;
-                    // Word applica un bilanciamento di centraggio nelle celle che può
-                    // risultare in uno shift costante rispetto al nostro calcolo puro.
-                    // Per i paragrafi centrati dentro una tabella, applichiamo un
-                    // micro‑bias negativo per riallineare all'output Word.
-                    if (context != null)
-                        currentX -= 4.45f; // ~90 twips
                     break;
                 case ParagraphAlignment.Right:
                     currentX += extraSpace;

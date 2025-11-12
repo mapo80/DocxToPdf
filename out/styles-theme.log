@@ -1,0 +1,10 @@
+DocxToPdf.Sdk - Demo
+
+Conversione DOCX → PDF
+  Input:  samples/styles-theme.docx
+  Output: out/styles-theme.pdf
+
+
+✓ Conversione completata!
+  Percorso: out/styles-theme.pdf
+  Dimensione: 1.980.810 bytes

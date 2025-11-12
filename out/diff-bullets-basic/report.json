@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-11-11T16:45:57.892442+00:00",
+  "generatedAt": "2025-11-12T09:24:07.158262+00:00",
   "summary": {
     "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/bullets-basic.pdf",
     "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/bullets-basic.pdf",
@@ -10,12 +10,12 @@
     ],
     "MissingFromBaseline": [],
     "MissingFromCandidate": [],
-    "TotalAePixels": 18684,
-    "WeightedAePercent": 0.21470136699179068,
+    "TotalAePixels": 4741,
+    "WeightedAePercent": 0.05447972494691071,
     "ConsistentPages": 1,
     "EngineOnlyPages": 0,
     "CleanPages": 0,
-    "OverallStatus": 2,
+    "OverallStatus": 1,
     "PageRangeExpression": null,
     "Fuzz": null,
     "UseCropBox": false,
@@ -40,45 +40,22 @@
       "GhostscriptVersion": "gs 10.05.1",
       "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
     },
-    "GeneratedAtUtc": "2025-11-11T16:45:57.892442+00:00",
+    "GeneratedAtUtc": "2025-11-12T09:24:07.158262+00:00",
     "GeometryAnalysis": {
       "TolerancePt": 0.25,
-      "Passed": false,
+      "Passed": true,
       "Pages": [
         {
           "PageNumber": 1,
           "MissingWords": [],
           "ExtraWords": [],
           "MovedWords": [],
-          "AddedGraphics": [
-            {
-              "Type": "fill",
-              "Baseline": null,
-              "Candidate": {
-                "X": 108.796875,
-                "Y": 734.734863,
-                "Width": 5.203125,
-                "Height": 5.203125,
-                "CenterX": 111.3984375,
-                "CenterY": 737.3364255
-              },
-              "Delta": {
-                "DeltaX": 0,
-                "DeltaY": 0,
-                "DeltaWidth": 0,
-                "DeltaHeight": 0,
-                "MaxDeviation": 0
-              },
-              "StrokeWidth": 1,
-              "StrokeColor": "#000000",
-              "FillColor": "#000000"
-            }
-          ],
+          "AddedGraphics": [],
           "RemovedGraphics": [],
           "ChangedGraphics": [],
-          "WordStatus": 4,
-          "WordStatusNote": "Oltre la met\u00E0 del testo del PDF di riferimento non \u00E8 stato trovato nel candidato. Il confronto parole \u00E8 disattivato per evitare falsi positivi (probabile testo rasterizzato/vettoriale).",
-          "IsClean": false
+          "WordStatus": 0,
+          "WordStatusNote": null,
+          "IsClean": true
         }
       ]
     }
@@ -91,13 +68,13 @@
         "Width": 2480,
         "Height": 3509,
         "Dpi": 300,
-        "AePixels": 18684,
-        "AePercent": 0.21470136699179068,
-        "Mae": 0.00157467,
-        "Rmse": 0.0375674,
-        "Psnr": 28.5038,
-        "Ssim": 0.9978624,
-        "Dssim": 0.0021376,
+        "AePixels": 4741,
+        "AePercent": 0.05447972494691071,
+        "Mae": 0.000276537,
+        "Rmse": 0.0145042,
+        "Psnr": 36.7701,
+        "Ssim": 0.999523208,
+        "Dssim": 0.000476792,
         "Status": 1,
         "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/A/page-0001.png",
         "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/B/page-0001.png",
@@ -114,13 +91,13 @@
         "Width": 2479,
         "Height": 3508,
         "Dpi": 300,
-        "AePixels": 16712,
-        "AePercent": 0.19217297591674282,
-        "Mae": 0.00157793,
-        "Rmse": 0.0381956,
-        "Psnr": 28.3597,
-        "Ssim": 0.99787543,
-        "Dssim": 0.00212457,
+        "AePixels": 6098,
+        "AePercent": 0.07012151789973059,
+        "Mae": 0.000363088,
+        "Rmse": 0.0161669,
+        "Psnr": 35.8275,
+        "Ssim": 0.999385681,
+        "Dssim": 0.000614319,
         "Status": 1,
         "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/A/page-0001.png",
         "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/B/page-0001.png",
@@ -139,13 +116,13 @@
           "Width": 2480,
           "Height": 3509,
           "Dpi": 300,
-          "AePixels": 18684,
-          "AePercent": 0.21470136699179068,
-          "Mae": 0.00157467,
-          "Rmse": 0.0375674,
-          "Psnr": 28.5038,
-          "Ssim": 0.9978624,
-          "Dssim": 0.0021376,
+          "AePixels": 4741,
+          "AePercent": 0.05447972494691071,
+          "Mae": 0.000276537,
+          "Rmse": 0.0145042,
+          "Psnr": 36.7701,
+          "Ssim": 0.999523208,
+          "Dssim": 0.000476792,
           "Status": 1,
           "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/A/page-0001.png",
           "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/poppler/B/page-0001.png",
@@ -162,13 +139,13 @@
           "Width": 2479,
           "Height": 3508,
           "Dpi": 300,
-          "AePixels": 16712,
-          "AePercent": 0.19217297591674282,
-          "Mae": 0.00157793,
-          "Rmse": 0.0381956,
-          "Psnr": 28.3597,
-          "Ssim": 0.99787543,
-          "Dssim": 0.00212457,
+          "AePixels": 6098,
+          "AePercent": 0.07012151789973059,
+          "Mae": 0.000363088,
+          "Rmse": 0.0161669,
+          "Psnr": 35.8275,
+          "Ssim": 0.999385681,
+          "Dssim": 0.000614319,
           "Status": 1,
           "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/A/page-0001.png",
           "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-bullets-basic/ghostscript/B/page-0001.png",
@@ -185,42 +162,19 @@
   ],
   "geometry": {
     "TolerancePt": 0.25,
-    "Passed": false,
+    "Passed": true,
     "Pages": [
       {
         "PageNumber": 1,
         "MissingWords": [],
         "ExtraWords": [],
         "MovedWords": [],
-        "AddedGraphics": [
-          {
-            "Type": "fill",
-            "Baseline": null,
-            "Candidate": {
-              "X": 108.796875,
-              "Y": 734.734863,
-              "Width": 5.203125,
-              "Height": 5.203125,
-              "CenterX": 111.3984375,
-              "CenterY": 737.3364255
-            },
-            "Delta": {
-              "DeltaX": 0,
-              "DeltaY": 0,
-              "DeltaWidth": 0,
-              "DeltaHeight": 0,
-              "MaxDeviation": 0
-            },
-            "StrokeWidth": 1,
-            "StrokeColor": "#000000",
-            "FillColor": "#000000"
-          }
-        ],
+        "AddedGraphics": [],
         "RemovedGraphics": [],
         "ChangedGraphics": [],
-        "WordStatus": 4,
-        "WordStatusNote": "Oltre la met\u00E0 del testo del PDF di riferimento non \u00E8 stato trovato nel candidato. Il confronto parole \u00E8 disattivato per evitare falsi positivi (probabile testo rasterizzato/vettoriale).",
-        "IsClean": false
+        "WordStatus": 0,
+        "WordStatusNote": null,
+        "IsClean": true
       }
     ]
   }

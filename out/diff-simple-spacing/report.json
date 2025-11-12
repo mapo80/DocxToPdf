@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-11-11T16:47:08.126151+00:00",
+  "generatedAt": "2025-11-12T09:25:17.520965+00:00",
   "summary": {
     "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/simple-spacing.pdf",
     "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/simple-spacing.pdf",
@@ -40,7 +40,7 @@
       "GhostscriptVersion": "gs 10.05.1",
       "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
     },
-    "GeneratedAtUtc": "2025-11-11T16:47:08.126151+00:00",
+    "GeneratedAtUtc": "2025-11-12T09:25:17.520965+00:00",
     "GeometryAnalysis": {
       "TolerancePt": 0.25,
       "Passed": true,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-11-11T13:27:40.230183+00:00",
+  "generatedAt": "2025-11-12T09:26:23.609356+00:00",
   "summary": {
     "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/tabs-alignment.pdf",
     "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/tabs-alignment.pdf",
@@ -10,8 +10,8 @@
     ],
     "MissingFromBaseline": [],
     "MissingFromCandidate": [],
-    "TotalAePixels": 82847,
-    "WeightedAePercent": 0.9845157456922163,
+    "TotalAePixels": 78736,
+    "WeightedAePercent": 0.9356625074272134,
     "ConsistentPages": 1,
     "EngineOnlyPages": 0,
     "CleanPages": 0,
@@ -40,7 +40,7 @@
       "GhostscriptVersion": "gs 10.05.1",
       "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
     },
-    "GeneratedAtUtc": "2025-11-11T13:27:40.230183+00:00",
+    "GeneratedAtUtc": "2025-11-12T09:26:23.609356+00:00",
     "GeometryAnalysis": {
       "TolerancePt": 0.25,
       "Passed": false,
@@ -48,6 +48,66 @@
         {
           "PageNumber": 1,
           "MissingWords": [
+            {
+              "Text": "Kickoff",
+              "Baseline": {
+                "X": 247.804031,
+                "Y": 150.973988,
+                "Width": 34.979965,
+                "Height": 7.326,
+                "CenterX": 265.2940135,
+                "CenterY": 154.636988
+              },
+              "Candidate": null,
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 12
+            },
+            {
+              "Text": "Justified",
+              "Baseline": {
+                "X": 72.025002,
+                "Y": 200.754017,
+                "Width": 42.696007,
+                "Height": 7.326,
+                "CenterX": 93.3730055,
+                "CenterY": 204.41701700000002
+              },
+              "Candidate": null,
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 12
+            },
+            {
+              "Text": "final",
+              "Baseline": {
+                "X": 480.096985,
+                "Y": 242.754017,
+                "Width": 22.608002,
+                "Height": 7.326,
+                "CenterX": 491.400986,
+                "CenterY": 246.41701700000002
+              },
+              "Candidate": null,
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 12
+            },
             {
               "Text": "tab\u2713",
               "Baseline": {
@@ -70,6 +130,66 @@
             }
           ],
           "ExtraWords": [
+            {
+              "Text": "Kicko\u0000",
+              "Baseline": null,
+              "Candidate": {
+                "X": 247.546875,
+                "Y": 150.09668,
+                "Width": 35.332031,
+                "Height": 7.708008,
+                "CenterX": 265.2128905,
+                "CenterY": 153.950684
+              },
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 12
+            },
+            {
+              "Text": "Justi\uFB01ed",
+              "Baseline": null,
+              "Candidate": {
+                "X": 72,
+                "Y": 199.788086,
+                "Width": 42.75,
+                "Height": 7.708008,
+                "CenterX": 93.375,
+                "CenterY": 203.64209
+              },
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 12
+            },
+            {
+              "Text": "\uFB01nal",
+              "Baseline": null,
+              "Candidate": {
+                "X": 480.884644,
+                "Y": 241.479492,
+                "Width": 22.599609,
+                "Height": 7.708008,
+                "CenterX": 492.1844485,
+                "CenterY": 245.333496
+              },
+              "Delta": {
+                "DeltaX": 0,
+                "DeltaY": 0,
+                "DeltaWidth": 0,
+                "DeltaHeight": 0,
+                "MaxDeviation": 0
+              },
+              "FontSize": 12
+            },
             {
               "Text": "tab",
               "Baseline": null,
@@ -94,12 +214,12 @@
               "Text": "\u2713",
               "Baseline": null,
               "Candidate": {
-                "X": 144,
-                "Y": 266.325195,
+                "X": 72.425194,
+                "Y": 283.170898,
                 "Width": 8.988281,
                 "Height": 7.708008,
-                "CenterX": 148.49414050000001,
-                "CenterY": 270.179199
+                "CenterX": 76.9193345,
+                "CenterY": 287.024902
               },
               "Delta": {
                 "DeltaX": 0,
@@ -130,13 +250,13 @@
         "Width": 2550,
         "Height": 3300,
         "Dpi": 300,
-        "AePixels": 82847,
-        "AePercent": 0.9845157456922163,
-        "Mae": 0.00629458,
-        "Rmse": 0.073313,
-        "Psnr": 22.6964,
-        "Ssim": 0.99062194,
-        "Dssim": 0.00937806,
+        "AePixels": 78736,
+        "AePercent": 0.9356625074272134,
+        "Mae": 0.00587329,
+        "Rmse": 0.0704303,
+        "Psnr": 23.0448,
+        "Ssim": 0.99098855,
+        "Dssim": 0.00901145,
         "Status": 2,
         "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/poppler/A/page-0001.png",
         "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/poppler/B/page-0001.png",
@@ -153,13 +273,13 @@
         "Width": 2550,
         "Height": 3300,
         "Dpi": 300,
-        "AePixels": 69434,
-        "AePercent": 0.8251218062982769,
-        "Mae": 0.00599306,
-        "Rmse": 0.0721997,
-        "Psnr": 22.8293,
-        "Ssim": 0.99111552,
-        "Dssim": 0.00888448,
+        "AePixels": 63164,
+        "AePercent": 0.7506120023767082,
+        "Mae": 0.00526818,
+        "Rmse": 0.0670402,
+        "Psnr": 23.4733,
+        "Ssim": 0.99183156,
+        "Dssim": 0.00816844,
         "Status": 2,
         "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/ghostscript/A/page-0001.png",
         "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/ghostscript/B/page-0001.png",
@@ -178,13 +298,13 @@
           "Width": 2550,
           "Height": 3300,
           "Dpi": 300,
-          "AePixels": 82847,
-          "AePercent": 0.9845157456922163,
-          "Mae": 0.00629458,
-          "Rmse": 0.073313,
-          "Psnr": 22.6964,
-          "Ssim": 0.99062194,
-          "Dssim": 0.00937806,
+          "AePixels": 78736,
+          "AePercent": 0.9356625074272134,
+          "Mae": 0.00587329,
+          "Rmse": 0.0704303,
+          "Psnr": 23.0448,
+          "Ssim": 0.99098855,
+          "Dssim": 0.00901145,
           "Status": 2,
           "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/poppler/A/page-0001.png",
           "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/poppler/B/page-0001.png",
@@ -201,13 +321,13 @@
           "Width": 2550,
           "Height": 3300,
           "Dpi": 300,
-          "AePixels": 69434,
-          "AePercent": 0.8251218062982769,
-          "Mae": 0.00599306,
-          "Rmse": 0.0721997,
-          "Psnr": 22.8293,
-          "Ssim": 0.99111552,
-          "Dssim": 0.00888448,
+          "AePixels": 63164,
+          "AePercent": 0.7506120023767082,
+          "Mae": 0.00526818,
+          "Rmse": 0.0670402,
+          "Psnr": 23.4733,
+          "Ssim": 0.99183156,
+          "Dssim": 0.00816844,
           "Status": 2,
           "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/ghostscript/A/page-0001.png",
           "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-tabs-alignment/ghostscript/B/page-0001.png",
@@ -230,6 +350,66 @@
         "PageNumber": 1,
         "MissingWords": [
           {
+            "Text": "Kickoff",
+            "Baseline": {
+              "X": 247.804031,
+              "Y": 150.973988,
+              "Width": 34.979965,
+              "Height": 7.326,
+              "CenterX": 265.2940135,
+              "CenterY": 154.636988
+            },
+            "Candidate": null,
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 12
+          },
+          {
+            "Text": "Justified",
+            "Baseline": {
+              "X": 72.025002,
+              "Y": 200.754017,
+              "Width": 42.696007,
+              "Height": 7.326,
+              "CenterX": 93.3730055,
+              "CenterY": 204.41701700000002
+            },
+            "Candidate": null,
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 12
+          },
+          {
+            "Text": "final",
+            "Baseline": {
+              "X": 480.096985,
+              "Y": 242.754017,
+              "Width": 22.608002,
+              "Height": 7.326,
+              "CenterX": 491.400986,
+              "CenterY": 246.41701700000002
+            },
+            "Candidate": null,
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 12
+          },
+          {
             "Text": "tab\u2713",
             "Baseline": {
               "X": 125.484993,
@@ -251,6 +431,66 @@
           }
         ],
         "ExtraWords": [
+          {
+            "Text": "Kicko\u0000",
+            "Baseline": null,
+            "Candidate": {
+              "X": 247.546875,
+              "Y": 150.09668,
+              "Width": 35.332031,
+              "Height": 7.708008,
+              "CenterX": 265.2128905,
+              "CenterY": 153.950684
+            },
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 12
+          },
+          {
+            "Text": "Justi\uFB01ed",
+            "Baseline": null,
+            "Candidate": {
+              "X": 72,
+              "Y": 199.788086,
+              "Width": 42.75,
+              "Height": 7.708008,
+              "CenterX": 93.375,
+              "CenterY": 203.64209
+            },
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 12
+          },
+          {
+            "Text": "\uFB01nal",
+            "Baseline": null,
+            "Candidate": {
+              "X": 480.884644,
+              "Y": 241.479492,
+              "Width": 22.599609,
+              "Height": 7.708008,
+              "CenterX": 492.1844485,
+              "CenterY": 245.333496
+            },
+            "Delta": {
+              "DeltaX": 0,
+              "DeltaY": 0,
+              "DeltaWidth": 0,
+              "DeltaHeight": 0,
+              "MaxDeviation": 0
+            },
+            "FontSize": 12
+          },
           {
             "Text": "tab",
             "Baseline": null,
@@ -275,12 +515,12 @@
             "Text": "\u2713",
             "Baseline": null,
             "Candidate": {
-              "X": 144,
-              "Y": 266.325195,
+              "X": 72.425194,
+              "Y": 283.170898,
               "Width": 8.988281,
               "Height": 7.708008,
-              "CenterX": 148.49414050000001,
-              "CenterY": 270.179199
+              "CenterX": 76.9193345,
+              "CenterY": 287.024902
             },
             "Delta": {
               "DeltaX": 0,

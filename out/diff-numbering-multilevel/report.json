@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-11-11T16:46:51.396759+00:00",
+  "generatedAt": "2025-11-12T09:25:01.763605+00:00",
   "summary": {
     "BaselinePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/samples/golden-word/numbering-multilevel.pdf",
     "CandidatePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/numbering-multilevel.pdf",
@@ -10,12 +10,12 @@
     ],
     "MissingFromBaseline": [],
     "MissingFromCandidate": [],
-    "TotalAePixels": 22490,
-    "WeightedAePercent": 0.2584368306382666,
+    "TotalAePixels": 18628,
+    "WeightedAePercent": 0.21405786043262026,
     "ConsistentPages": 1,
     "EngineOnlyPages": 0,
     "CleanPages": 0,
-    "OverallStatus": 2,
+    "OverallStatus": 1,
     "PageRangeExpression": null,
     "Fuzz": null,
     "UseCropBox": false,
@@ -40,35 +40,14 @@
       "GhostscriptVersion": "gs 10.05.1",
       "PdfBoxVersion": "pdfbox-app-3.0.2.jar"
     },
-    "GeneratedAtUtc": "2025-11-11T16:46:51.396759+00:00",
+    "GeneratedAtUtc": "2025-11-12T09:25:01.763605+00:00",
     "GeometryAnalysis": {
       "TolerancePt": 0.25,
-      "Passed": false,
+      "Passed": true,
       "Pages": [
         {
           "PageNumber": 1,
-          "MissingWords": [
-            {
-              "Text": "Assets",
-              "Baseline": {
-                "X": 144,
-                "Y": 125.490012,
-                "Width": 34.883972,
-                "Height": 7.71,
-                "CenterX": 161.44198599999999,
-                "CenterY": 129.345012
-              },
-              "Candidate": null,
-              "Delta": {
-                "DeltaX": 0,
-                "DeltaY": 0,
-                "DeltaWidth": 0,
-                "DeltaHeight": 0,
-                "MaxDeviation": 0
-              },
-              "FontSize": 50
-            }
-          ],
+          "MissingWords": [],
           "ExtraWords": [],
           "MovedWords": [],
           "AddedGraphics": [],
@@ -76,7 +55,7 @@
           "ChangedGraphics": [],
           "WordStatus": 0,
           "WordStatusNote": null,
-          "IsClean": false
+          "IsClean": true
         }
       ]
     }
@@ -89,13 +68,13 @@
         "Width": 2480,
         "Height": 3509,
         "Dpi": 300,
-        "AePixels": 22490,
-        "AePercent": 0.2584368306382666,
-        "Mae": 0.0017871,
-        "Rmse": 0.0395949,
-        "Psnr": 28.0472,
-        "Ssim": 0.99730186,
-        "Dssim": 0.00269814,
+        "AePixels": 18628,
+        "AePercent": 0.21405786043262026,
+        "Mae": 0.00144895,
+        "Rmse": 0.0355615,
+        "Psnr": 28.9804,
+        "Ssim": 0.9978518,
+        "Dssim": 0.0021482,
         "Status": 1,
         "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/A/page-0001.png",
         "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/B/page-0001.png",
@@ -112,13 +91,13 @@
         "Width": 2479,
         "Height": 3508,
         "Dpi": 300,
-        "AePixels": 19637,
-        "AePercent": 0.22580784634257295,
-        "Mae": 0.00177282,
-        "Rmse": 0.0399834,
-        "Psnr": 27.9624,
-        "Ssim": 0.9972973,
-        "Dssim": 0.0027027,
+        "AePixels": 16740,
+        "AePercent": 0.1924949507447508,
+        "Mae": 0.00143993,
+        "Rmse": 0.0357978,
+        "Psnr": 28.9229,
+        "Ssim": 0.99786547,
+        "Dssim": 0.00213453,
         "Status": 1,
         "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/A/page-0001.png",
         "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/B/page-0001.png",
@@ -137,13 +116,13 @@
           "Width": 2480,
           "Height": 3509,
           "Dpi": 300,
-          "AePixels": 22490,
-          "AePercent": 0.2584368306382666,
-          "Mae": 0.0017871,
-          "Rmse": 0.0395949,
-          "Psnr": 28.0472,
-          "Ssim": 0.99730186,
-          "Dssim": 0.00269814,
+          "AePixels": 18628,
+          "AePercent": 0.21405786043262026,
+          "Mae": 0.00144895,
+          "Rmse": 0.0355615,
+          "Psnr": 28.9804,
+          "Ssim": 0.9978518,
+          "Dssim": 0.0021482,
           "Status": 1,
           "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/A/page-0001.png",
           "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/poppler/B/page-0001.png",
@@ -160,13 +139,13 @@
           "Width": 2479,
           "Height": 3508,
           "Dpi": 300,
-          "AePixels": 19637,
-          "AePercent": 0.22580784634257295,
-          "Mae": 0.00177282,
-          "Rmse": 0.0399834,
-          "Psnr": 27.9624,
-          "Ssim": 0.9972973,
-          "Dssim": 0.0027027,
+          "AePixels": 16740,
+          "AePercent": 0.1924949507447508,
+          "Mae": 0.00143993,
+          "Rmse": 0.0357978,
+          "Psnr": 28.9229,
+          "Ssim": 0.99786547,
+          "Dssim": 0.00213453,
           "Status": 1,
           "BaselineImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/A/page-0001.png",
           "CandidateImagePath": "/Users/politom/Documents/Workspace/personal/DocxToPdf/out/diff-numbering-multilevel/ghostscript/B/page-0001.png",
@@ -183,32 +162,11 @@
   ],
   "geometry": {
     "TolerancePt": 0.25,
-    "Passed": false,
+    "Passed": true,
     "Pages": [
       {
         "PageNumber": 1,
-        "MissingWords": [
-          {
-            "Text": "Assets",
-            "Baseline": {
-              "X": 144,
-              "Y": 125.490012,
-              "Width": 34.883972,
-              "Height": 7.71,
-              "CenterX": 161.44198599999999,
-              "CenterY": 129.345012
-            },
-            "Candidate": null,
-            "Delta": {
-              "DeltaX": 0,
-              "DeltaY": 0,
-              "DeltaWidth": 0,
-              "DeltaHeight": 0,
-              "MaxDeviation": 0
-            },
-            "FontSize": 50
-          }
-        ],
+        "MissingWords": [],
         "ExtraWords": [],
         "MovedWords": [],
         "AddedGraphics": [],
@@ -216,7 +174,7 @@
         "ChangedGraphics": [],
         "WordStatus": 0,
         "WordStatusNote": null,
-        "IsClean": false
+        "IsClean": true
       }
     ]
   }

@@ -27,9 +27,15 @@ Questo documento riassume dove siamo arrivati con la pipeline DOCX→PDF, cosa r
   - Su `layout-stress` la riga giustificata target ha `sum|delta| ≈ 0.345 pt` con delta per parola ~[−0.045, +0.066] pt (quasi tutto entro ±0.05 pt).
 
 - Diff attuali (estratto)
-  - `out/diff-layout-stress`: AE% ≈ 5.06 (geometry=false) — il valore è dominato dallo shift del blocco tabella.
+  - `out/diff-layout-stress`: AE% ≈ 5.06 (geometry=false) — dominato dallo shift blocco tabella; PdfBox mostra WordStatus=4 (riconoscimento testo insufficiente per confronto parole).
   - `out/diff-simple-spacing`: AE% ≈ 0.064 (geometry=true).
-  - Altri sample (tabs/bullets/numbering/styles) con AE% basso ma non nullo.
+  - `bullets-basic` e `numbering-multilevel`: geometry=true, AE% basso ma non zero.
+  - `tabs-alignment`, `styles-*`, `lorem`: AE% > 0.9, geometry=false.
+
+### Aggiornamento 2025‑11‑12
+- Rimosso il bias ad‑hoc (−4.45 pt) sul centraggio dei paragrafi dentro le celle; ora il calcolo usa `line.AvailableWidthPt` come nel renderer principale, senza offset fissi.
+- Rigenerati PDF e diff per l’intero dataset; l’AE% di `layout-stress` resta ≈ 5.06 (shift tabella ancora presente). Gli altri sample mantengono trend: bullets/numbering ok a livello geometrico, tabs/styles con differenze rilevanti.
+- Confermata la selezionabilità del testo via Skia+HarfBuzz → PdfBox continua però a segnalare `WordStatus=4` su `layout-stress` (eccezione FlateFilter nel log, ma report generato).
 
 ## Problemi aperti
 
@@ -47,10 +53,11 @@ Questo documento riassume dove siamo arrivati con la pipeline DOCX→PDF, cosa r
 ## Cosa voglio fare e come
 
 1. Chiudere lo shift tabella (layout‑stress)
-   - Rimuovere la correzione ad‑hoc di centraggio e sostituirla con un calcolo deterministico:
-     - Misurare `innerWidth` della cella e la width del testo, calcolare il centraggio esatto senza bias.
-     - Validare con PdfBox che le X di “Metric/Value/Notes” coincidano con il PDF Word.
-   - Punti codice: `DocxToPdf.Sdk/DocxToPdfConverter.cs` → `RenderParagraphLayout` (branch Center in tabella) e `ResolveColumnWidths` per verifiche.
+   - Fatto: rimosso il bias fisso; centraggio ora deterministico usando `AvailableWidthPt` (nessun offset).
+   - Prossimo: verificare la catena misura/indent nelle celle.
+     - Allineare la logica table con quella dei paragrafi “fuori tabella”: usare sempre `line.AvailableWidthPt` per il calcolo di `extraSpace` e verificare che l’indent di prima riga vs successive sia coerente con Word.
+     - Strumentare un dump delle X per le intestazioni e confrontarle con PdfBox (dx ≈ 0 atteso).
+   - Punti codice: `DocxToPdf.Sdk/DocxToPdfConverter.cs` → `RenderParagraphLayout`, `BuildRowPlans` (passaggio `innerWidth`), `ResolveColumnWidths` (autofit e scaling).
 
 2. Rifinitura spacing giustificata
    - Usare i JSON raccolti (`out/spacing-*.json`) per correggere l’intercetta e l’offset per‑spazio finché ogni parola rientra in ±0.05 pt.
@@ -59,6 +66,12 @@ Questo documento riassume dove siamo arrivati con la pipeline DOCX→PDF, cosa r
 3. Regressione completa + documentazione
    - Rigenerare tutti i sample DOCX→PDF, lanciare PdfVisualDiff con geometry; iterare fino a AE%=0 e geometry Passed.
    - Aggiornare README con prerequisiti font (MS), comandi per render/diff, uso degli script spacing e lettura dei report.
+
+## Prossime azioni operative
+- Aggiungere diagnostica puntuale per X/Y di ogni riga in cella (almeno per la riga header della tabella di `layout-stress`).
+- Validare l’uso degli indent nelle celle: il centraggio deve considerare l’area effettiva (innerWidth – rightIndent), come per `line.AvailableWidthPt`.
+- Micro‑tuning `GetSpaceCalibration` per le righe giustificate e, se necessario, ritoccare i coefficienti di `_justified` in `SpacingCompensator` per chiudere gli ultimi ±0.01–0.02 pt.
+- Rilanciare l’intero diff con `--geometry-check` e aggiornare `out/diff-*/report.json` e `index.html`.
 
 ## Comandi utili
 
