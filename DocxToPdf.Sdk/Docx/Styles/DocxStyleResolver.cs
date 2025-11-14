@@ -16,6 +16,8 @@ internal sealed class DocxStyleResolver
     private readonly ColorSchemeMapper _colorMapper;
     private readonly string? _defaultParagraphStyleId;
     private readonly string? _defaultCharacterStyleId;
+    private readonly string? _defaultTableStyleId;
+    private readonly TablePropertySet _tableDefaults;
 
     private const string WordDefaultFontFamily = "Aptos";
     private const double WordDefaultFontSizePt = 12d;
@@ -32,7 +34,9 @@ internal sealed class DocxStyleResolver
         ThemeColorPalette themeColors,
         ColorSchemeMapper colorMapper,
         string? defaultParagraphStyleId,
-        string? defaultCharacterStyleId)
+        string? defaultCharacterStyleId,
+        string? defaultTableStyleId,
+        TablePropertySet tableDefaults)
     {
         _styles = styles;
         _paragraphDefaults = paragraphDefaults;
@@ -42,6 +46,8 @@ internal sealed class DocxStyleResolver
         _colorMapper = colorMapper;
         _defaultParagraphStyleId = defaultParagraphStyleId;
         _defaultCharacterStyleId = defaultCharacterStyleId;
+        _defaultTableStyleId = defaultTableStyleId;
+        _tableDefaults = tableDefaults;
 
         DefaultFontFamily = DetermineDefaultFontFamily();
         DefaultFontSizePt = runDefaults.FontSizePt ?? WordDefaultFontSizePt;
@@ -56,6 +62,7 @@ internal sealed class DocxStyleResolver
         var styles = new Dictionary<string, StyleDefinition>(StringComparer.OrdinalIgnoreCase);
         string? defaultParagraphStyleId = null;
         string? defaultCharacterStyleId = null;
+        string? defaultTableStyleId = null;
 
         if (mainPart.StyleDefinitionsPart?.Styles is { } stylesRoot)
         {
@@ -69,6 +76,8 @@ internal sealed class DocxStyleResolver
                         defaultParagraphStyleId ??= def.StyleId;
                     if (def.StyleType == StyleValues.Character && def.IsDefault)
                         defaultCharacterStyleId ??= def.StyleId;
+                    if (def.StyleType == StyleValues.Table && def.IsDefault)
+                        defaultTableStyleId ??= def.StyleId;
                 }
             }
         }
@@ -83,6 +92,12 @@ internal sealed class DocxStyleResolver
         var runDefaults = runDefaultsElement != null
             ? RunPropertySet.FromOpenXml(runDefaultsElement)
             : RunPropertySet.Empty;
+        var tableDefaults = TablePropertySet.Empty.Clone();
+        if (!string.IsNullOrEmpty(defaultTableStyleId) &&
+            styles.TryGetValue(defaultTableStyleId, out var defaultTableStyle))
+        {
+            tableDefaults.Apply(defaultTableStyle.TableProperties);
+        }
 
         var themeFonts = ThemeFontScheme.Load(mainPart.ThemePart);
         var themeColors = ThemeColorPalette.Load(mainPart.ThemePart);
@@ -98,7 +113,9 @@ internal sealed class DocxStyleResolver
             themeColors,
             colorMapper,
             defaultParagraphStyleId,
-            defaultCharacterStyleId);
+            defaultCharacterStyleId,
+            defaultTableStyleId,
+            tableDefaults);
     }
 
     public ParagraphStyleContext CreateParagraphContext(Paragraph paragraph)
@@ -191,6 +208,35 @@ internal sealed class DocxStyleResolver
             return RgbColor.FromHex(set.ColorHex);
 
         return DefaultTextColor;
+    }
+
+    public TablePaddingOverride? ResolveTableCellPadding(string? tableStyleId)
+    {
+        var accumulator = _tableDefaults.Clone();
+        if (!string.IsNullOrEmpty(_defaultTableStyleId))
+            ApplyTableStyle(_defaultTableStyleId, accumulator);
+
+        if (!string.IsNullOrEmpty(tableStyleId) &&
+            !string.Equals(tableStyleId, _defaultTableStyleId, StringComparison.OrdinalIgnoreCase))
+        {
+            ApplyTableStyle(tableStyleId, accumulator);
+        }
+
+        return accumulator.CellPadding;
+    }
+
+    private void ApplyTableStyle(string? styleId, TablePropertySet accumulator)
+    {
+        if (string.IsNullOrEmpty(styleId))
+            return;
+
+        foreach (var style in EnumerateStyleChain(styleId))
+        {
+            if (style.StyleType != StyleValues.Table)
+                continue;
+
+            accumulator.Apply(style.TableProperties);
+        }
     }
 
     private RgbColor ResolveThemeColor(ThemeColorValues requested, byte? tint, byte? shade)
@@ -359,4 +405,5 @@ internal sealed class DocxStyleResolver
 
         return null;
     }
+
 }

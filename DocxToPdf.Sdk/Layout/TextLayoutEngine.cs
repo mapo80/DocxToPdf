@@ -97,7 +97,8 @@ public sealed class TextLayoutEngine
             var absolute = positionalTab.Reference switch
             {
                 PositionalTabReference.Indent => currentLineIndent + positionalTab.PositionPt,
-                _ => positionalTab.PositionPt
+                PositionalTabReference.Page => positionalTab.PositionPt,
+                _ => 0f
             };
             return new TabResolution(absolute, positionalTab.Leader, positionalTab.Alignment, false, true);
         }
