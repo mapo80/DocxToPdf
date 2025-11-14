@@ -23,6 +23,15 @@ internal sealed class ParagraphPropertySet
     internal RunPropertySet? RunProperties { get; set; }
     internal List<TabStopDefinition>? TabStops { get; set; }
     internal bool? SuppressSpacingBetweenSameStyle { get; set; }
+    internal bool? NoSpaceBetweenSameStyle { get; set; }
+    internal bool? KeepTogether { get; set; }
+    internal bool? KeepWithNext { get; set; }
+    internal bool? PageBreakBefore { get; set; }
+    internal bool? SnapToGrid { get; set; }
+    internal bool? SpaceAfterAuto { get; set; }
+    internal bool? SpaceBeforeAuto { get; set; }
+    internal float? LineUnitBefore { get; set; }
+    internal float? LineUnitAfter { get; set; }
     internal int? NumberingId { get; set; }
     internal int? NumberingLevel { get; set; }
 
@@ -40,6 +49,15 @@ internal sealed class ParagraphPropertySet
             RunProperties = RunProperties?.Clone(),
             TabStops = TabStops != null ? new List<TabStopDefinition>(TabStops) : null,
             SuppressSpacingBetweenSameStyle = SuppressSpacingBetweenSameStyle,
+            NoSpaceBetweenSameStyle = NoSpaceBetweenSameStyle,
+            KeepTogether = KeepTogether,
+            KeepWithNext = KeepWithNext,
+            PageBreakBefore = PageBreakBefore,
+            SnapToGrid = SnapToGrid,
+            SpaceAfterAuto = SpaceAfterAuto,
+            SpaceBeforeAuto = SpaceBeforeAuto,
+            LineUnitBefore = LineUnitBefore,
+            LineUnitAfter = LineUnitAfter,
             NumberingId = NumberingId,
             NumberingLevel = NumberingLevel
         };
@@ -79,6 +97,24 @@ internal sealed class ParagraphPropertySet
 
         if (overlay.SuppressSpacingBetweenSameStyle.HasValue)
             SuppressSpacingBetweenSameStyle = overlay.SuppressSpacingBetweenSameStyle;
+        if (overlay.NoSpaceBetweenSameStyle.HasValue)
+            NoSpaceBetweenSameStyle = overlay.NoSpaceBetweenSameStyle;
+        if (overlay.KeepTogether.HasValue)
+            KeepTogether = overlay.KeepTogether;
+        if (overlay.KeepWithNext.HasValue)
+            KeepWithNext = overlay.KeepWithNext;
+        if (overlay.PageBreakBefore.HasValue)
+            PageBreakBefore = overlay.PageBreakBefore;
+        if (overlay.SnapToGrid.HasValue)
+            SnapToGrid = overlay.SnapToGrid;
+        if (overlay.SpaceAfterAuto.HasValue)
+            SpaceAfterAuto = overlay.SpaceAfterAuto;
+        if (overlay.SpaceBeforeAuto.HasValue)
+            SpaceBeforeAuto = overlay.SpaceBeforeAuto;
+        if (overlay.LineUnitBefore.HasValue)
+            LineUnitBefore = overlay.LineUnitBefore;
+        if (overlay.LineUnitAfter.HasValue)
+            LineUnitAfter = overlay.LineUnitAfter;
 
         if (overlay.NumberingId.HasValue)
             NumberingId = overlay.NumberingId;
@@ -88,6 +124,7 @@ internal sealed class ParagraphPropertySet
 
     public ParagraphFormatting ToParagraphFormatting()
     {
+        var snapToGrid = SnapToGrid;
         return new ParagraphFormatting
         {
             SpacingBeforePt = SpacingBeforePt ?? 0f,
@@ -99,7 +136,17 @@ internal sealed class ParagraphPropertySet
             FirstLineIndentPt = FirstLineIndentPt ?? 0f,
             HangingIndentPt = HangingIndentPt ?? 0f,
             TabStops = TabStops?.ToArray() ?? Array.Empty<TabStopDefinition>(),
-            SuppressSpacingBetweenSameStyle = SuppressSpacingBetweenSameStyle ?? false
+            SuppressSpacingBetweenSameStyle = SuppressSpacingBetweenSameStyle ?? false,
+            NoSpaceBetweenParagraphsOfSameStyle = NoSpaceBetweenSameStyle ?? false,
+            KeepTogether = KeepTogether ?? false,
+            KeepWithNext = KeepWithNext ?? false,
+            PageBreakBefore = PageBreakBefore ?? false,
+            SnapToGrid = snapToGrid ?? false,
+            SnapToGridExplicit = snapToGrid.HasValue,
+            SpaceAfterAuto = SpaceAfterAuto ?? false,
+            SpaceBeforeAuto = SpaceBeforeAuto ?? false,
+            LineUnitBefore = LineUnitBefore ?? 0f,
+            LineUnitAfter = LineUnitAfter ?? 0f
         };
     }
 
@@ -109,7 +156,7 @@ internal sealed class ParagraphPropertySet
         new()
         {
             SpacingBeforePt = 0f,
-            SpacingAfterPt = UnitConverter.DxaToPoints(160), // Word default: 8 pt after paragraph
+            SpacingAfterPt = UnitConverter.DxaToPoints(200), // Word default: 10 pt after paragraph
             LineSpacing = ParagraphLineSpacing.Auto(1.15f)
         };
 
@@ -123,8 +170,16 @@ internal sealed class ParagraphPropertySet
         {
             if (spacing.Before?.Value is string before && int.TryParse(before, out var beforeTwips))
                 set.SpacingBeforePt = UnitConverter.DxaToPoints(beforeTwips);
+            if (spacing.BeforeLines?.Value is int beforeLines)
+                set.LineUnitBefore = beforeLines / 100f;
+            if (spacing.BeforeAutoSpacing?.Value is bool beforeAuto)
+                set.SpaceBeforeAuto = beforeAuto;
             if (spacing.After?.Value is string after && int.TryParse(after, out var afterTwips))
                 set.SpacingAfterPt = UnitConverter.DxaToPoints(afterTwips);
+            if (spacing.AfterLines?.Value is int afterLines)
+                set.LineUnitAfter = afterLines / 100f;
+            if (spacing.AfterAutoSpacing?.Value is bool afterAuto)
+                set.SpaceAfterAuto = afterAuto;
             if (spacing.Line?.Value is string line && int.TryParse(line, out var lineValue))
             {
                 var rule = spacing.LineRule?.Value;
@@ -159,7 +214,15 @@ internal sealed class ParagraphPropertySet
         if (paragraphPropertiesElement.GetFirstChild<ContextualSpacing>() != null)
         {
             set.SuppressSpacingBetweenSameStyle = true;
+            set.NoSpaceBetweenSameStyle = true;
         }
+
+        if (paragraphPropertiesElement.GetFirstChild<KeepNext>() != null)
+            set.KeepWithNext = true;
+        if (paragraphPropertiesElement.GetFirstChild<KeepLines>() != null)
+            set.KeepTogether = true;
+        if (paragraphPropertiesElement.GetFirstChild<PageBreakBefore>() != null)
+            set.PageBreakBefore = true;
 
         if (paragraphPropertiesElement.GetFirstChild<Justification>() is { } jc)
         {
@@ -200,6 +263,9 @@ internal sealed class ParagraphPropertySet
             if (level.HasValue)
                 set.NumberingLevel = (int)level.Value;
         }
+
+        if (paragraphPropertiesElement.GetFirstChild<SnapToGrid>() is { } snap)
+            set.SnapToGrid = snap.Val?.Value ?? true;
 
         return set;
     }

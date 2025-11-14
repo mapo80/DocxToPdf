@@ -241,7 +241,11 @@ public sealed class FontManager
             ["TimesNewRoman"] = "Times New Roman",
             ["ArialMT"] = "Arial",
             ["Aptos Display"] = "Aptos",
-            ["Aptos Narrow"] = "Aptos"
+            ["Aptos Narrow"] = "Aptos",
+            ["Aptos Serif"] = "Aptos",
+            ["Aptos Serif Display"] = "Aptos",
+            ["Aptos Mono"] = "Aptos",
+            ["Aptos Mono Display"] = "Aptos"
         };
 
     private sealed record LocalFontFamily(FontSource Regular, FontSource? Bold, FontSource? Italic, FontSource? BoldItalic)

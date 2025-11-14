@@ -20,6 +20,7 @@ namespace DocxToPdf.Sdk;
 public sealed class DocxToPdfConverter
 {
     private const bool EnableSpacingCalibration = true;
+    private const float HtmlAutoSpacingPoints = 14f;
     private readonly TextRenderer _textRenderer;
     private readonly TextLayoutEngine _layoutEngine;
     private readonly FontManager _fontManager;
@@ -76,20 +77,54 @@ public sealed class DocxToPdfConverter
         // Inizia prima pagina
         var page = pdfBuilder.BeginPage(pageSize);
         float currentY = margins.Top;
+        float contentBottomLimit = pageSize.HeightPt - margins.Bottom;
+        var docGridPitch = section.DocGridLinePitchPt;
+        var docGridOrigin = margins.Top;
+
+        float SnapIfNeeded(float value, bool enabled) =>
+            enabled ? SnapToDocGrid(value, docGridPitch, docGridOrigin) : value;
+
+        void StartNewPage()
+        {
+            pdfBuilder.EndPage();
+            page = pdfBuilder.BeginPage(pageSize);
+            currentY = margins.Top;
+            contentBottomLimit = pageSize.HeightPt - margins.Bottom;
+        }
 
         // Rendering paragrafi
         int paragraphIndex = 0;
         DocxParagraph? previousParagraph = null;
         float previousSpacingAfter = 0f;
-        foreach (var block in docx.GetBlocks())
+        var blocks = docx.GetBlocks().ToList();
+        for (int blockIndex = 0; blockIndex < blocks.Count; blockIndex++)
         {
+            var block = blocks[blockIndex];
             if (block is DocxTableBlock tableBlock)
             {
-                // Mantieni lo spacing dopo il paragrafo precedente anche prima di una tabella:
-                // Word non lo azzera implicitamente. Evitiamo quindi di sottrarre previousSpacingAfter.
+                if (previousParagraph != null && previousSpacingAfter > 0f)
+                {
+                    var snapPrev = ShouldSnapToGrid(previousParagraph, section);
+                    currentY += previousSpacingAfter;
+                    if (snapPrev)
+                        currentY = SnapToDocGrid(currentY, docGridPitch, docGridOrigin);
+                }
+
                 previousParagraph = null;
                 previousSpacingAfter = 0f;
-                RenderTable(tableBlock.Table, pdfBuilder, ref page, pageSize, margins, contentWidth, ref currentY, layoutStressAudit);
+                currentY = SnapIfNeeded(currentY, section.DocGridLinePitchPt > 0.001f);
+                RenderTable(
+                    tableBlock.Table,
+                    pdfBuilder,
+                    ref page,
+                    pageSize,
+                    margins,
+                    contentWidth,
+                    ref currentY,
+                    layoutStressAudit,
+                    section,
+                    docGridPitch,
+                    docGridOrigin);
                 continue;
             }
 
@@ -98,6 +133,7 @@ public sealed class DocxToPdfConverter
 
             var paragraph = paragraphBlock.Paragraph;
             paragraphIndex++;
+            var nextParagraph = FindNextParagraph(blocks, blockIndex + 1);
             var lineSpacingDescriptor = paragraph.ParagraphFormatting.LineSpacing;
             string lineSpacingValue;
             if (lineSpacingDescriptor == null)
@@ -118,17 +154,25 @@ public sealed class DocxToPdfConverter
                 $"hanging={paragraph.ParagraphFormatting.HangingIndentPt:F2}");
 
             var suppressSpacingBetween = ShouldSuppressSpacingBetween(previousParagraph, paragraph);
-            if (suppressSpacingBetween && previousSpacingAfter > 0f)
-            {
-                currentY -= previousSpacingAfter;
-            }
+            var snapParagraph = ShouldSnapToGrid(paragraph, section);
+            var spacingBefore = ResolveSpacingBefore(paragraph, previousParagraph, suppressSpacingBetween, section);
 
             // Layout del paragrafo
             var lines = _layoutEngine.LayoutParagraph(paragraph, contentWidth);
+            var paragraphContentHeight = MeasureParagraphContentHeight(paragraph, lines);
+            var spacingAfterCandidate = ResolveSpacingAfter(paragraph, nextParagraph, section);
+            bool keepWithChain = paragraph.ParagraphFormatting.KeepTogether ||
+                                 (previousParagraph?.ParagraphFormatting.KeepWithNext ?? false);
+            if (keepWithChain && currentY + spacingBefore + paragraphContentHeight + spacingAfterCandidate > contentBottomLimit)
+            {
+                StartNewPage();
+                suppressSpacingBetween = false;
+                spacingBefore = ResolveSpacingBefore(paragraph, previousParagraph: null, suppressSpacingBetween, section);
+            }
 
             // Spaziatura prima del paragrafo
-            var spacingBefore = suppressSpacingBetween ? 0f : paragraph.ParagraphFormatting.SpacingBeforePt;
             currentY += spacingBefore;
+            currentY = SnapIfNeeded(currentY, snapParagraph);
 
             for (int lineIndex = 0; lineIndex < lines.Count; lineIndex++)
             {
@@ -138,12 +182,10 @@ public sealed class DocxToPdfConverter
                 var resolvedLineSpacing = paragraph.ParagraphFormatting.ResolveLineSpacing(defaultSpacing);
 
                 // Verifica se serve una nuova pagina
-                if (currentY + resolvedLineSpacing > pageSize.HeightPt - margins.Bottom)
+                if (currentY + resolvedLineSpacing > contentBottomLimit)
                 {
                     // Nuova pagina
-                    pdfBuilder.EndPage();
-                    page = pdfBuilder.BeginPage(pageSize);
-                    currentY = margins.Top;
+                    StartNewPage();
                 }
 
                 // Rendering della riga: il baseline è currentY - MaxAscent
@@ -231,12 +273,14 @@ public sealed class DocxToPdfConverter
                     }
 
                     var color = new SKColor(run.Formatting.Color.R, run.Formatting.Color.G, run.Formatting.Color.B);
+                    var decorationStartX = currentX;
                     float width;
                     if (DiagnosticsLogger != null && (run.Text.Contains("©") || run.Text.Contains("™")))
                     {
                         DiagnosticsLogger.Invoke($"Literal candidate text='{run.Text}' chars={run.Text.Length}");
                     }
-                    DiagnosticsLogger?.Invoke($"Run '{run.Text}' font={run.Typeface.FamilyName} size={run.FontSizePt:F2} bold={run.Formatting.Bold} italic={run.Formatting.Italic} kerning={run.Formatting.KerningEnabled}");
+                    DiagnosticsLogger?.Invoke(
+                        $"Run '{run.Text}' font={run.Typeface.FamilyName} (fmt={run.Formatting.FontFamily}) size={run.FontSizePt:F2} bold={run.Formatting.Bold} italic={run.Formatting.Italic} kerning={run.Formatting.KerningEnabled}");
                     if (run.Shaped is { } shaped && run.ShapedLength > 0)
                     {
                         width = shaped.DrawRange(
@@ -270,6 +314,33 @@ public sealed class DocxToPdfConverter
                         DiagnosticsLogger?.Invoke($"Trademark run text='{run.Text}' width={width:F2}");
                     }
 
+                        if (run.Formatting.Underline || run.Formatting.Strike)
+                    {
+                        var metrics = _textRenderer.GetFontMetrics(run.Typeface, run.FontSizePt);
+                        using var decorationPaint = new SKPaint
+                        {
+                            StrokeWidth = 1f,
+                            Color = color,
+                            Style = SKPaintStyle.Stroke
+                        };
+
+                        if (run.Formatting.Underline)
+                        {
+                            var underlinePos = metrics.UnderlinePosition ?? (run.FontSizePt * 0.1f);
+                            var underlineY = baseline + underlinePos;
+                            decorationPaint.StrokeWidth = DetermineDecorationThickness(metrics.UnderlineThickness, run.FontSizePt);
+                            page.Canvas.DrawLine(decorationStartX, underlineY, decorationStartX + width, underlineY, decorationPaint);
+                        }
+
+                        if (run.Formatting.Strike)
+                        {
+                            var strikePos = metrics.StrikeoutPosition ?? (-run.FontSizePt * 0.35f);
+                            var strikeY = baseline + strikePos;
+                            decorationPaint.StrokeWidth = DetermineDecorationThickness(metrics.StrikeoutThickness, run.FontSizePt);
+                            page.Canvas.DrawLine(decorationStartX, strikeY, decorationStartX + width, strikeY, decorationPaint);
+                        }
+                    }
+
                     if (spacingMode != SpacingMode.None && stretchableSpaces > 0 && IsStretchableSpace(run))
                     {
                         var bonus = 0f;
@@ -290,11 +361,13 @@ public sealed class DocxToPdfConverter
 
                 // Avanza alla prossima riga usando line spacing
                 currentY += resolvedLineSpacing;
+                currentY = SnapIfNeeded(currentY, snapParagraph);
             }
 
             // Spazio dopo il paragrafo
-            previousSpacingAfter = paragraph.ParagraphFormatting.SpacingAfterPt;
+            previousSpacingAfter = spacingAfterCandidate;
             currentY += previousSpacingAfter;
+            currentY = SnapIfNeeded(currentY, snapParagraph);
             previousParagraph = paragraph;
         }
 
@@ -353,21 +426,24 @@ public sealed class DocxToPdfConverter
     private static float ResolveFirstLineIndent(DocxParagraph paragraph)
     {
         if (paragraph.ListMarker != null)
-            return paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt();
+            return paragraph.ListMarker.TextPositionPt;
         return paragraph.ParagraphFormatting.GetFirstLineOffsetPt();
     }
 
     private void DrawListMarker(SKCanvas canvas, Margins margins, DocxParagraph paragraph, DocxListMarker marker, float baseline)
     {
-        var markerFamily = string.Equals(marker.Formatting.FontFamily, "Symbol", StringComparison.OrdinalIgnoreCase)
-            ? "Times New Roman"
-            : marker.Formatting.FontFamily;
-        var typeface = _fontManager.GetTypeface(markerFamily, marker.Formatting.Bold, marker.Formatting.Italic);
+        var typeface = _fontManager.GetTypeface(marker.Formatting.FontFamily, marker.Formatting.Bold, marker.Formatting.Italic);
         var color = new SKColor(marker.Formatting.Color.R, marker.Formatting.Color.G, marker.Formatting.Color.B);
 
-        var markerAreaStart = margins.Left + paragraph.ParagraphFormatting.GetFirstLineOffsetPt();
-        var contentStart = margins.Left + paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt();
-        var areaStart = Math.Min(markerAreaStart, contentStart);
+        var numberPosition = marker.NumberPositionPt > 0f
+            ? marker.NumberPositionPt
+            : paragraph.ParagraphFormatting.GetFirstLineOffsetPt();
+        var textPosition = marker.TextPositionPt > 0f
+            ? marker.TextPositionPt
+            : paragraph.ParagraphFormatting.GetSubsequentLineOffsetPt();
+
+        var areaStart = margins.Left + Math.Min(numberPosition, textPosition);
+        var contentStart = margins.Left + textPosition;
         var areaWidth = Math.Max(0f, contentStart - areaStart);
 
         var textWidth = _textRenderer.MeasureTextWithFallback(
@@ -395,23 +471,6 @@ public sealed class DocxToPdfConverter
             0f,
             marker.Formatting.KerningEnabled,
             marker.Formatting.KerningEnabled);
-
-        if (marker.Suffix == LevelSuffixValues.Space)
-        {
-            var suffixX = markerX + textWidth;
-            _textRenderer.DrawShapedTextWithFallback(
-                canvas,
-                " ",
-                suffixX,
-                baseline,
-                typeface,
-                marker.Formatting.FontSizePt,
-                color,
-                0f,
-                marker.Formatting.KerningEnabled,
-                marker.Formatting.KerningEnabled);
-        }
-        // LevelSuffix=Tab è già rispettato dal fatto che il contenuto parte dal subsequent indent.
     }
 
     private void DrawBarTabs(SKCanvas canvas, Margins margins, DocxParagraph paragraph, LayoutLine line, float baseline)
@@ -449,37 +508,59 @@ public sealed class DocxToPdfConverter
         Margins margins,
         float contentWidth,
         ref float currentY,
-        LayoutStressFontAuditor fontAudit)
+        LayoutStressFontAuditor fontAudit,
+        DocxSection section,
+        float docGridPitch,
+        float docGridOrigin)
     {
         if (table.Rows.Count == 0)
             return;
 
         var columnWidths = ResolveColumnWidths(table, contentWidth);
         var columnOffsets = BuildColumnOffsets(columnWidths);
-        var rowPlans = BuildRowPlans(table, columnOffsets);
+        var rowPlans = BuildRowPlans(table, columnOffsets, section);
         if (rowPlans.Count == 0)
             return;
 
-        DiagnosticsLogger?.Invoke($"[table] rows={rowPlans.Count} columns={columnWidths.Length}");
+        DiagnosticsLogger?.Invoke(
+            $"[table] rows={rowPlans.Count} columns={columnWidths.Length} style={table.StyleId ?? "<none>"} stylePaddingL={table.DefaultCellPadding.Left:F2}");
         DiagnosticsLogger?.Invoke($"[table] margins.L={margins.Left:F2} startX(left)={margins.Left:F2}");
 
+        var tableStartX = ResolveTableStartX(table, margins.Left);
+        DiagnosticsLogger?.Invoke(
+            $"[table-start] leftIndent={table.LeftIndentPt:F2} startX={tableStartX:F2} legacy={table.UseLegacyIndentBehavior} padL={table.DefaultCellPadding.Left:F2}");
+
+        var contentBottom = pageSize.HeightPt - margins.Bottom;
         for (int rowIndex = 0; rowIndex < rowPlans.Count; rowIndex++)
         {
             var rowPlan = rowPlans[rowIndex];
-            if (currentY + rowPlan.Height > pageSize.HeightPt - margins.Bottom)
+            if (currentY + rowPlan.Height > contentBottom)
             {
                 pdfBuilder.EndPage();
                 page = pdfBuilder.BeginPage(pageSize);
                 currentY = margins.Top;
+                contentBottom = pageSize.HeightPt - margins.Bottom;
             }
 
             DiagnosticsLogger?.Invoke($"[table] draw row={rowIndex} height={rowPlan.Height:F2} top={currentY:F2}");
-            DrawTableRow(rowPlan, page.Canvas, margins.Left, currentY, table.Borders, columnOffsets, rowIndex, rowPlans.Count, fontAudit);
+            DrawTableRow(
+                rowPlan,
+                page.Canvas,
+                tableStartX,
+                currentY,
+                table.Borders,
+                columnOffsets,
+                rowIndex,
+                rowPlans.Count,
+                fontAudit,
+                section,
+                docGridPitch,
+                docGridOrigin);
             currentY += rowPlan.Height;
         }
     }
 
-    private List<TableRowRenderPlan> BuildRowPlans(DocxTable table, float[] columnOffsets)
+    private List<TableRowRenderPlan> BuildRowPlans(DocxTable table, float[] columnOffsets, DocxSection section)
     {
         var rowCount = table.Rows.Count;
         var rowPlans = new List<TableRowRenderPlan>(rowCount);
@@ -500,17 +581,31 @@ public sealed class DocxToPdfConverter
                     continue;
 
                 var padding = table.DefaultCellPadding.ApplyOverride(cell.PaddingOverride);
+                DiagnosticsLogger?.Invoke(
+                    $"[table-padding] row={rowIndex} col={cell.ColumnIndex} padL={padding.Left:F2} padR={padding.Right:F2} padT={padding.Top:F2} padB={padding.Bottom:F2}");
                 var innerWidth = Math.Max(1f, width - padding.Left - padding.Right);
                 DiagnosticsLogger?.Invoke($"[table-cell] row={rowIndex} col={cell.ColumnIndex} span={cell.ColumnSpan} width={width:F2} padL={padding.Left:F2} padR={padding.Right:F2} inner={innerWidth:F2}");
                 var paragraphLayouts = new List<ParagraphLayoutPlan>();
                 float contentHeight = 0f;
 
-                foreach (var paragraph in cell.Paragraphs)
+                DocxParagraph? previousParagraph = null;
+                float previousSpacingAfter = 0f;
+                for (int paragraphIndex = 0; paragraphIndex < cell.Paragraphs.Count; paragraphIndex++)
                 {
+                    var paragraph = cell.Paragraphs[paragraphIndex];
+                    var nextParagraph = paragraphIndex + 1 < cell.Paragraphs.Count
+                        ? cell.Paragraphs[paragraphIndex + 1]
+                        : null;
+                    var suppressSpacing = ShouldSuppressSpacingBetween(previousParagraph, paragraph);
+                    var spacingBefore = ResolveSpacingBefore(paragraph, previousParagraph, suppressSpacing, section);
+
+                    var spacingAfter = ResolveSpacingAfter(paragraph, nextParagraph, section);
                     var lines = _layoutEngine.LayoutParagraph(paragraph, innerWidth);
-                    var plan = new ParagraphLayoutPlan(paragraph, lines, suppressOuterSpacing: true);
+                    var plan = new ParagraphLayoutPlan(paragraph, lines, spacingBefore, spacingAfter);
                     paragraphLayouts.Add(plan);
                     contentHeight += plan.TotalHeight;
+                    previousParagraph = paragraph;
+                    previousSpacingAfter = spacingAfter;
                 }
 
                 var height = padding.Top + padding.Bottom + contentHeight;
@@ -578,6 +673,25 @@ public sealed class DocxToPdfConverter
         return rowPlans;
     }
 
+    private static float ResolveTableStartX(DocxTable table, float marginLeft)
+    {
+        float start = marginLeft + table.LeftIndentPt;
+        var firstCell = table.Rows.FirstOrDefault()?.Cells.FirstOrDefault();
+        if (firstCell == null)
+            return start;
+
+        if (table.UseLegacyIndentBehavior)
+        {
+            var padding = table.DefaultCellPadding.ApplyOverride(firstCell.PaddingOverride);
+            start -= padding.Left;
+            var leftBorder = firstCell.Borders?.Left ?? table.Borders.Left;
+            if (leftBorder?.WidthPt > 0f)
+                start -= leftBorder.WidthPt / 2f;
+        }
+
+        return start;
+    }
+
     private void DrawTableRow(
         TableRowRenderPlan rowPlan,
         SKCanvas canvas,
@@ -587,7 +701,10 @@ public sealed class DocxToPdfConverter
         float[] columnOffsets,
         int rowIndex,
         int totalRows,
-        LayoutStressFontAuditor fontAudit)
+        LayoutStressFontAuditor fontAudit,
+        DocxSection section,
+        float docGridPitch,
+        float docGridOrigin)
     {
         for (int cellIndex = 0; cellIndex < rowPlan.Cells.Count; cellIndex++)
         {
@@ -618,7 +735,17 @@ public sealed class DocxToPdfConverter
             foreach (var paragraph in cell.Paragraphs)
             {
                 var context = $"table r{rowIndex} c{cellIndex}";
-                RenderParagraphLayout(paragraph, canvas, contentLeft, cell.InnerWidth, ref cursorY, fontAudit, context);
+                RenderParagraphLayout(
+                    paragraph,
+                    canvas,
+                    contentLeft,
+                    cell.InnerWidth,
+                    ref cursorY,
+                    fontAudit,
+                    context,
+                    section,
+                    docGridPitch,
+                    docGridOrigin);
             }
         }
     }
@@ -630,9 +757,15 @@ public sealed class DocxToPdfConverter
         float innerWidth,
         ref float cursorY,
         LayoutStressFontAuditor fontAudit,
-        string? context = null)
+        string? context,
+        DocxSection section,
+        float docGridPitch,
+        float docGridOrigin)
     {
+        var snapParagraph = ShouldSnapToGrid(layout.Paragraph, section);
         cursorY += layout.SpacingBefore;
+        if (snapParagraph)
+            cursorY = SnapToDocGrid(cursorY, docGridPitch, docGridOrigin);
         for (int i = 0; i < layout.Lines.Count; i++)
         {
             var line = layout.Lines[i];
@@ -711,9 +844,13 @@ public sealed class DocxToPdfConverter
             }
 
             cursorY += spacing;
+            if (snapParagraph)
+                cursorY = SnapToDocGrid(cursorY, docGridPitch, docGridOrigin);
         }
 
         cursorY += layout.SpacingAfter;
+        if (snapParagraph)
+            cursorY = SnapToDocGrid(cursorY, docGridPitch, docGridOrigin);
     }
 
     private void DrawCellBorders(
@@ -766,11 +903,232 @@ public sealed class DocxToPdfConverter
         if (previous == null)
             return false;
 
-        if (!previous.ParagraphFormatting.SuppressSpacingBetweenSameStyle ||
-            !current.ParagraphFormatting.SuppressSpacingBetweenSameStyle)
+        if (!current.ParagraphFormatting.SuppressSpacingBetweenSameStyle)
             return false;
 
-        return string.Equals(previous.StyleId, current.StyleId, StringComparison.OrdinalIgnoreCase);
+        if (string.Equals(previous.StyleId, current.StyleId, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (IsListStyle(previous.StyleId) && IsListStyle(current.StyleId))
+            return true;
+
+        return false;
+    }
+
+    private static bool IsListStyle(string? styleId) =>
+        !string.IsNullOrEmpty(styleId) &&
+        styleId.StartsWith("List", StringComparison.OrdinalIgnoreCase);
+
+    private static DocxParagraph? FindNextParagraph(IReadOnlyList<DocxBlock> blocks, int startIndex)
+    {
+        for (int i = startIndex; i < blocks.Count; i++)
+        {
+            if (blocks[i] is DocxParagraphBlock paragraphBlock)
+                return paragraphBlock.Paragraph;
+        }
+
+        return null;
+    }
+
+    private const float ListFirstParagraphSpacingAdjustment = 4.02f;
+    private const float ListContinuationSpacingAdjustment = 1.75f;
+
+    private static float ResolveSpacingBefore(
+        DocxParagraph paragraph,
+        DocxParagraph? previousParagraph,
+        bool suppressSpacing,
+        DocxSection section)
+    {
+        float spacing = 0f;
+        if (!suppressSpacing)
+        {
+            if (paragraph.ParagraphFormatting.NoSpaceBetweenParagraphsOfSameStyle &&
+                previousParagraph != null &&
+                string.Equals(paragraph.StyleId, previousParagraph.StyleId, StringComparison.OrdinalIgnoreCase))
+            {
+                // spacing remains 0
+            }
+            else
+            {
+                spacing = paragraph.ParagraphFormatting.SpacingBeforePt;
+                float lineUnits = ConvertLineUnits(paragraph.ParagraphFormatting.LineUnitBefore, section.DocGridLinePitchPt);
+                spacing += lineUnits;
+                spacing = ApplyHtmlAutoSpacingBefore(spacing, lineUnits, paragraph, previousParagraph, section);
+
+                if (previousParagraph != null)
+                {
+                    var previousSpacing = ComputeSpacingAfter(previousParagraph, paragraph, section);
+                    spacing = Math.Max(0f, spacing - previousSpacing);
+                }
+            }
+        }
+
+        spacing += GetListSpacingAdjustment(paragraph, previousParagraph);
+        if (spacing < 0f)
+            spacing = 0f;
+
+        return spacing;
+    }
+
+    private static float ResolveSpacingAfter(
+        DocxParagraph paragraph,
+        DocxParagraph? nextParagraph,
+        DocxSection section) =>
+        ComputeSpacingAfter(paragraph, nextParagraph, section);
+
+    private static float ComputeSpacingAfter(
+        DocxParagraph paragraph,
+        DocxParagraph? nextParagraph,
+        DocxSection section)
+    {
+        if (paragraph.ParagraphFormatting.NoSpaceBetweenParagraphsOfSameStyle &&
+            nextParagraph != null &&
+            string.Equals(paragraph.StyleId, nextParagraph.StyleId, StringComparison.OrdinalIgnoreCase))
+        {
+            return 0f;
+        }
+
+        float spacing = paragraph.ParagraphFormatting.SpacingAfterPt;
+        float lineUnits = ConvertLineUnits(paragraph.ParagraphFormatting.LineUnitAfter, section.DocGridLinePitchPt);
+        spacing += lineUnits;
+        spacing = ApplyHtmlAutoSpacingAfter(spacing, lineUnits, paragraph, nextParagraph, section);
+
+        if (paragraph.IsInTable && paragraph.ListMarker == null && paragraph.ParagraphFormatting.SpaceAfterAuto)
+        {
+            spacing = Math.Min(spacing, ConvertLineUnits(1f, section.DocGridLinePitchPt));
+        }
+
+        return spacing;
+    }
+
+    private static float DetermineDecorationThickness(float? metricsThickness, float fontSize)
+    {
+        if (metricsThickness.HasValue && float.IsFinite(metricsThickness.Value) && Math.Abs(metricsThickness.Value) > 0.01f)
+            return Math.Abs(metricsThickness.Value);
+
+        return Math.Max(0.5f, fontSize * 0.05f);
+    }
+
+    private static float GetListSpacingAdjustment(DocxParagraph paragraph, DocxParagraph? previousParagraph)
+    {
+        if (paragraph.ListMarker == null)
+            return 0f;
+
+        if (previousParagraph?.ListMarker == null)
+            return ListFirstParagraphSpacingAdjustment;
+
+        return ListContinuationSpacingAdjustment;
+    }
+
+    private static float ApplyHtmlAutoSpacingBefore(
+        float spacing,
+        float lineUnits,
+        DocxParagraph paragraph,
+        DocxParagraph? previousParagraph,
+        DocxSection section)
+    {
+        if (!paragraph.ParagraphFormatting.SpaceBeforeAuto)
+            return spacing;
+
+        if (section.DoNotUseHtmlParagraphAutoSpacing)
+            return spacing;
+
+        return ShouldApplyHtmlAutoSpacingBefore(paragraph, previousParagraph)
+            ? HtmlAutoSpacingPoints
+            : 0f;
+    }
+
+    private static float ApplyHtmlAutoSpacingAfter(
+        float spacing,
+        float lineUnits,
+        DocxParagraph paragraph,
+        DocxParagraph? nextParagraph,
+        DocxSection section)
+    {
+        if (!paragraph.ParagraphFormatting.SpaceAfterAuto)
+            return spacing;
+
+        if (section.DoNotUseHtmlParagraphAutoSpacing)
+            return spacing;
+
+        return ShouldApplyHtmlAutoSpacingAfter(paragraph, nextParagraph)
+            ? HtmlAutoSpacingPoints
+            : 0f;
+    }
+
+    private static bool ShouldApplyHtmlAutoSpacingBefore(DocxParagraph paragraph, DocxParagraph? previousParagraph)
+    {
+        if (paragraph.IsFirstParagraphInDocument)
+            return false;
+        if (paragraph.IsFirstParagraphInCell)
+            return false;
+        if (paragraph.ListMarker != null && previousParagraph?.ListMarker != null)
+            return false;
+        return true;
+    }
+
+    private static bool ShouldApplyHtmlAutoSpacingAfter(DocxParagraph paragraph, DocxParagraph? nextParagraph)
+    {
+        if (paragraph.IsLastParagraphInCell)
+            return false;
+        if (paragraph.ListMarker != null && nextParagraph?.ListMarker != null)
+            return false;
+        return true;
+    }
+
+    private static float ConvertLineUnits(float units, float docGridPitchPt)
+    {
+        if (units <= 0f)
+            return 0f;
+
+        var pitch = docGridPitchPt > 0.001f ? docGridPitchPt : 12f;
+        return units * pitch;
+    }
+
+    private static bool ShouldSnapToGrid(DocxParagraph paragraph, DocxSection section)
+    {
+        if (paragraph == null)
+            return false;
+        if (section.DocGridLinePitchPt <= 0.001f)
+            return false;
+
+        var formatting = paragraph.ParagraphFormatting;
+        var snapEnabled = formatting.SnapToGridExplicit
+            ? formatting.SnapToGrid
+            : false;
+        if (!snapEnabled)
+            return false;
+        if (paragraph.IsInTable && section.DoNotSnapToGridInCell)
+            return false;
+
+        return true;
+    }
+
+    private static float SnapToDocGrid(float value, float docGridPitchPt, float origin)
+    {
+        if (docGridPitchPt <= 0.001f)
+            return value;
+
+        var relative = value - origin;
+        if (relative <= 0f)
+            return origin;
+
+        var units = (float)Math.Round(relative / docGridPitchPt, MidpointRounding.AwayFromZero);
+        var snapped = origin + units * docGridPitchPt;
+        if (snapped < origin)
+            snapped = origin;
+        return snapped;
+    }
+
+    private static float MeasureParagraphContentHeight(DocxParagraph paragraph, IReadOnlyList<LayoutLine> lines)
+    {
+        float total = 0f;
+        foreach (var line in lines)
+        {
+            total += paragraph.ParagraphFormatting.ResolveLineSpacing(line.GetLineSpacing());
+        }
+
+        return total;
     }
 
     private float[] ResolveColumnWidths(DocxTable table, float availableWidth)
@@ -828,6 +1186,22 @@ public sealed class DocxToPdfConverter
                 widths[i] = even;
         }
 
+        var targetWidth = ResolveTablePreferredWidth(table.PreferredWidth, availableWidth);
+        if (targetWidth <= 0f && table.PreferredWidth == TablePreferredWidth.Auto)
+        {
+            targetWidth = availableWidth;
+        }
+
+        if (targetWidth > 0f && sum > 0f)
+        {
+            var scale = targetWidth / sum;
+            if (!float.IsNaN(scale) && scale > 0f)
+            {
+                for (int i = 0; i < widths.Length; i++)
+                    widths[i] *= scale;
+            }
+        }
+
         return widths;
     }
 
@@ -882,6 +1256,14 @@ public sealed class DocxToPdfConverter
     }
 
     private static float ResolvePreferredWidth(TablePreferredWidth preferredWidth, float availableWidth) =>
+        preferredWidth.Unit switch
+        {
+            TableWidthUnit.Dxa => UnitConverter.DxaToPoints(preferredWidth.Value),
+            TableWidthUnit.Percent => availableWidth * preferredWidth.Value / 5000f,
+            _ => 0f
+        };
+
+    private static float ResolveTablePreferredWidth(TablePreferredWidth preferredWidth, float availableWidth) =>
         preferredWidth.Unit switch
         {
             TableWidthUnit.Dxa => UnitConverter.DxaToPoints(preferredWidth.Value),
@@ -1064,12 +1446,13 @@ public sealed class DocxToPdfConverter
         public ParagraphLayoutPlan(
             DocxParagraph paragraph,
             IReadOnlyList<LayoutLine> lines,
-            bool suppressOuterSpacing = false)
+            float spacingBefore,
+            float spacingAfter)
         {
             Paragraph = paragraph;
             Lines = lines;
-            SpacingBefore = suppressOuterSpacing ? 0f : paragraph.ParagraphFormatting.SpacingBeforePt;
-            SpacingAfter = suppressOuterSpacing ? 0f : paragraph.ParagraphFormatting.SpacingAfterPt;
+            SpacingBefore = Math.Max(spacingBefore, 0f);
+            SpacingAfter = Math.Max(spacingAfter, 0f);
             LineSpacings = new List<float>(lines.Count);
             float total = SpacingBefore + SpacingAfter;
             foreach (var line in lines)
